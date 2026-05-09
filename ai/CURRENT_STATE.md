@@ -67,4 +67,4 @@ None.
 
 ## Session reconciliation
 
-CHAT_END (2026-05-09): Local `main` matches `origin/main` (`7a0d1f2`); P0-T8 still active.
+CHAT_END (2026-05-09): Planning files refreshed per `/ai/templates/CHAT_END_PROMPT.md`; **P0-T8** still active.

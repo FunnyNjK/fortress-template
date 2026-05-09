@@ -5,9 +5,9 @@ Last Updated: 2026-05-09
 ## 2026-05-09
 
 - CHAT_END: Ran `/ai/templates/CHAT_END_PROMPT.md`; reconciled `CURRENT_STATE`, `TASKS`, `HANDOFF`,
-  `DONE_LOG` vs `origin/main` `7a0d1f2`; clean tree; P0-T8 still active; YAML parse `ci.yml` +
+  `DONE_LOG` vs `origin/main` at start of pass; **P0-T8** still active; YAML parse `ci.yml` +
   `dependabot.yml`; `pnpm lint` + `pnpm typecheck` + `pnpm audit --audit-level=high` (clean); `bash -n scripts/setup.sh`; `grep -c replace-with-`
-  `.env.example` (=27); `/ai/TESTING.md` note for Phase 0 CI gates; ARCHITECTURE / ROADMAP / DEPLOYMENT /
+  `.env.example` (=27); `/ai/TESTING.md` Phase 0 CI summary; ARCHITECTURE / ROADMAP / DEPLOYMENT /
   DECISIONS unchanged.
 - P0-T7: CI workflow scaffolding — `.github/workflows/ci.yml`: jobs `install` (pnpm store cache via
   `setup-node`), `lint` / `typecheck` / `test` / `dep-audit` / `sbom` (`needs: install`), `gitleaks`

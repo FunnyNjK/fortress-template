@@ -37,7 +37,7 @@ None.
 
 ## Tests / Checks Last Run
 
-- CHAT_END (2026-05-09): `git fetch`; clean vs `origin/main` (`7a0d1f2`); `python3` YAML parse
+- CHAT_END (2026-05-09): `git fetch`; clean tree before edits; `python3` YAML parse
   `ci.yml` + `dependabot.yml`; `npx pnpm@10.33.4 run lint`; `npx pnpm@10.33.4 run typecheck`;
   `npx pnpm@10.33.4 audit --audit-level=high` (clean); `bash -n scripts/setup.sh`;
   `grep -c replace-with-` `.env.example` (=27).
