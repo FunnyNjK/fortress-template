@@ -1,6 +1,6 @@
 # AI Handoff
 
-Last Updated: 2026-05-10
+Last Updated: 2026-05-09
 
 > **Target shape: ≤ 50 lines.** Baton, not a diary.
 
@@ -38,4 +38,4 @@ None.
 
 ## Tests / Checks Last Run
 
-- 2026-05-10: `pnpm lint` / `typecheck` / `test` / `build` (workspace).
+- CHAT_END (2026-05-09): `git fetch` / status (clean vs **`260e8a4`**); **python3** YAML **`ci.yml`** / **`dependabot.yml`**; **`npx pnpm@10.33.4`** `lint` / `typecheck` / `test` / `build`; **`pnpm audit --audit-level=high`** (**1 moderate**); **`bash -n`** **`scripts/setup.sh`**; **`grep -c replace-with-`** **`.env.example`** (=27).

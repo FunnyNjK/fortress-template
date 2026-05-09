@@ -25,6 +25,7 @@ push and pull request.
   (Postgres container from `docker-compose.yml`).
 - Each integration test suite imports from `packages/testing` for factories
   and fixtures.
+- **API P2-T4 security chain:** `apps/api/test/security/security-chain.integration.test.ts` (supertest; Redis via **`REDIS_URL`** — CI **`redis`** service; skips locally if Redis unreachable unless **`CI=true`**).
 
 ### E2E tests (required for web)
 - Playwright for `apps/web` smoke tests.

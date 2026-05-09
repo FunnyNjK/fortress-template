@@ -1,10 +1,12 @@
 # Done Log
 
-Last Updated: 2026-05-10
+Last Updated: 2026-05-09
 
 ## 2026-05-10
 
 - **P2-T4** — Security middleware chain: **`apps/api/src/security/`** (`SecurityModule`, Helmet-based headers + explicit `Permissions-Policy`, dynamic **`express.json`** limits via **`BodyLimitRegistry`**, **`RateLimitGuard`** + **`ioredis`**, global **`ZodValidationPipe`**, **`FortressRequestLoggerMiddleware`**, **`FortressExceptionFilter`**); **`REDIS_URL`** in **`env.schema.ts`**; non-prod **`SecurityChainTestController`** (`/__security_chain__/…`); **`main.ts`** / tests use **`bodyParser: false`**; CI **`redis`** service + **`REDIS_URL`**; Vitest **`setup-env`** reads **`apps/api/.env`** and repo **`.env`** for **`DATABASE_URL`/`REDIS_URL`** defaults; integration tests **`test/security/security-chain.integration.test.ts`** (`describe.skipIf` when Redis unreachable locally unless **`CI=true`**). Pins: **`helmet@8.1.0`**, **`ioredis@5.8.2`**, **`express@5.2.1`**, **`@types/express@5.0.6`**. (`9923095`)
+
+- CHAT_END (2026-05-09): Ran `/ai/templates/CHAT_END_PROMPT.md`; `git fetch` / status clean vs **`origin/main`** at **`260e8a4`**; YAML **`ci.yml`** + **`dependabot.yml`** (**python3** `yaml.safe_load`); **`npx pnpm@10.33.4`** `lint` + `typecheck` + `test` + `build`; **`pnpm audit --audit-level=high`** (**1 moderate**, below gate); **`bash -n`** **`scripts/setup.sh`**; **`grep -c replace-with-`** **`.env.example`** (=27); **`TESTING.md`** delta (P2-T4 API security integration note); **`ARCHITECTURE.md`**, **`ROADMAP.md`**, **`DEPLOYMENT.md`**, **`DECISIONS.md`** unchanged this pass.
 
 - **Post-Phase-1 cleanup commit** — addresses findings from the Phase 0+1 review:
   - **Restored the migration ADR as ADR-026.** Original was written as ADR-023 on

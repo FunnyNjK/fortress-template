@@ -1,6 +1,6 @@
 # Current State
 
-Last Updated: 2026-05-10
+Last Updated: 2026-05-09
 
 > **Target shape: ≤ 80 lines.** Snapshot only — implementation detail in DONE_LOG.md.
 
@@ -56,3 +56,5 @@ None.
 ## Session reconciliation
 
 2026-05-10 — **P2-T4**: full workspace `lint` / `typecheck` / `test` / `build`; **`ADR-028`** (security deps + rate-limit note).
+
+CHAT_END (2026-05-09): **`git fetch`** / status vs **`origin/main`** at **`260e8a4`** (clean); YAML **`ci.yml`** / **`dependabot.yml`** (**python3** `yaml.safe_load`); **`npx pnpm@10.33.4`** `lint` / `typecheck` / `test` / `build`; **`pnpm audit --audit-level=high`** (**1 moderate**, below gate); **`bash -n`** **`scripts/setup.sh`**; **`grep -c replace-with-`** **`.env.example`** (=27); **`TESTING.md`** (P2-T4 security integration bullet); **`ARCHITECTURE.md`** / **`ROADMAP.md`** / **`DEPLOYMENT.md`** / **`DECISIONS.md`** unchanged.

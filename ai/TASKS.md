@@ -1,8 +1,8 @@
 # Tasks
 
-Last Updated: 2026-05-10
+Last Updated: 2026-05-09
 
-CHAT_END (2026-05-10): **`P2-T4`** complete (security chain + `REDIS_URL` + CI Redis); next **`P2-T5`**. Full workspace `lint` / `typecheck` / `test` / `build` green.
+CHAT_END (2026-05-09): **`origin/main`** at **`260e8a4`** (clean after **`git fetch`**); YAML parse **`ci.yml`** / **`dependabot.yml`**; **`npx pnpm@10.33.4`** `lint` + `typecheck` + `test` + `build`; **`pnpm audit --audit-level=high`** (**1 moderate**); **`bash -n`** **`scripts/setup.sh`**; **`grep -c replace-with-`** **`.env.example`** (=27); **`TESTING.md`** delta; **`ARCHITECTURE` / `ROADMAP` / `DEPLOYMENT` / `DECISIONS`** unchanged. Prior: **`P2-T4`** complete; next **`P2-T5`**.
 
 Phase 0 is **complete** (P0-T1–P0-T8). **Phase 1** is **complete** (P1-T1–P1-T6): shared library
 packages landed. Next: **Phase 2** (`apps/api` skeleton). Phase 2–8 remain in Backlog until decomposed.
