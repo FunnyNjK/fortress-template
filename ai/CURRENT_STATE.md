@@ -6,11 +6,11 @@ Last Updated: 2026-05-09
 
 ## Current Phase
 
-Phase 0 (Repo skeleton) — in progress. P0-T1–P0-T6 complete; **P0-T7** active.
+Phase 0 (Repo skeleton) — in progress. P0-T1–P0-T7 complete; **P0-T8** active.
 
 ## Current Task
 
-P0-T7: Add CI workflow scaffolding. Status: Active.
+P0-T8: Add `.well-known/security.txt`, `AGENTS.md`, and `PROJECT_STATUS.md`. Status: Active.
 
 ## What Exists Now
 
@@ -28,7 +28,11 @@ P0-T7: Add CI workflow scaffolding. Status: Active.
 - `.env.example` — canonical env template (`replace-with-*` placeholders; local URLs
   use `127.0.0.1` ports aligned with `docker-compose.yml`).
 - `scripts/setup.sh`, `scripts/setup.ps1` — idempotent local `.env` + `docker compose up -d`.
-- No `apps/` yet; P0-T7+ pending.
+- `.github/workflows/ci.yml` — nine-job CI (install, lint, typecheck, test, dep-audit,
+  gitleaks, semgrep, codeql, sbom); actions pinned by SHA; push + `pull_request`.
+- `.github/dependabot.yml` — weekly `npm` + `github-actions` updates.
+- `.gitleaks.toml` — baseline secret scan config (allowlists `.env.example`).
+- No `apps/` yet; P0-T8+ pending.
 
 ## What Works
 
@@ -36,10 +40,11 @@ P0-T7: Add CI workflow scaffolding. Status: Active.
   via Turbo; `pnpm run lint` runs `@fortress/config-eslint` lint.
 - `docker compose config` validates the stack; `docker compose up -d` brings up
   supporting services (manual smoke).
+- CI workflow present locally; green run after push is manual confirmation on GitHub.
 
 ## What Is Not Built Yet
 
-- P0-T7 through P0-T8; all application code and Phases 1–8 per roadmap.
+- P0-T8; all application code and Phases 1–8 per roadmap.
 
 ## Known Problems
 
@@ -48,7 +53,8 @@ None.
 ## Important Files or Folders
 
 - `/ai/HANDOFF.md` — next session baton
-- `/ai/TASKS.md` — P0-T7 active
+- `/ai/TASKS.md` — P0-T8 active
+- `.github/workflows/ci.yml` — CI gates
 - `.env.example` — env var catalog for setup scripts and forks
 - `docker-compose.yml` — local backing services
 - `packages/config-typescript/` — shared TS configs
@@ -56,8 +62,5 @@ None.
 
 ## Next Recommended Action
 
-1. Execute **P0-T7** (CI workflow + Dependabot) per TASKS.md, then commit and push.  
-2. Continue Phase 0 toward P0-T8.
-
-CHAT_END (2026-05-09): Reconciled to `origin/main` at `53f1a4e`; clean tree; `.github/workflows/ci.yml`
-not present yet (P0-T7); `scripts/setup.*` on tree; `grep -c replace-with-` `.env.example` (=27); lint + typecheck OK.
+1. Execute **P0-T8** per TASKS.md, then commit and push; confirm CI green on `main`.
+2. Begin Phase 1 after Phase 0 closes.

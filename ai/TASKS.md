@@ -2,8 +2,8 @@
 
 Last Updated: 2026-05-09
 
-Phase 0 tasks are queued and ready for execution. **P0-T7** is Active.
-CHAT_END (2026-05-09): Landed `origin/main` `53f1a4e`; P0-T7 Active; `.github/workflows/ci.yml` not created yet.
+Phase 0 tasks are queued and ready for execution. **P0-T8** is Active.
+CHAT_END (2026-05-09): P0-T7 landed (CI workflow, Dependabot, `.gitleaks.toml`); **P0-T8** Active next.
 Phase 1–8 placeholders are in Backlog; each will be decomposed when its phase becomes active.
 
 ---
@@ -65,92 +65,15 @@ Rough unattended profiles — refine when each phase becomes active.
 
 ---
 
-## Active Task
-
-### P0-T7: Add CI workflow scaffolding
-
-Status: Active
-Owner: AI CLI (unattended)
-Priority: High
-Unattended: Yes
-
-### Goal
-
-Scaffold the GitHub Actions CI pipeline that enforces all code quality, security,
-and supply-chain gates on every push and pull request. The initial run may produce
-trivial output for lint and test (no app code yet), but must be green.
-
-### Scope Included
-
-- `.github/workflows/ci.yml` — 9 jobs:
-  1. `install` — pnpm install with pnpm store cache
-  2. `lint` — `pnpm lint` (ESLint)
-  3. `typecheck` — `pnpm typecheck` (`tsc --noEmit`)
-  4. `test` — `pnpm test` (Vitest)
-  5. `dep-audit` — `pnpm audit --audit-level=high` (blocks on high/critical)
-  6. `gitleaks` — secret scanning via `gitleaks/gitleaks-action`
-  7. `semgrep` — SAST via `returntocorp/semgrep-action`
-  8. `codeql` — GitHub CodeQL analysis
-  9. `sbom` — CycloneDX SBOM generation, uploaded as build artifact
-- Triggers: `push` (all branches) and `pull_request`
-- `.github/dependabot.yml` — weekly updates for `npm` (pnpm compat) and `github-actions`
-
-### Scope Excluded
-
-- Deploy workflows (`deploy-staging.yml`, `deploy-prod.yml`) — Phase 6
-- `CODEOWNERS` file — Phase 7 (docs pass)
-- Actual passing test suite (apps scaffolded in Phases 2–5)
-
-### Files Likely Involved
-
-- `.github/workflows/ci.yml` (create)
-- `.github/dependabot.yml` (create)
-
-### Acceptance Criteria
-
-- `ci.yml` is valid GitHub Actions YAML
-- All 9 jobs defined with correct job IDs and `needs:` dependencies
-- `dep-audit` step fails build on `high` or `critical` CVEs
-- `gitleaks` uses the official action with a non-placeholder config
-- SBOM artifact uploaded as `sbom-*.json` per build
-- `dependabot.yml` covers both `npm` and `github-actions` ecosystems
-- Action versions pinned to specific SHA (not floating tag)
-- `permissions:` block at job level (least privilege)
-
-### Test Requirements
-
-- `python3 -c "import yaml; yaml.safe_load(open('.github/workflows/ci.yml'))"` exits 0
-- Manual: push to a branch; confirm CI run is green
-
-### Security Considerations
-
-- No secrets hardcoded in workflow YAML — use `${{ secrets.* }}` references only
-- Action versions pinned to commit SHA, not floating tag (supply-chain integrity)
-- `permissions: contents: read` or narrower at job level; escalate only where required
-- CodeQL analysis must include `javascript` and `typescript` language targets
-
-### Dev Environment Constraints
-
-- All work runs natively in WSL Ubuntu (`~/repos/fortress-template`).
-- No Docker for application processes.
-- No `/mnt/c` paths in code or scripts.
-
-### Handoff Notes
-
-- Depends on P0-T1 (pnpm workspace required; otherwise `pnpm install` in CI fails).
-- Depends on P0-T2 and P0-T3 (lint and typecheck reference these packages).
-
-### Verification Step
-
-`python3 -c "import yaml; yaml.safe_load(open('.github/workflows/ci.yml'))"` exits 0.
+### P0-T7: Add CI workflow scaffolding — Done; see DONE_LOG.md.
 
 ---
 
-## Ready
+## Active Task
 
 ### P0-T8: Add .well-known/security.txt, AGENTS.md, and PROJECT_STATUS.md
 
-Status: Ready
+Status: Active
 Owner: AI CLI (unattended)
 Priority: Medium
 Unattended: Yes

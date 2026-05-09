@@ -4,10 +4,14 @@ Last Updated: 2026-05-09
 
 ## 2026-05-09
 
-- CHAT_END: Ran `/ai/templates/CHAT_END_PROMPT.md`; reconciled `CURRENT_STATE`, `TASKS`, `HANDOFF`,
-  `DONE_LOG` vs `origin/main` `53f1a4e`; clean tree; P0-T7 not started (no `.github/workflows/ci.yml`);
-  `bash -n scripts/setup.sh`; `grep -c replace-with-` `.env.example` (=27); lint + typecheck OK;
-  ARCHITECTURE / ROADMAP / TESTING / DEPLOYMENT / DECISIONS unchanged.
+- P0-T7: CI workflow scaffolding — `.github/workflows/ci.yml`: jobs `install` (pnpm store cache via
+  `setup-node`), `lint` / `typecheck` / `test` / `dep-audit` / `sbom` (`needs: install`), `gitleaks`
+  / `semgrep` / `codeql` parallel to install path; `returntocorp/semgrep-action@v1`,
+  `gitleaks/gitleaks-action@v2.3.9`, `github/codeql-action@v3.35.4` (`javascript-typescript`),
+  CycloneDX via `npx @cyclonedx/cyclonedx-npm@4.2.1 --ignore-npm-errors` + `upload-artifact`;
+  all `uses:` refs commit-SHA pinned; job-level `permissions`. `.github/dependabot.yml` weekly
+  `npm` + `github-actions`. Root `.gitleaks.toml` with `[extend] useDefault = true` and `.env.example`
+  allowlist.
 - P0-T6: Add `scripts/setup.sh` and `scripts/setup.ps1` — idempotent `.env` from `.env.example`:
   `openssl rand -hex 32` (except `ENCRYPTION_KEY` base64); refuses `NODE_ENV=production`;
   existing `.env` requires `--force` / `-Force`; docker compose up after write; appends

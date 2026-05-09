@@ -6,21 +6,20 @@ Last Updated: 2026-05-09
 
 ## Current State Summary
 
-P0-T6 complete: `scripts/setup.sh` and `scripts/setup.ps1` generate `.env` from `.env.example`,
-append matching `POSTGRES_PASSWORD` / `REDIS_PASSWORD` for Docker Compose, then run
-`docker compose up -d`. Active task is **P0-T7** (CI workflow + Dependabot).
+P0-T7 complete: `.github/workflows/ci.yml` (9 jobs, SHA-pinned actions), `.github/dependabot.yml`,
+`.gitleaks.toml`. Active task is **P0-T8** (security.txt, AGENTS.md, PROJECT_STATUS.md).
 
 ## Last Completed Task
 
-P0-T6: Add setup scripts — see DONE_LOG.md.
+P0-T7: CI workflow + Dependabot — see DONE_LOG.md.
 
 ## Active Task
 
-P0-T7: Add CI workflow scaffolding. Status: Active.
+P0-T8: Disclosure/docs files. Status: Active.
 
 ## Next Recommended Task
 
-Execute P0-T7 per `/ai/TASKS.md`, then commit and push.
+Execute P0-T8 per `/ai/TASKS.md`, then commit, push, and confirm CI green.
 
 ## What Is Blocked
 
@@ -28,7 +27,7 @@ None.
 
 ## Important Instructions for Next AI
 
-- Do not start P0-T8 until P0-T7 is done, committed, and pushed, CI-green per project rules.
+- Do not start Phase 1 until P0-T8 is done and pushed; CI should be green per project rules.
 - No application/business logic in Phase 0 packages beyond config files.
 - Honor `/ai/AI_RULES.md` and `/ai/DEV_ENVIRONMENT.md`.
 
@@ -38,6 +37,5 @@ None.
 
 ## Tests / Checks Last Run
 
-- CHAT_END (2026-05-09): `git fetch` + clean vs `origin/main` (`53f1a4e`); `bash -n scripts/setup.sh`;
-  `grep -c replace-with-` `.env.example` (=27); `npx pnpm@10.33.4 run lint`; `npx pnpm@10.33.4 run typecheck`;
-  `.github/workflows/ci.yml` absent (P0-T7).
+- CHAT_END (2026-05-09): `python3` YAML parse `ci.yml` + `dependabot.yml`; `pnpm lint`;
+  `pnpm typecheck`; `pnpm audit --audit-level=high` (clean).
