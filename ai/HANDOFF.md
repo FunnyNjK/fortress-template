@@ -38,6 +38,5 @@ None.
 
 ## Tests / Checks Last Run
 
-- `dotenv.parse(.env.example)` (OK); `grep -c replace-with-` ≥ 1;
-  `npx pnpm@10.33.4 run typecheck`; `npx pnpm@10.33.4 run lint`.
-- Push: `main` synced to `origin/main` (includes P0-T5 + handoff note).
+- CHAT_END (2026-05-09): `grep -c replace-with-` .env.example (=27); `npx pnpm@10.33.4 run typecheck`;
+  `npx pnpm@10.33.4 run lint`; `git status` clean; `main` = `origin/main` (`2ba6e65`).
