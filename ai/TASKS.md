@@ -100,90 +100,13 @@ Rough unattended profiles — refine when each phase becomes active.
 
 ## Active Task
 
-**P2-T2** — Wire Drizzle ORM + Postgres connection + users table (details below). **P2-T1** landed; see DONE_LOG.md.
+**P2-T3** — Add `audit_events` + `sessions` Drizzle schemas and migration (`Unattended: Yes`). Depends on **`P2-T2`**.
 
 ---
 
 ### P2-T1: Scaffold `apps/api` (NestJS 11) with env validation — Done; see DONE_LOG.md.
 
-### P2-T2: Wire Drizzle ORM + Postgres connection + users table
-Status: Backlog
-Owner: TBD
-Priority: High
-
-## Goal
-Add the Drizzle 0.45+ data access layer to `apps/api` with a typed client,
-forward-only migration tooling, and a minimal `users` table that later FKs
-hang off of.
-
-## Scope Included
-- `apps/api/src/db/` module with a typed Drizzle client provider, exported
-  via Nest DI as `DRIZZLE` token.
-- `drizzle.config.ts` for `drizzle-kit generate` / `drizzle-kit migrate`.
-- `apps/api/src/db/schema/users.ts`: minimal columns (`id` uuid PK,
-  `clerk_user_id` text unique, `email` text nullable, `created_at`,
-  `updated_at`, `deleted_at` nullable). Soft-delete pattern per security
-  baseline.
-- First migration committed under `apps/api/drizzle/` (forward-only).
-- `pnpm --filter api db:generate`, `db:migrate`, `db:studio` scripts.
-- Integration test against docker-compose Postgres: insert a user, read it
-  back, assert types.
-
-## Scope Excluded
-- `audit_events` and `sessions` tables (P2-T3).
-- Encryption helpers (`packages/crypto` already exists from P1-T2; this task
-  just imports it where needed, but does not encrypt any column yet).
-- `@encrypted` Drizzle helper from the security baseline (defer to a later
-  Phase or follow-up; not required for Phase 2 verification).
-
-## Files Likely Involved
-- `apps/api/package.json` (add `drizzle-orm`, `drizzle-kit`, `pg`)
-- `apps/api/drizzle.config.ts`
-- `apps/api/src/db/db.module.ts`
-- `apps/api/src/db/db.client.ts`
-- `apps/api/src/db/schema/users.ts`
-- `apps/api/src/db/schema/index.ts`
-- `apps/api/drizzle/0000_*.sql`
-- `apps/api/drizzle/meta/_journal.json`
-- `apps/api/test/db/users.integration.test.ts`
-- `docker-compose.yml` (verify Postgres service already exists per ADR-026)
-
-## Acceptance Criteria
-- `pnpm --filter api db:generate` produces a clean migration with no diffs
-  on a second run.
-- `pnpm --filter api db:migrate` applies the migration against the
-  docker-compose Postgres without error.
-- Integration test inserts a user with a `clerk_user_id`, reads it, asserts
-  the row contains the expected columns and types.
-- `pnpm --filter api typecheck` and `lint` clean.
-- No business logic or service classes beyond the DI provider.
-
-## Test Requirements
-- Integration test must spin up against the `docker-compose` Postgres.
-  Skip with a clear message if `DATABASE_URL` is not reachable, but do not
-  silently pass.
-- CI workflow already runs `docker compose up -d postgres redis ...` before
-  tests (verify; if not, P2-T6 adds it).
-
-## Security Considerations
-- Connection string read from validated env only (P2-T1 schema). No
-  hardcoded credentials.
-- Confirm Drizzle uses parameterized queries (the default).
-
-## Dev Environment Constraints
-- All work runs natively on Ubuntu 26 (`~/repos/<project>`).
-- Docker is for supporting services only (Postgres, Redis, mailpit, Azurite,
-  Unleash) via `docker-compose up -d`.
-- Apps run as native Node processes via `pnpm dev`. No Windows paths anywhere
-  in the repo.
-
-## Handoff Notes
-- Depends on P2-T1.
-- Pin `drizzle-orm` and `drizzle-kit` to exact versions; do not use `^`/`~`.
-- The `users` table is intentionally minimal. Phase 3 will extend it (e.g.
-  display name, locale) when Clerk syncs profile fields.
-
----
+### P2-T2: Wire Drizzle ORM + Postgres connection + users table — Done; see DONE_LOG.md.
 
 ### P2-T3: Add `audit_events` and `sessions` Drizzle schemas + migration
 Status: Backlog

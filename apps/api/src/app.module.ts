@@ -4,10 +4,12 @@ import { LoggerModule } from 'nestjs-pino';
 import { fortressPinoRedactPaths } from '@fortress/observability';
 
 import { EnvConfigModule } from './config/config.module.js';
+import { DbModule } from './db/db.module.js';
 
 @Module({
   imports: [
     EnvConfigModule,
+    DbModule,
     LoggerModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({

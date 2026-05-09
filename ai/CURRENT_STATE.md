@@ -6,14 +6,11 @@ Last Updated: 2026-05-09
 
 ## Current Phase
 
-**Phase 2 (API skeleton) — started.** **`P2-T1` complete**: `apps/api` NestJS 11 scaffold (env validation
-via Zod + `replace-with-*` rejection under `NODE_ENV=production`), `nestjs-pino` wired with paths from
-**`fortressPinoRedactPaths()`** in `@fortress/observability`. Remaining Phase 2: `P2-T2`–`P2-T6`
-(see `/ai/TASKS.md`).
+**Phase 2 (API skeleton).** **P2-T2** complete: Drizzle + Postgres **`users`** table, **`DbModule`** + **`DATABASE_URL`** env validation, `db:*` scripts, CI Postgres service for **`api`** integration test. Next: **`P2-T3`–`P2-T6`**.
 
 ## Current Task
 
-**`P2-T2`** — Drizzle + Postgres (`users`). See `/ai/TASKS.md`.
+**`P2-T3`** — Drizzle **`audit_events`** + **`sessions`**. See `/ai/TASKS.md`.
 
 ## What Exists Now
 
@@ -25,17 +22,17 @@ via Zod + `replace-with-*` rejection under `NODE_ENV=production`), `nestjs-pino`
 - **`packages/observability`** — `createFortressLogger`, **`fortressPinoRedactPaths()`** export for nestjs-pino.
 - **`packages/sdk`** — `createFortressSdk`, `AuthMeResponseSchema` (Zod strict), `normalizeBaseUrl`; `engines.node` pinned.
 - **`packages/testing`** — Vitest fixtures importing `@fortress/types`.
-- **`apps/api`** — Nest bootstrap shell (`P2-T1`): `EnvConfigModule` + env schema, no controllers.
+- **`apps/api`** — Nest shell + **Drizzle** (`P2-T2`): **`DbModule`**, **`users`** schema, committed migration under **`drizzle/`**, Vitest DB integration + CI Postgres.
 - **`@types/node`** — root `devDependencies` for workspace `tsc` with `types: ["node"]`.
 
 ## What Works
 
 - `pnpm --filter api` `build` / `lint` / `typecheck` / `test`; root Turbo includes `api`.
-- Smoke tests in each new package (`vitest run`).
+- `pnpm --filter api db:generate` (idempotent), `db:migrate` against reachable Postgres; smoke tests in packages.
 
 ## What Is Not Built Yet
 
-- Drizzle-backed DB layer, migrations, middleware, session/audit, health (**`P2-T2`** onward).
+- `audit_events` / `sessions` schemas (**`P2-T3`**), security middleware, auth, health endpoints (`P2-T4`+).
 
 ## Known Problems
 
@@ -43,15 +40,16 @@ None.
 
 ## Important Files or Folders
 
-- `/apps/api` — Nest API (`P2-T1` shell).  
+- `/apps/api` — Nest API + Drizzle.  
+- `/apps/api/drizzle` — SQL migrations + meta.  
 - `/ai/HANDOFF.md` — next-session baton  
 - `/packages/sdk` — web↔API typed boundary  
 - `/packages/crypto`, `/packages/auth-core` — security helpers for API (when built)
 
 ## Next Recommended Action
 
-1. Confirm **GitHub Actions CI is green** after the P2-T1 push (manual check on GitHub).
-2. Implement **`P2-T2`** per `/ai/TASKS.md`.
+1. Confirm **GitHub Actions CI is green** after the P2-T2 push (manual check on GitHub).
+2. Implement **`P2-T3`** per `/ai/TASKS.md`.
 3. When passing `<N>` to `./run-phase-cursor.sh`, pass exactly the Phase 2 task count — do not cross a phase boundary unattended (ADR-022).
 
 ## Session reconciliation

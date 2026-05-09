@@ -99,6 +99,22 @@ jobs:
     timeout-minutes: 15
     permissions:
       contents: read
+    services:
+      postgres:
+        image: postgres:18-alpine@sha256:54451ecb8ab38c24c3ec123f2fd501303a3a1856a5c66e98cecf2460d5e1e9d7
+        env:
+          POSTGRES_USER: fortress
+          POSTGRES_PASSWORD: test
+          POSTGRES_DB: fortress
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U fortress -d fortress"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 12
+    env:
+      DATABASE_URL: postgresql://fortress:test@postgres:5432/fortress
     steps:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2

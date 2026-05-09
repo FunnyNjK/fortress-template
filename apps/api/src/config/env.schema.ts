@@ -2,10 +2,19 @@ import { z } from 'zod';
 
 const logLevelSchema = z.enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace']);
 
+const postgresUrlSchema = z
+  .string()
+  .min(1)
+  .refine(
+    (v) => /^postgres(ql)?:\/\//i.test(v),
+    { message: 'DATABASE_URL must be a postgres:// or postgresql:// connection string' },
+  );
+
 export const envSchema = z.object({
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
   PORT: z.coerce.number().int().min(1).max(65_535).default(4000),
   LOG_LEVEL: logLevelSchema.default('info'),
+  DATABASE_URL: postgresUrlSchema,
 });
 
 export type AppEnvConfig = z.infer<typeof envSchema>;
