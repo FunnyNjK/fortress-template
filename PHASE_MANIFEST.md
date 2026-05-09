@@ -2,13 +2,13 @@
 
 Last Updated: 2026-05-09
 
-Estimated total tasks across all 9 phases: ~51 (14 complete: 8 in P0 + 6 in P1; 6 in P2 decomposed; ~31 estimated for P3–P8).
+Estimated total tasks across all 9 phases: ~51 (20 complete: 8 in P0 + 6 in P1 + 6 in P2; ~31 estimated for P3–P8).
 
 | Phase | Title               | Tasks  | Run command          | Verification                                                                                       | Status   |
 |-------|---------------------|--------|----------------------|----------------------------------------------------------------------------------------------------|----------|
 | P0    | Repo skeleton       | 8      | `./run-phase.sh 8`   | `pnpm install && pnpm typecheck && pnpm lint` pass; CI green on initial commit                     | Complete |
 | P1    | Shared packages     | 6      | `./run-phase.sh 6`   | Each package has smoke tests; all build, lint, and link correctly                                  | Complete |
-| P2    | API skeleton        | ~6     | `./run-phase.sh <N>` | API boots; security middleware integration test passes; rate-limit smoke test passes               | Ready    |
+| P2    | API skeleton        | 6      | `./run-phase.sh 6`   | API boots; security middleware integration test passes; rate-limit smoke test passes; `/healthz` + `/readyz` | Complete |
 | P3    | Web skeleton        | ~5     | `./run-phase.sh <N>` | E2E: sign up via Clerk → land in app → see "hello, [name]" → sign out                              | Backlog  |
 | P4    | Worker skeleton     | ~4     | `./run-phase.sh <N>` | Worker consumes test job; retry/backoff demonstrated; Postmark webhook signature verifies          | Backlog  |
 | P5    | Marketing site      | ~4     | `./run-phase.sh <N>` | Lighthouse 95+ on perf and security headers; CSP report-only mode wired                            | Backlog  |
@@ -25,7 +25,7 @@ Estimated total tasks across all 9 phases: ~51 (14 complete: 8 in P0 + 6 in P1; 
   The harness uses the task count to know when a phase is complete.
 - **Unattended profile**: P0, P1, P2, P5, P7 are fully unattended. P3, P4, P6, P8 are
   Partial — see the Human pairing matrix in `/ai/TASKS.md` for details.
-- **Estimated total tasks across all 9 phases**: ~51 (14 complete: 8 in P0 + 6 in P1; ~37 estimated for P2–P8).
+- **Estimated total tasks across all 9 phases**: ~51 (20 complete: 8 in P0 + 6 in P1 + 6 in P2; ~31 estimated for P3–P8).
 - **Cursor CLI variant**: `./run-phase-cursor.sh <N>` runs the same phase via the
   Cursor CLI harness.
 - **Phase boundary discipline.** The harness scripts run `<N>` consecutive

@@ -16,6 +16,7 @@ import {
   RATE_LIMIT_AUTH_MAX,
   RATE_LIMIT_GENERAL_MAX,
   RATE_LIMIT_WINDOW_SECONDS,
+  SKIP_RATE_LIMIT_KEY,
 } from './constants.js';
 import { FORTRESS_REDIS } from './redis.tokens.js';
 
@@ -44,6 +45,15 @@ export class RateLimitGuard implements CanActivate {
     }
     const req = ctx.switchToHttp().getRequest<Request>();
     const res = ctx.switchToHttp().getResponse<Response>();
+
+    const skipRateLimit = this.reflector.getAllAndOverride<boolean>(SKIP_RATE_LIMIT_KEY, [
+      ctx.getHandler(),
+      ctx.getClass(),
+    ]);
+    if (skipRateLimit) {
+      return true;
+    }
+
     const isAuth = this.reflector.getAllAndOverride<boolean>(AUTH_ROUTE_KEY, [
       ctx.getHandler(),
       ctx.getClass(),

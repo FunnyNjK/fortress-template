@@ -2,10 +2,10 @@
 
 Last Updated: 2026-05-09
 
-CHAT_END (2026-05-09): **`origin/main`** **`d21487a`** after **`git fetch`** (clean); Ritual **`CHAT_END_PROMPT.md`**; **`npx pnpm@10.33.4`** `lint` `typecheck` `test` `build`; **`pnpm audit --audit-level=high`** (**moderate: 1**); **`grep -c replace-with-`** **`.env.example`** (=28); **`TESTING.md`** (P2-T5 auth integration line). Next **`P2-T6`**.
+CHAT_END (2026-05-09): **`feat(api):`** **P2-T6** (**`origin/main`** after **`push`** — **`git`** **`log`** **`-1`**); Ritual **`CHAT_END_PROMPT.md`**; **`npx pnpm@10.33.4`** `lint` `typecheck` `test` `build`; CI **`api-integration`** (**`ci.yml`**); **`pnpm audit --audit-level=high`** (**moderate: 1**); **`grep -c replace-with-`** **`.env.example`** (=28); **`TESTING.md`** (**`test/integration/`**, **`test:integration`**); Phase 2 complete — **human review before Phase 3** (**`Unattended: Partial`**). Next **`apps/web`** after approval.
 
-Phase 0 is **complete** (P0-T1–P0-T8). **Phase 1** is **complete** (P1-T1–P1-T6): shared library
-packages landed. Next: **Phase 2** (`apps/api` skeleton). Phase 2–8 remain in Backlog until decomposed.
+Phase 0 is **complete** (P0-T1–P0-T8). **Phase 1** is **complete** (P1-T1–P1-T6). **Phase 2**
+(`apps/api` skeleton): **complete** (**P2-T1–P2-T6**). Phase 3–8 remain Backlog until decomposed.
 
 ---
 
@@ -100,7 +100,7 @@ Rough unattended profiles — refine when each phase becomes active.
 
 ## Active Task
 
-**P2-T6** — Health endpoints + Phase 2 verification harness (`Unattended: Yes`). Depends on **`P2-T1`–`P2-T5`**.
+**Phase 3 (web skeleton)** — first decomposed task TBD (`Unattended: Partial` — see matrix). Pick up from **`Backlog`** / **`ROADMAP.md`** **after human approves Phase 3** per ADR-022.
 
 ---
 
@@ -120,91 +120,7 @@ Rough unattended profiles — refine when each phase becomes active.
 
 ---
 
-### P2-T6: Health endpoints + Phase 2 verification harness
-Status: Backlog
-Owner: TBD
-Priority: Medium
-
-## Goal
-Add operational health endpoints and consolidate the Phase 2 integration
-test suite + CI wiring so the verification line in `PHASE_MANIFEST.md`
-("API boots; security middleware integration test passes; rate-limit smoke
-test passes") is enforced by green tests.
-
-## Scope Included
-- `GET /healthz` (liveness): public, no auth, no DB or Redis check.
-  Returns 200 with `{ status: 'ok', uptime, version }`.
-- `GET /readyz` (readiness): public. Pings Postgres (`SELECT 1`) and Redis
-  (`PING`). 200 only when both are healthy; 503 with structured failure
-  detail otherwise.
-- Both endpoints exercise the full security chain (P2-T4) but are NOT
-  rate-limited (`@SkipRateLimit()` decorator).
-- `apps/api/test/integration/` suite: aggregates the security-chain test,
-  the rate-limit smoke test, the session/audit lifecycle test, the CSRF
-  test, and the readiness test under one `pnpm --filter api test:integration`
-  script.
-- `.github/workflows/ci.yml` updated: add a job that runs
-  `docker compose up -d postgres redis`, applies migrations, runs
-  `pnpm --filter api test:integration`. Service health-checks before the
-  step starts.
-- Update `apps/api/README.md` (one paragraph) describing the API's role
-  and how to run it.
-
-## Scope Excluded
-- Business module health checks (no business modules exist yet).
-- Worker readiness checks (Phase 4).
-- E2E tests (Playwright; Phase 3).
-
-## Files Likely Involved
-- `apps/api/src/health/health.module.ts`
-- `apps/api/src/health/health.controller.ts`
-- `apps/api/src/security/decorators/skip-rate-limit.decorator.ts`
-- `apps/api/src/app.module.ts` (wire HealthModule)
-- `apps/api/package.json` (add `test:integration` script)
-- `apps/api/test/integration/index.test.ts`
-- `apps/api/test/integration/readiness.integration.test.ts`
-- `.github/workflows/ci.yml`
-- `apps/api/README.md`
-
-## Acceptance Criteria
-- `/healthz` returns 200 with `{ status: 'ok' }` even when Postgres is down.
-- `/readyz` returns 503 when Postgres is stopped; returns 200 when both
-  services are up.
-- `pnpm --filter api test:integration` runs all Phase 2 integration suites
-  and exits 0 against docker-compose services.
-- CI workflow's new job is green on the PR introducing this task.
-- `pnpm typecheck`, `pnpm lint`, `pnpm test`, `pnpm audit
-  --audit-level=high`, and the new integration job all clean.
-- Phase 2 verification line ("API boots; security middleware integration
-  test passes; rate-limit smoke test passes") is satisfied by tests that
-  actually run.
-
-## Test Requirements
-- Readiness integration test: stop the Redis container, hit `/readyz`,
-  assert 503; restart Redis, assert 200. (Use docker compose programmatic
-  control; if too brittle in CI, use a Redis client mock injected via DI
-  to simulate the down state — choose one approach and document.)
-- Liveness test: hit `/healthz` while Redis is intentionally down, assert
-  200.
-
-## Security Considerations
-- Health endpoints disclose no version-control or commit-sha info that
-  would aid an attacker. The `version` field is a build-time constant
-  baked into the image, not a hash.
-- Skip-rate-limit decorator is a deliberate exception — verify it does NOT
-  also skip headers, body size, or exception filter.
-
-## Dev Environment Constraints
-- All work runs natively on Ubuntu 26 (`~/repos/<project>`).
-- Docker is for supporting services only (Postgres, Redis, mailpit, Azurite,
-  Unleash) via `docker-compose up -d`.
-- Apps run as native Node processes via `pnpm dev`. No Windows paths anywhere
-  in the repo.
-
-## Handoff Notes
-- Depends on P2-T1 through P2-T5 (this task locks in Phase 2 verification).
-- After this lands, Phase 2 is Done and the harness exits per ADR-022's
-  phase-boundary discipline. Human review before kicking off Phase 3.
+### P2-T6: Health endpoints + Phase 2 verification harness — Done; see DONE_LOG.md.
 
 ---
 

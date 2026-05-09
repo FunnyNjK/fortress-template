@@ -6,33 +6,32 @@ Last Updated: 2026-05-09
 
 ## Current Phase
 
-**Phase 2 (API skeleton).** **`P2-T5`** complete. Next: **`P2-T6`**.
+**Phase 2 (API skeleton) complete.** **Phase 3 (web skeleton)** is next **after explicit human approval** per ADR-022 (**`Unattended: Partial`** — Clerk creds).
 
 ## Current Task
 
-**`P2-T6`** — Health endpoints + Phase 2 verification harness. See **`/ai/TASKS.md`**.
+**Phase 3** — first scaffold task not yet queued in **`TASKS.md`** (**`HANDOFF`**). Do not start unattended harness for P3 until a human clears the phase boundary.
 
 ## What Exists Now
 
 - Root monorepo skeleton (unchanged from Phase 0): `pnpm-workspace.yaml`, Turbo, CI, `docker-compose`,
   `.env.example`, setup scripts — see prior entries.
-- **`packages/types`** — branded boundary types, `FORTRESS_API_VERSION`, pagination input shape; zero runtime deps.
+- **`packages/types`** — branded boundary types, **`FORTRESS_API_VERSION`**, pagination input shape; zero runtime deps.
 - **`packages/crypto`** — AES-256-GCM secret box, HMAC-SHA256, timing-safe compare, `randomOpaqueBytes`.
 - **`packages/auth-core`** — CSRF double-submit compare, base64url opaque tokens, canonical cookie/header names.
-- **`packages/observability`** — `createFortressLogger`, **`fortressPinoRedactPaths()`** export for nestjs-pino.
-- **`packages/sdk`** — `createFortressSdk`, **`AuthMeResponseSchema`** (`id` + `clerkUserId`), `normalizeBaseUrl`; `engines.node` pinned.
+- **`packages/observability`** — **`createFortressLogger`**, **`fortressPinoRedactPaths()`** for nestjs-pino.
+- **`packages/sdk`** — **`createFortressSdk`**, **`AuthMeResponseSchema`**, `normalizeBaseUrl`; `engines.node` pinned.
 - **`packages/testing`** — Vitest fixtures importing `@fortress/types`.
-- **`apps/api`** — Nest + Drizzle + **P2-T4 security** + **P2-T5 auth**: **`AuthModule`**, dev JWKS stub, session/audit services, CSRF, **`GET /auth/me`**, global guard ordering; env **`FORTRESS_REQUEST_HMAC_KEY`**, **`ALLOW_DEV_AUTH`**.
-- **`@types/node`** — root `devDependencies` for workspace `tsc` with `types: ["node"]`.
+- **`apps/api`** — Nest + Drizzle + security + auth + **`HealthModule`** (`GET /healthz`, `GET /readyz`), **`@SkipRateLimit()`**; **`test/integration/`** + **`test:integration`**; CI **`api-integration`** job.
 
 ## What Works
 
-- `pnpm --filter api` `build` / `lint` / `typecheck` / `test`; root Turbo includes `api`.
+- `pnpm --filter api` `build` / `lint` / `typecheck` / **`test`** (excludes **`test/integration/**`**) / **`test:integration`**; root Turbo **`test`** (**`pnpm test`**).
 - `pnpm --filter api db:generate` (idempotent), `db:migrate` against reachable Postgres; smoke tests in packages.
 
 ## What Is Not Built Yet
 
-- **`/healthz`** / **`/readyz`** and Phase 2 verification harness (**`P2-T6`**).
+- **`apps/web`** and Phase 3+ scope.
 
 ## Known Problems
 
@@ -40,22 +39,16 @@ None.
 
 ## Important Files or Folders
 
-- `/apps/api` — Nest API + Drizzle.  
-- `/apps/api/drizzle` — SQL migrations + meta.  
-- `/apps/api/src/security` — inbound boundary middleware and guards.  
-- `/apps/api/src/auth` — session, audit, CSRF, JWKS stub.  
-- `/ai/HANDOFF.md` — next-session baton  
-- `/packages/sdk` — web↔API typed boundary  
-- `/packages/crypto`, `/packages/auth-core` — security helpers for API  
+- `/apps/api` — Nest API + Drizzle + health + auth  
+- `/apps/api/drizzle` — SQL migrations + meta  
+- `/apps/api/test/integration` — Phase 2 supertest aggregation (**`pnpm --filter api test:integration`**)  
 
 ## Next Recommended Action
 
-1. Confirm **GitHub Actions CI is green** on `origin/main` after push.
-2. Implement **`P2-T6`** per **`/ai/TASKS.md`**.
-3. When passing `<N>` to **`./run-phase-cursor.sh`**, pass exactly the Phase 2 task count — do not cross a phase boundary unattended (ADR-022).
+1. **Human**: confirm **GitHub Actions** green (**`api-integration`** + existing jobs) after push.
+2. **Human**: review Phase 2 and **explicitly approve Phase 3** before the harness runs P3 tasks (**`Unattended: Partial`**).
+3. Decompose **`apps/web`** first task into **`TASKS.md`** / **`HANDOFF`** when Phase 3 starts.
 
 ## Session reconciliation
 
-2026-05-09 — **P2-T5**: auth + session/audit + CSRF + SDK **`AuthMeResponse`**; CI env keys; **`pnpm-lock.yaml`** updated.
-
-CHAT_END (2026-05-09): **`CHAT_END_PROMPT.md`** verification on **`d21487a`**: Turbo **`lint`** / **`typecheck`** / **`test`** / **`build`**; **`pnpm audit --audit-level=high`** (1 moderate); **`.env.example`** **`replace-with`** count **28**.
+2026-05-09 — **P2-T6**: **`/healthz`**, **`/readyz`**, **`SkipRateLimit`**, **`@fortress/types`** on **`api`**, **`test/integration`**, **`api-integration`** CI, **`README`**.

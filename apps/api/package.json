@@ -17,12 +17,14 @@
     "db:studio": "drizzle-kit studio",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit -p tsconfig.json",
-    "test": "vitest run"
+    "test": "vitest run",
+    "test:integration": "vitest run --config vitest.integration.config.ts"
   },
   "dependencies": {
     "@fortress/auth-core": "workspace:*",
     "@fortress/crypto": "workspace:*",
     "@fortress/observability": "workspace:*",
+    "@fortress/types": "workspace:*",
     "@nestjs/common": "11.1.19",
     "@nestjs/config": "4.0.4",
     "@nestjs/core": "11.1.19",

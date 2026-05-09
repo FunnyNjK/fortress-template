@@ -25,8 +25,9 @@ push and pull request.
   (Postgres container from `docker-compose.yml`).
 - Each integration test suite imports from `packages/testing` for factories
   and fixtures.
-- **API P2-T4 security chain:** `apps/api/test/security/security-chain.integration.test.ts` (supertest; Redis via **`REDIS_URL`** — CI **`redis`** service; skips locally if Redis unreachable unless **`CI=true`**).
-- **API P2-T5 auth / CSRF:** `apps/api/test/auth/auth-flow.integration.test.ts` (supertest; Postgres + Redis; **`describe.skipIf`** when DB or Redis unavailable locally — full run in CI with services + env); plus **`apps/api/test/auth/jwks-dev-stub.unit.test.ts`**.
+- **API P2-T6 health + aggregated integration:** **`pnpm --filter api test:integration`** (Vitest `vitest.integration.config.ts`) runs **`apps/api/test/integration/**/*.test.ts`** serially against real Postgres + Redis; CI **`api-integration`** job (**`docker compose up -d postgres redis --wait`**, **`pnpm --filter api db:migrate`**). **`/readyz`** failure simulation uses **`vi.spyOn`** / temporary **`Redis#ping`** stubs (documented in **`readiness.integration.test.ts`**) rather than stopping shared compose services.
+- **API P2-T4 security chain:** `apps/api/test/integration/security-chain.integration.test.ts` (supertest; Redis via **`REDIS_URL`** — CI **`redis`** service; skips locally if Redis unreachable unless **`CI=true`**).
+- **API P2-T5 auth / CSRF:** `apps/api/test/integration/auth-flow.integration.test.ts` (supertest; Postgres + Redis; **`describe.skipIf`** when DB or Redis unavailable locally — full run in CI **`test`**/**`api-integration`** with services + env); plus **`apps/api/test/auth/jwks-dev-stub.unit.test.ts`**.
 
 ### E2E tests (required for web)
 - Playwright for `apps/web` smoke tests.
@@ -47,7 +48,8 @@ push and pull request.
 ### CI gates (required — red CI = no merge)
 - lint (ESLint 10 + typescript-eslint type-checked rules)
 - typecheck (`tsc --noEmit` per workspace package)
-- test (Vitest unit + integration, `--run`)
+- test (Vitest — Turbo `pnpm test`; API default Vitest excludes `apps/api/test/integration/**`)
+- **api-integration** (docker-compose Postgres + Redis at repo root, **`pnpm --filter api db:migrate`**, **`pnpm --filter api test:integration`**)
 - e2e (Playwright smoke — can be `--reporter=line` in CI)
 - dep-audit (`pnpm audit --audit-level=high`)
 - gitleaks (real config, blocks on secrets detected)
@@ -90,7 +92,8 @@ pnpm typecheck        # tsc --noEmit (all packages via Turbo)
 Per-package (Turbo filter):
 
 ```bash
-pnpm --filter @fortress/api test
+pnpm --filter api test
+pnpm --filter api test:integration
 pnpm --filter @fortress/web test:e2e
 ```
 

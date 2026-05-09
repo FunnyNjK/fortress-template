@@ -6,36 +6,33 @@ Last Updated: 2026-05-09
 
 ## Current State Summary
 
-**Phase 2 in progress.** **`P2-T5` complete**: **`AuthModule`** — **`JwksVerifier`** + **`DevJwksStubVerifier`** (throws if constructed in production; **`x-debug-user-id`** + **`ALLOW_DEV_AUTH`**), **`UnsupportedProductionJwksVerifier`**, **`SessionService`** (HMAC hashed bearer/IP/UA, advisory-lock **`upsert`**, audit in-tx, Redis **`stepped_up_at`** cache), **`AuditService`**, global **`AuthenticatedGuard`** (`@Public` / **`@RequireAuth()`**), **`CsrfGuard`** + **`FortressCsrfCookieInterceptor`** (`__Host-fortress-csrf`, **`@fortress/auth-core`** double-submit), **`GET /auth/me`** + **`POST /auth/poke`**. **`AppModule`**: guard order Auth → rate limit → CSRF; **`FORTRESS_REQUEST_HMAC_KEY`** + **`ALLOW_DEV_AUTH`** in **`env.schema`** / **`.env.example`** / CI / **`test/setup-env`**. Rate limit uses **`req.fortressAuth?.sessionId`**. **`@fortress/sdk`**: **`AuthMeResponse`** = `{ id, clerkUserId }`.
+**Phase 2 complete** (**`P2-T6`**): **`HealthModule`** (**`GET /healthz`** liveness **`{ status, uptime, version }`** with **`FORTRESS_API_VERSION`**; **`GET /readyz`** Postgres + Redis checks, 503 **`{ status:'unavailable', checks }`**); **`@SkipRateLimit()`** on health routes (**`SKIP_RATE_LIMIT_KEY`** in **`rate-limit.guard`**). Integration tests live under **`apps/api/test/integration/`**; **`pnpm --filter api test`** excludes them; **`test:integration`** + CI **`api-integration`** (**compose `.env`** + **`postgres`/`redis` --wait**, migrate). **`apps/api/README.md`** added.
 
 ## Last Completed Task
 
-**P2-T5** — see `DONE_LOG.md` (commit hash in that entry after push).
+**`P2-T6`** — see **`DONE_LOG.md`** / **`git log -1`** on **`origin/main`** after **`push`**.
 
 ## Active Task
 
-**`P2-T6`** — Health endpoints + Phase 2 verification harness (`Unattended: Yes`).
+None — **phase boundary**. **Human must approve Phase 3** before picking up **`apps/web`** (**`TASKS.md`/`ROADMAP`**, **`Unattended: Partial`**).
 
 ## Next Recommended Task
 
-Implement **`P2-T6`** per **`/ai/TASKS.md`** (`/healthz`, `/readyz`, integration harness).
+After human approval: scaffold **`apps/web`** (Phase 3) — first **`TASKS`** line in Backlog section.
 
 ## What Is Blocked
 
-None.
+Human phase gate (**ADR-022**): do **not** start P3 unattended until approved.
 
 ## Important Instructions for Next AI
 
-- Confirm **CI green on `origin/main`** after pushes (GitHub Actions).
-- Phase 2 **`P2-T6`** remains **`Unattended: Yes`** (matrix in **`/ai/TASKS.md`**).
-- Security integration tests **skip** when Redis is unreachable **unless** `CI=true` — local dev: `docker compose up -d redis` or set **`REDIS_URL`** in **`.env`**; auth integration also needs Postgres for full run.
-- **`pnpm`** may require `corepack prepare pnpm@10.33.4 --activate` or **`npx pnpm@10.33.4 <cmd>`** when `pnpm` is not on `PATH`.
-- Pull-rebase before planning-file edits; deltas only (`/ai/templates/CHAT_END_PROMPT.md`).
+- Confirm **CI green** on **`origin/main`** (**`api-integration`** depends on **`REDIS_URL`** with **`REDIS_PASSWORD`** from compose, e.g. **`redis://:test@127.0.0.1:6379/0`** in CI env).
+- **`pnpm`** locally: **`npx pnpm@10.33.4`** when **`pnpm`** not on **`PATH`**.
 
 ## Known Risks
 
-- Fixed-window rate limits are an approximation of a token bucket (see **ADR-028**).
+- Redis failure tests patch **`Redis#ping`** / **`vi.spyOn(db,'execute')`** — restore in **`finally`**.
 
 ## Tests / Checks Last Run
 
-- CHAT_END (2026-05-09): **`npx pnpm@10.33.4`** root **`lint`**, **`typecheck`**, **`test`**, **`build`**; **`pnpm audit --audit-level=high`** (**1 moderate**); **`git`** **`d21487a`** vs **`origin/main`** (clean).
+- Repo: **`lint`**, **`typecheck`**, **`test`**, **`build`**, **`pnpm audit --audit-level=high`** (1 moderate). **`test:integration`**: CI (**`CI=true`**) requires reachable Redis/PG with matching **`REDIS_URL`** (password if compose uses **`requirepass`**).

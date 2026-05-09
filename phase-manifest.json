@@ -21,8 +21,8 @@
       "title": "API skeleton",
       "task_count": 6,
       "task_ids": ["P2-T1", "P2-T2", "P2-T3", "P2-T4", "P2-T5", "P2-T6"],
-      "verification": "API boots; security middleware chain integration test passes; rate-limit smoke test passes",
-      "status": "Ready"
+      "verification": "API boots; security middleware chain integration test passes; rate-limit smoke test passes; GET /healthz liveness and GET /readyz readiness",
+      "status": "Complete"
     },
     {
       "id": "P3",

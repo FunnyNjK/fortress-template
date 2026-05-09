@@ -9,6 +9,7 @@ import { AuthenticatedGuard } from './auth/authenticated.guard.js';
 import { CsrfGuard, FortressCsrfCookieInterceptor } from './auth/csrf.middleware.js';
 import { EnvConfigModule } from './config/config.module.js';
 import { DbModule } from './db/db.module.js';
+import { HealthModule } from './health/health.module.js';
 import { RateLimitGuard } from './security/rate-limit.guard.js';
 import { SecurityModule } from './security/security.module.js';
 
@@ -17,6 +18,7 @@ import { SecurityModule } from './security/security.module.js';
     EnvConfigModule,
     SecurityModule,
     DbModule,
+    HealthModule,
     AuthModule,
     LoggerModule.forRootAsync({
       inject: [ConfigService],
