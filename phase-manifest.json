@@ -19,10 +19,10 @@
     {
       "id": "P2",
       "title": "API skeleton",
-      "task_count": 6,
-      "task_ids": ["P2-T1", "P2-T2", "P2-T3", "P2-T4", "P2-T5", "P2-T6"],
-      "verification": "API boots; security middleware chain integration test passes; rate-limit smoke test passes; GET /healthz liveness and GET /readyz readiness",
-      "status": "Complete"
+      "task_count": 7,
+      "task_ids": ["P2-T1", "P2-T2", "P2-T3", "P2-T4", "P2-T5", "P2-T6", "P2-T7"],
+      "verification": "API boots; security middleware integration test passes; rate-limit smoke test passes; CI green on origin/main; reviewer prompt returns APPROVED",
+      "status": "Ready"
     },
     {
       "id": "P3",

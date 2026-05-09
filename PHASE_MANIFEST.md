@@ -2,13 +2,13 @@
 
 Last Updated: 2026-05-09
 
-Estimated total tasks across all 9 phases: ~51 (20 complete: 8 in P0 + 6 in P1 + 6 in P2; ~31 estimated for P3–P8).
+Estimated total tasks across all 9 phases: ~52 (14 complete: 8 in P0 + 6 in P1; 7 in P2 in progress, T1–T6 on origin/main but not yet APPROVED, T7 remediation pending; ~31 estimated for P3–P8).
 
 | Phase | Title               | Tasks  | Run command          | Verification                                                                                       | Status   |
 |-------|---------------------|--------|----------------------|----------------------------------------------------------------------------------------------------|----------|
 | P0    | Repo skeleton       | 8      | `./run-phase.sh 8`   | `pnpm install && pnpm typecheck && pnpm lint` pass; CI green on initial commit                     | Complete |
 | P1    | Shared packages     | 6      | `./run-phase.sh 6`   | Each package has smoke tests; all build, lint, and link correctly                                  | Complete |
-| P2    | API skeleton        | 6      | `./run-phase.sh 6`   | API boots; security middleware integration test passes; rate-limit smoke test passes; `/healthz` + `/readyz` | Complete |
+| P2 | API skeleton | 7 | `./run-phase.sh 7` (or `./run-phase.sh 1` to run only T7 if T1–T6 already on origin) | API boots; security middleware integration test passes; rate-limit smoke test passes; CI green on origin/main; reviewer prompt APPROVED | Ready |
 | P3    | Web skeleton        | ~5     | `./run-phase.sh <N>` | E2E: sign up via Clerk → land in app → see "hello, [name]" → sign out                              | Backlog  |
 | P4    | Worker skeleton     | ~4     | `./run-phase.sh <N>` | Worker consumes test job; retry/backoff demonstrated; Postmark webhook signature verifies          | Backlog  |
 | P5    | Marketing site      | ~4     | `./run-phase.sh <N>` | Lighthouse 95+ on perf and security headers; CSP report-only mode wired                            | Backlog  |
