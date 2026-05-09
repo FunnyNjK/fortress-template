@@ -46,5 +46,5 @@ None.
 
 ## Next Recommended Action
 
-1. Commit and push P0-T3, then execute **P0-T4** per TASKS.md.  
+1. Execute **P0-T4** (`docker-compose.yml` at repo root) per TASKS.md, then commit and push.  
 2. Continue Phase 0 toward P0-T8.
