@@ -2,7 +2,7 @@
 
 Last Updated: 2026-05-09
 
-CHAT_END (2026-05-09): P2-T1 scaffolded `apps/api` (NestJS 11, env Zod + production placeholder guard, nestjs-pino with `fortressPinoRedactPaths()`). Prior CHAT_END: YAML + `pnpm` checks clean; Phase 0–1 complete.
+CHAT_END (2026-05-09): `git fetch` vs `origin/main` at `1bedc16` (clean); YAML parse `ci.yml` + `dependabot.yml`; `npx pnpm@10.33.4 lint` + `typecheck` + `test` + `build`; `audit --audit-level=high` (clean); `bash -n scripts/setup.sh`; `grep -c replace-with-` `.env.example` (=27); planning deltas only. Prior note: P2-T1 scaffold merged (`7b4cdb8`); hash-only fix (`1bedc16`).
 
 Phase 0 is **complete** (P0-T1–P0-T8). **Phase 1** is **complete** (P1-T1–P1-T6): shared library
 packages landed. Next: **Phase 2** (`apps/api` skeleton). Phase 2–8 remain in Backlog until decomposed.

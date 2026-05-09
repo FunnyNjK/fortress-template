@@ -57,3 +57,5 @@ None.
 ## Session reconciliation
 
 2026-05-09 — **P2-T1**: workspace `pnpm lint` / `typecheck` / `test` / `build` + `audit --audit-level=high` (clean). Older CHAT_END entries remain in `DONE_LOG.md`.
+
+CHAT_END (2026-05-09): `git fetch` vs `origin/main` at `1bedc16` (clean); YAML `ci.yml` / `dependabot.yml`; `npx pnpm@10.33.4` `lint` / `typecheck` / `test` / `build`; `audit --audit-level=high`; `bash -n scripts/setup.sh`; `grep -c replace-with-` `.env.example` (=27); ARCHITECTURE / ROADMAP / TESTING / DEPLOYMENT / DECISIONS unchanged.

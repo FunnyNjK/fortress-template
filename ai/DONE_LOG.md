@@ -49,6 +49,8 @@ Last Updated: 2026-05-09
 
 - **P2-T1** — Scaffold `apps/api` (NestJS **11.x** pinned): Nest CLI `nest build` / `nest start --watch`, `EnvConfigModule` + Zod **`validateEnv`** (PORT coerced); **`assertNoPlaceholderSecretsInProduction`** scans `process.env` when `NODE_ENV=production`; `nestjs-pino` + `NestFactory.create(..., bufferLogs:true)` / `enableShutdownHooks()`; `.env` resolution `apps/api/.env` then repo-root `../../.env`. Vitest: supertest **`GET /` → 404**, env schema coverage. **`@fortress/observability`**: export **`fortressPinoRedactPaths()`** (includes **`*.secret`**, **`*.apiKey`**) shared with `createFortressLogger`. (`7b4cdb8`)
 
+- CHAT_END (2026-05-09): Ran `/ai/templates/CHAT_END_PROMPT.md`; `git fetch` clean vs `origin/main` at `1bedc16`; YAML parse `ci.yml` + `dependabot.yml`; `npx pnpm@10.33.4 lint` + `typecheck` + `test` + `build`; `audit --audit-level=high` (clean); `bash -n scripts/setup.sh`; `grep -c replace-with-` `.env.example` (=27); ARCHITECTURE / ROADMAP / TESTING / DEPLOYMENT / DECISIONS unchanged this pass.
+
 - CHAT_END (2026-05-09): Ran `/ai/templates/CHAT_END_PROMPT.md`; reconciled `CURRENT_STATE`, `TASKS`, `HANDOFF`,
   `DONE_LOG` vs `origin/main` (clean); YAML parse `ci.yml` + `dependabot.yml`; `pnpm lint` +
   `pnpm typecheck` + `pnpm test` + `pnpm audit --audit-level=high` (clean); `bash -n scripts/setup.sh`;

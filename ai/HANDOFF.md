@@ -39,4 +39,4 @@ None.
 
 ## Tests / Checks Last Run
 
-- Workspace `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm build`, `pnpm audit --audit-level=high`; manual `NODE_ENV=test` curl `/` → 404; production env with placeholder → exit 1.
+- Workspace `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm build` (via `npx pnpm@10.33.4` when `pnpm` absent from PATH), `pnpm audit --audit-level=high`; YAML parse `ci.yml` / `dependabot.yml`; `bash -n scripts/setup.sh`; `grep -c replace-with-` `.env.example` (=27); matched `origin/main` when run.
