@@ -35,7 +35,7 @@ P0-T4: Add `docker-compose.yml` for local dev supporting services. Status: Activ
 
 ## Known Problems
 
-None on published `origin/main` tip; this session completes P0-T3 locally (commit/push pending).
+None.
 
 ## Important Files or Folders
 

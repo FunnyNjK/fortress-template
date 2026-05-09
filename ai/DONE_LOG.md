@@ -10,7 +10,7 @@ Last Updated: 2026-05-09
   `no-implied-eval`, `no-console` warn), `next.js` (FlatCompat + `next/core-web-vitals`),
   `node.js` (`eslint-plugin-n` flat recommended + Node globals), `eslint.config.js`
   self-lint (`disableTypeChecked` for `.js`), `README.md`, **ADR-024** for dependency stack.
-  (`TBD`)
+  (`240606f`)
 - P0-T2: Add shared TypeScript config package — `packages/config-typescript`
   (`@fortress/config-typescript`): `base.json`, `next.json`, `node.json`, `library.json`,
   `README.md`, `exports` map, `tsconfig.json` + `tsconfig.package-path.json` validating
