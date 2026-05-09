@@ -8,8 +8,7 @@ Last Updated: 2026-05-09
   `DONE_LOG` vs `origin/main` at `8f072fc` (clean); Phase 0 complete / no active task; YAML parse
   `ci.yml` + `dependabot.yml`; `pnpm lint` + `pnpm typecheck` + `pnpm audit --audit-level=high` (clean);
   `bash -n scripts/setup.sh`; `grep -c replace-with-` `.env.example` (=27); ARCHITECTURE / ROADMAP /
-  TESTING / DEPLOYMENT / DECISIONS unchanged.
-- P0-T8: Add `.well-known/security.txt` (RFC 9116 fields, fork placeholders), root `AGENTS.md`
+  TESTING / DEPLOYMENT / DECISIONS unchanged. (`5391624`)
   (layer rules, 10 locked decisions, 10 security invariants, secrets-out-of-repo emphasis,
   fork follow-up guidance), `PROJECT_STATUS.md` (phases 0–8 table, decision status, `REFRESH_PROMPT`
   flag); `/ai/TASKS.md` / `HANDOFF` / `CURRENT_STATE` / `ROADMAP` Phase 0 closed. (`195dd87`)
