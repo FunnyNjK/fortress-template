@@ -7,7 +7,7 @@ Last Updated: 2026-05-09
 ## Current State Summary
 
 P0-T1 complete: monorepo skeleton at repo root. Active task is P0-T2 (shared
-TypeScript config package). Local `main` is 2 commits ahead of `origin` until a human runs `git push`.
+TypeScript config package). Local `main` is **ahead of** `origin` (P0-T1 + planning commits); run `git log origin/main..HEAD --oneline` before push.
 
 ## Last Completed Task
 
@@ -19,7 +19,7 @@ P0-T2: Add shared TypeScript config package. Status: Active.
 
 ## Next Recommended Task
 
-Human: `git push` from WSL so `origin/main` includes P0-T1 (`a58986b` + DONE_LOG `9bce76f`).
+Human: `git push` from WSL so `origin/main` catches up to local `main` (includes P0-T1 monorepo skeleton and subsequent `/ai` updates).
 Then pick up P0-T2, or paste:
 `Read /ai/START_HERE.md and follow it. Pick up P0-T2 per HANDOFF.md`
 

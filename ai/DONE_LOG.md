@@ -7,6 +7,8 @@ Last Updated: 2026-05-09
 - P0-T1: Initialize the monorepo skeleton — added `pnpm-workspace.yaml`, `turbo.json`,
   root `package.json` (`packageManager` pnpm@10.33.4, turbo 2.9.12), `.node-version`
   24.15.0, `.editorconfig`, `.prettierrc`; `pnpm-lock.yaml` from install. (`a58986b`)
+- Post-P0-T1 planning: DONE_LOG hash footnote (`9bce76f`); HANDOFF/CURRENT_STATE push sync (`0dc397f`).
+- CHAT_END template pass: durable ahead-of-origin wording, DONE_LOG completeness.
 
 ## 2026-05-02
 - Created customized AI project starter for WSL-native dev with Astro 5 +

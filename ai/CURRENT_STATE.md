@@ -31,7 +31,7 @@ P0-T2: Add shared TypeScript config package. Status: Active.
 
 ## Known Problems
 
-None. Local branch may be ahead of `origin` until `git push` succeeds (harness had no GitHub auth).
+None. Local `main` may be **ahead of** `origin` until `git push` succeeds (HTTPS auth not available in harness).
 
 ## Important Files or Folders
 
@@ -41,4 +41,5 @@ None. Local branch may be ahead of `origin` until `git push` succeeds (harness h
 
 ## Next Recommended Action
 
-Execute P0-T2 (shared TypeScript config package), then commit and push before P0-T3.
+1. `git push` so `origin/main` matches local (P0-T1 + planning commits).  
+2. Execute P0-T2 (shared TypeScript config package); commit and push before P0-T3.
