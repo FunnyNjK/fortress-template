@@ -6,11 +6,11 @@ Last Updated: 2026-05-09
 
 ## Current State Summary
 
-**`P2-T7`** landed as **`0eae43e`** (await **`git push`**). Highlights: **`turbo`** **`lint`/`test`** **`dependsOn:^build`**; **`test` JOB `DATABASE_URL`** uses **`127.0.0.1`** (+ **`NODE_ENV=test`** CI); **`api-integration`** runs **`pnpm run build`** pre-suite; **`RateLimitGuard` before `AuthenticatedGuard`**; **`FortressRequestIdMiddleware` + **`FortressRequestLoggingInterceptor`** (429 via **`FortressExceptionFilter`** **pino**); **`__Host-` CSRF always `Secure`**; **`NODE_ENV` required** (**`main.ts`** prod JWKS guard); **`ADR-029`**; integration **`rate-limit-unauth`** (`test/integration/`); **`CHAT_END_PROMPT`** requires **`gh run list`**.
+**`P2-T7`** landed as **`1dea680`** (await **`git push`**). Highlights: **`turbo`** **`lint`/`test`** **`dependsOn:^build`**; **`test` JOB `DATABASE_URL`** uses **`127.0.0.1`** (+ **`NODE_ENV=test`** CI); **`api-integration`** runs **`pnpm run build`** pre-suite; **`RateLimitGuard` before `AuthenticatedGuard`**; **`FortressRequestIdMiddleware` + **`FortressRequestLoggingInterceptor`** (429 via **`FortressExceptionFilter`** **pino**); **`__Host-` CSRF always `Secure`**; **`NODE_ENV` required** (**`main.ts`** prod JWKS guard); **`ADR-029`**; integration **`rate-limit-unauth`** (`test/integration/`); **`CHAT_END_PROMPT`** requires **`gh run list`**.
 
 ## Last Completed Task
 
-**`P2-T7`** — **`0eae43e`**. Prior **`origin/main`** tip **`72b07fb`** (**pre-remediation `HANDOFF`** overstated Phase 2 completeness vs **`TASKS`**).
+**`P2-T7`** — **`1dea680`**. Prior **`origin/main`** tip **`72b07fb`** (**pre-remediation `HANDOFF`** overstated Phase 2 completeness vs **`TASKS`**).
 
 ## Active Task
 

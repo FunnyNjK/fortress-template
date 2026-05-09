@@ -45,4 +45,4 @@ None code-side (**CI post-push verdict TBD**).
 
 ## Session reconciliation
 
-**P2-T7**: **`0eae43e`** on local **`main`** (push + **`gh run list`** verification still owed before calling Phase 2 done).
+**P2-T7**: **`1dea680`** on local **`main`** (push + **`gh run list`** verification still owed before calling Phase 2 done).
