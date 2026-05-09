@@ -6,11 +6,11 @@ Last Updated: 2026-05-09
 
 ## Current Phase
 
-**Phase 2 (API skeleton).** **P2-T2** complete: Drizzle + Postgres **`users`** table, **`DbModule`** + **`DATABASE_URL`** env validation, `db:*` scripts, CI Postgres service for **`api`** integration test. Next: **`P2-T3`–`P2-T6`**.
+**Phase 2 (API skeleton).** **P2-T3** complete: **`audit_events`** (append-only trigger) + **`sessions`** Drizzle schemas, migration **`0001_*.sql`**, integration tests. Next: **`P2-T4`–`P2-T6`**.
 
 ## Current Task
 
-**`P2-T3`** — Drizzle **`audit_events`** + **`sessions`**. See `/ai/TASKS.md`.
+**`P2-T4`** — Security middleware chain. See `/ai/TASKS.md`.
 
 ## What Exists Now
 
@@ -22,7 +22,7 @@ Last Updated: 2026-05-09
 - **`packages/observability`** — `createFortressLogger`, **`fortressPinoRedactPaths()`** export for nestjs-pino.
 - **`packages/sdk`** — `createFortressSdk`, `AuthMeResponseSchema` (Zod strict), `normalizeBaseUrl`; `engines.node` pinned.
 - **`packages/testing`** — Vitest fixtures importing `@fortress/types`.
-- **`apps/api`** — Nest shell + **Drizzle** (`P2-T2`): **`DbModule`**, **`users`** schema, committed migration under **`drizzle/`**, Vitest DB integration + CI Postgres.
+- **`apps/api`** — Nest shell + **Drizzle** (**through P2-T3**): **`DbModule`**, **`users`** / **`sessions`** / **`audit_events`**, migrations **`drizzle/`**, Vitest DB integration + CI Postgres.
 - **`@types/node`** — root `devDependencies` for workspace `tsc` with `types: ["node"]`.
 
 ## What Works
@@ -32,7 +32,7 @@ Last Updated: 2026-05-09
 
 ## What Is Not Built Yet
 
-- `audit_events` / `sessions` schemas (**`P2-T3`**), security middleware, auth, health endpoints (`P2-T4`+).
+- Security middleware chain (**`P2-T4`**), auth / health (**`P2-T5`**+).
 
 ## Known Problems
 
@@ -49,11 +49,11 @@ None.
 ## Next Recommended Action
 
 1. Confirm **GitHub Actions CI is green** on `origin/main` (manual check on GitHub).
-2. Implement **`P2-T3`** per `/ai/TASKS.md`.
+2. Implement **`P2-T4`** per `/ai/TASKS.md`.
 3. When passing `<N>` to `./run-phase-cursor.sh`, pass exactly the Phase 2 task count — do not cross a phase boundary unattended (ADR-022).
 
 ## Session reconciliation
 
-2026-05-09 — **P2-T1**: workspace `pnpm lint` / `typecheck` / `test` / `build` + `audit --audit-level=high` (clean). Older CHAT_END entries remain in `DONE_LOG.md`.
+2026-05-09 — **P2-T3**: `pnpm lint` / `typecheck` / `test` / `build` (workspace); API integration tests skip without `DATABASE_URL` (CI exercises against Postgres).
 
 CHAT_END (2026-05-09): Ran `/ai/templates/CHAT_END_PROMPT.md`; `git fetch` vs `origin/main` at `fbed14e` (clean); YAML `ci.yml` + `dependabot.yml` (**python3**); `npx pnpm@10.33.4 lint` / `typecheck` / `test` / `build`; `pnpm audit --audit-level=high` (**1 moderate**); `bash -n scripts/setup.sh`; `grep -c replace-with-` `.env.example` (=27); ARCHITECTURE / ROADMAP / TESTING / DEPLOYMENT / DECISIONS unchanged.

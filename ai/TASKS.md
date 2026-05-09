@@ -100,7 +100,7 @@ Rough unattended profiles — refine when each phase becomes active.
 
 ## Active Task
 
-**P2-T3** — Add `audit_events` + `sessions` Drizzle schemas and migration (`Unattended: Yes`). Depends on **`P2-T2`**.
+**P2-T4** — Build the security middleware chain (`Unattended: Yes`). Depends on **`P2-T1`–`P2-T3`**.
 
 ---
 
@@ -108,78 +108,7 @@ Rough unattended profiles — refine when each phase becomes active.
 
 ### P2-T2: Wire Drizzle ORM + Postgres connection + users table — Done; see DONE_LOG.md.
 
-### P2-T3: Add `audit_events` and `sessions` Drizzle schemas + migration
-Status: Backlog
-Owner: TBD
-Priority: High
-
-## Goal
-Land the two security-critical tables: an append-only `audit_events` log
-(non-negotiable #9) and the server-side `sessions` table required by ADR-021.
-Tables only — service wiring is P2-T5.
-
-## Scope Included
-- `apps/api/src/db/schema/audit_events.ts`: `id` uuid PK, `user_id` FK
-  nullable, `session_id` FK nullable, `action` text, `resource` text nullable,
-  `metadata` jsonb default `{}`, `ip_hash` text nullable, `ua_hash` text
-  nullable, `created_at` timestamptz default now. NOT NULL on `action` and
-  `created_at`.
-- `apps/api/src/db/schema/sessions.ts`: `id` uuid PK, `user_id` FK NOT NULL,
-  `hashed_session_token` text unique NOT NULL, `last_seen_at` timestamptz NOT
-  NULL, `hashed_ip` text nullable, `hashed_ua` text nullable, `stepped_up_at`
-  timestamptz nullable, `created_at`, `updated_at`.
-- Append-only enforcement on `audit_events`: SQL trigger `BEFORE UPDATE OR
-  DELETE ON audit_events ... RAISE EXCEPTION`. Migration includes the trigger.
-- Indexes: `(user_id, created_at desc)` on `audit_events`; `(user_id)`,
-  `(hashed_session_token)` on `sessions`; partial index for active sessions
-  if useful.
-- Forward-only migration committed.
-
-## Scope Excluded
-- `SessionService` / `AuditService` implementations (P2-T5).
-- CSRF cookie issuance (P2-T5).
-- Any controller wiring (P2-T5/T6).
-
-## Files Likely Involved
-- `apps/api/src/db/schema/audit_events.ts`
-- `apps/api/src/db/schema/sessions.ts`
-- `apps/api/src/db/schema/index.ts` (re-export)
-- `apps/api/drizzle/0001_*.sql`
-- `apps/api/test/db/audit-events-append-only.integration.test.ts`
-- `apps/api/test/db/sessions-schema.integration.test.ts`
-
-## Acceptance Criteria
-- Migrations apply cleanly to a fresh docker-compose Postgres.
-- Integration test attempts an `UPDATE` on `audit_events` and asserts the
-  trigger raises; same for `DELETE`.
-- Integration test inserts a session row with all required columns and reads
-  it back.
-- FK constraints enforced (orphan `user_id` insert fails).
-- `pnpm --filter api typecheck` and `lint` clean.
-
-## Test Requirements
-- Two integration tests as above. Both run against docker-compose Postgres.
-- No service-level tests yet; this task is schema + DB constraints only.
-
-## Security Considerations
-- The append-only trigger is the line of defense between an attacker with
-  DB write access and audit-log tampering. Test it.
-- `hashed_session_token` must be unique and indexed. Plain tokens never enter
-  the DB.
-- No PII in `audit_events` other than what's intentionally hashed
-  (`ip_hash`, `ua_hash`). Do not add `email` or raw IP columns.
-
-## Dev Environment Constraints
-- All work runs natively on Ubuntu 26 (`~/repos/<project>`).
-- Docker is for supporting services only (Postgres, Redis, mailpit, Azurite,
-  Unleash) via `docker-compose up -d`.
-- Apps run as native Node processes via `pnpm dev`. No Windows paths anywhere
-  in the repo.
-
-## Handoff Notes
-- Depends on P2-T2 (users table FK target).
-- The trigger's exact SQL is migration-engine flavored; do not hand-write
-  raw SQL outside the Drizzle migration file.
+### P2-T3: Add `audit_events` and `sessions` Drizzle schemas + migration — Done; see DONE_LOG.md.
 
 ---
 
