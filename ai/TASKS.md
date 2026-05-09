@@ -2,10 +2,9 @@
 
 Last Updated: 2026-05-09
 
-CHAT_END (2026-05-09): Phase 1 (`P1-T1`–`P1-T6`) complete — added `packages/types`, `crypto`,
-`auth-core`, `observability`, `sdk`, `testing` with Vitest smoke tests, ESLint presets, dual
-`tsconfig`; root `@types/node`; `pnpm lint` + `pnpm typecheck` + `pnpm test` + `pnpm audit
---audit-level=high` (clean). Phase 2 (`apps/api` skeleton) next.
+CHAT_END (2026-05-09): Reconciled vs `origin/main` at `7c0417f` (clean). YAML (`ci.yml`, `dependabot.yml`);
+`pnpm lint` + `pnpm typecheck` + `pnpm test` + `pnpm audit --audit-level=high` (clean); `bash -n scripts/setup.sh`;
+`grep -c replace-with-` `.env.example` (=27). Phase 0–1 complete; Phase 2 next.
 
 Phase 0 is **complete** (P0-T1–P0-T8). **Phase 1** is **complete** (P1-T1–P1-T6): shared library
 packages landed. Next: **Phase 2** (`apps/api` skeleton). Phase 2–8 remain in Backlog until decomposed.

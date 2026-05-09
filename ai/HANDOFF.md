@@ -28,7 +28,7 @@ None.
 
 ## Important Instructions for Next AI
 
-- Confirm CI green on `main` after Phase 1 lands.
+- Confirm **CI green on `origin/main`** (latest: `7c0417f` at time of handoff).
 - Phase 2 stays **Unattended: Yes** until real Clerk/Postgres wiring; follow task matrix in `/ai/TASKS.md`.
 - No business logic in shared packages; honor `AGENTS.md`.
 
@@ -38,4 +38,6 @@ None.
 
 ## Tests / Checks Last Run
 
-- `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm audit --audit-level=high` — all clean (local).
+- `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm audit --audit-level=high` (clean); YAML `ci.yml` /
+  `dependabot.yml` parse; `bash -n scripts/setup.sh`; `grep -c replace-with-` `.env.example` (=27). Repo =
+  `origin/main` @ `7c0417f`.
