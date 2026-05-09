@@ -7,8 +7,7 @@ Last Updated: 2026-05-09
 ## Current State Summary
 
 P0-T2 complete: `packages/config-typescript` + root `typescript` devDependency.
-Active task is **P0-T3** (shared ESLint config). Local `main` may still be
-**ahead of** `origin` until `git push` succeeds from an authenticated environment.
+Active task is **P0-T3** (shared ESLint config).
 
 ## Last Completed Task
 
@@ -20,12 +19,11 @@ P0-T3: Add shared ESLint config package. Status: Active.
 
 ## Next Recommended Task
 
-Execute P0-T3 per `/ai/TASKS.md`, then commit and push. Human: `git push` from
-WSL if local is ahead of `origin` (HTTPS auth may fail in harness).
+Execute P0-T3 per `/ai/TASKS.md`, then commit and push.
 
 ## What Is Blocked
 
-**Push** from this environment may still fail (`could not read Username for 'https://github.com'`).
+None.
 
 ## Important Instructions for Next AI
 

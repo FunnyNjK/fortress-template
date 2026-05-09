@@ -33,8 +33,7 @@ P0-T3: Add shared ESLint config package. Status: Active.
 
 ## Known Problems
 
-None. Local `main` may be **ahead of** `origin` until `git push` succeeds (HTTPS
-auth not available in harness).
+None. `origin/main` includes P0-T2 as of this handoff (`67200e7`).
 
 ## Important Files or Folders
 

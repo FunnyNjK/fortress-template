@@ -9,7 +9,7 @@ Last Updated: 2026-05-09
   `README.md`, `exports` map, `tsconfig.json` + `tsconfig.package-path.json` validating
   workspace `extends`; root `devDependencies` + **ADR-023** for workspace `typescript`.
   Minimal `fortress-config-stub.d.ts` for `tsc --noEmit` with no app source in package.
-  (`9bb706c`)
+  (`67200e7`)
 - P0-T1: Initialize the monorepo skeleton — added `pnpm-workspace.yaml`, `turbo.json`,
   root `package.json` (`packageManager` pnpm@10.33.4, turbo 2.9.12), `.node-version`
   24.15.0, `.editorconfig`, `.prettierrc`; `pnpm-lock.yaml` from install. (`a58986b`)
