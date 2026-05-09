@@ -52,3 +52,5 @@ None.
 ## Session reconciliation
 
 2026-05-09 — **P2-T6**: **`/healthz`**, **`/readyz`**, **`SkipRateLimit`**, **`@fortress/types`** on **`api`**, **`test/integration`**, **`api-integration`** CI, **`README`**.
+
+CHAT_END (2026-05-09): Ritual **`/ai/templates/CHAT_END_PROMPT.md`** — **`origin/main`** **`72b07fb`**; **`npx pnpm@10.33.4`** **`lint`** / **`typecheck`** / **`test`** / **`build`**; **`pnpm audit --audit-level=high`** (1 moderate, below **`high`** gate); YAML **`ci.yml`** + **`dependabot.yml`**; **`bash -n`** **`scripts/setup.sh`**; **`grep -c replace-with-`** **`.env.example`** (=28).

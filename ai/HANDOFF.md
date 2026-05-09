@@ -10,7 +10,7 @@ Last Updated: 2026-05-09
 
 ## Last Completed Task
 
-**`P2-T6`** — **`DONE_LOG`** / **`origin/main`** **`f65aca4`**.
+**`P2-T6`** — **`DONE_LOG`**; feature commit **`f65aca4`**; branch tip **`origin/main`** **`72b07fb`** (includes docs-only follow-ups).
 
 ## Active Task
 
@@ -35,4 +35,4 @@ Human phase gate (**ADR-022**): do **not** start P3 unattended until approved.
 
 ## Tests / Checks Last Run
 
-- Repo: **`lint`**, **`typecheck`**, **`test`**, **`build`**, **`pnpm audit --audit-level=high`** (1 moderate). **`test:integration`**: CI (**`CI=true`**) requires reachable Redis/PG with matching **`REDIS_URL`** (password if compose uses **`requirepass`**).
+- CHAT_END (2026-05-09): **`npx pnpm@10.33.4`** **`lint`** **`typecheck`** **`test`** **`build`**; **`pnpm audit --audit-level=high`** (**1 moderate**). **`python3`** **`yaml.safe_load`** **`ci.yml`** + **`dependabot.yml`**; **`bash -n`** **`scripts/setup.sh`**. **`test:integration`**: CI **`api-integration`** or local Compose + **`REDIS_URL`** with **`requirepass`**.
