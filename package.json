@@ -1,0 +1,17 @@
+{
+  "name": "fortress-template",
+  "private": true,
+  "packageManager": "pnpm@10.33.4",
+  "scripts": {
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "lint": "turbo lint",
+    "typecheck": "turbo typecheck",
+    "test": "turbo test",
+    "clean": "turbo clean",
+    "setup": "pnpm install"
+  },
+  "devDependencies": {
+    "turbo": "2.9.12"
+  }
+}

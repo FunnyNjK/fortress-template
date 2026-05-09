@@ -1,8 +1,8 @@
 # Tasks
 
-Last Updated: 2026-05-08
+Last Updated: 2026-05-09
 
-Phase 0 tasks are queued and ready for execution. P0-T1 is Active.
+Phase 0 tasks are queued and ready for execution. P0-T2 is Active.
 Phase 1–8 placeholders are in Backlog; each will be decomposed when its phase becomes active.
 
 ---
@@ -50,89 +50,15 @@ Rough unattended profiles — refine when each phase becomes active.
 
 ---
 
-## Active Task
-
-### P0-T1: Initialize the monorepo skeleton
-
-Status: Active
-Owner: AI CLI (unattended)
-Priority: High
-Unattended: Yes
-
-### Goal
-
-Bootstrap root-level monorepo configuration: workspace definition, Turbo pipeline,
-root `package.json` with workspace scripts, Node version pin, editor config, and
-Prettier config. No apps or packages yet.
-
-### Scope Included
-
-- `pnpm-workspace.yaml` — declares `apps/*` and `packages/*` globs
-- `turbo.json` — pipeline for `build`, `lint`, `typecheck`, `test`, `clean`
-- `package.json` (root) — `packageManager: "pnpm@10.x.x"` (exact); scripts: `dev`,
-  `build`, `lint`, `typecheck`, `test`, `clean`, `setup`
-- `.gitignore` — Node, pnpm, Turbo, env files, build outputs, secret patterns
-- `.node-version` — pins Node 24 LTS
-- `.editorconfig` — indent style, charset, line endings
-- `.prettierrc` — single quotes, semi, 100-column print width
-
-### Scope Excluded
-
-- Any `apps/*` or `packages/*` directories
-- `docker-compose.yml` (P0-T4)
-- `.env.example` (P0-T5)
-- CI workflows (P0-T7)
-
-### Files Likely Involved
-
-- `pnpm-workspace.yaml` (create)
-- `turbo.json` (create)
-- `package.json` (create)
-- `.gitignore` (create)
-- `.node-version` (create)
-- `.editorconfig` (create)
-- `.prettierrc` (create)
-
-### Acceptance Criteria
-
-- `pnpm install` exits 0
-- `packageManager` in `package.json` is `pnpm@10.x.x` with exact version
-- `turbo.json` defines `build`, `lint`, `typecheck`, `test`, `clean` pipeline tasks
-- `.node-version` pins Node 24 LTS
-- `.gitignore` includes `.env`, `.env.*`, `*.local`, `node_modules`, `.turbo`, `dist`
-
-### Test Requirements
-
-- `pnpm install` exits 0
-- `node -e "JSON.parse(require('fs').readFileSync('turbo.json','utf8'))"` succeeds
-
-### Security Considerations
-
-- `.gitignore` must cover all secret and env file patterns before first commit
-- No `^`/`~` version ranges in `package.json` — exact pinning only
-
-### Dev Environment Constraints
-
-- All work runs natively in WSL Ubuntu (`~/repos/fortress-template`).
-- No Docker for application processes.
-- No `/mnt/c` paths in code or scripts.
-
-### Handoff Notes
-
-- P0-T2 and P0-T3 depend on this task completing first.
-- After this task the repo installs cleanly but has no app or package source.
-
-### Verification Step
-
-`pnpm install` exits 0.
+### P0-T1: Initialize the monorepo skeleton — Done; see DONE_LOG.md.
 
 ---
 
-## Ready
+## Active Task
 
 ### P0-T2: Add shared TypeScript config package
 
-Status: Ready
+Status: Active
 Owner: AI CLI (unattended)
 Priority: High
 Unattended: Yes
@@ -198,6 +124,8 @@ workspace members. Strict compiler settings, ES2023 target, and per-app variants
 with all four required strict flags present.
 
 ---
+
+## Ready
 
 ### P0-T3: Add shared ESLint config package
 
