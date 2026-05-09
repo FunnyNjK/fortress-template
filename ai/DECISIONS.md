@@ -651,6 +651,29 @@ P0-T3; Phase 1+ apps will extend these presets.
 
 ---
 
+## ADR-025: Phase 1 shared package runtime + test stack
+Date: 2026-05-09
+Status: Accepted
+
+### Decision
+Phase 1 library packages use **Vitest 4** for smoke tests, **Zod 4** in `@fortress/sdk`, **Pino 10** in
+`@fortress/observability`, and **`typescript-eslint` 8** as an explicit `devDependency` on each package that
+ships an `eslint.config.js` (pnpm isolated `node_modules`; configs cannot rely on transitive resolution from
+`@fortress/config-eslint` alone). Root **`@types/node` ~24** supports `compilerOptions.types: ["node"]` in packages
+that import Node built-ins. **`@fortress/sdk`** declares **`engines.node` >= 24.15.0** so `eslint-plugin-n`
+treats `fetch` / `Response` as supported. Dual **tsconfig**: `tsconfig.json` (`noEmit`, all `src/**/*.ts`
+including tests) and `tsconfig.build.json` (emit `dist/`, exclude `*.test.ts`).
+Aligns with ADR-009 (Vitest), template stack (Zod 4, Pino), strict TypeScript presets, and reproducible CI.
+pnpm strictness required hoisting `typescript-eslint` for ESLint flat configs importing `typescript-eslint`.
+
+### Tradeoffs
+Minor duplication of `devDependencies` across six packages; bumping Vitest/Zod is repo-wide maintenance.
+
+### Related Tasks
+P1-T1–P1-T6
+
+---
+
 ## ADR Template
 
 ## ADR-XXX: Title

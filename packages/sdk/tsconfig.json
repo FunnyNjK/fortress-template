@@ -1,0 +1,14 @@
+{
+  "extends": "@fortress/config-typescript/library.json",
+  "compilerOptions": {
+    "composite": false,
+    "rootDir": "src",
+    "outDir": "dist",
+    "noEmit": true,
+    "types": ["node"],
+    "lib": ["ES2023", "DOM"],
+    "tsBuildInfoFile": "./node_modules/.tmp/sdk.tsbuildinfo"
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "dist"]
+}

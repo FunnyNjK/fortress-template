@@ -1,0 +1,35 @@
+{
+  "name": "@fortress/testing",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Factories and fixtures reused by Vitest suites across packages and apps.",
+  "license": "UNLICENSED",
+  "files": ["dist", "README.md"],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "clean": "rm -rf dist",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@fortress/types": "workspace:*"
+  },
+  "devDependencies": {
+    "@fortress/config-eslint": "workspace:*",
+    "@fortress/config-typescript": "workspace:*",
+    "eslint": "^9.28.0",
+    "typescript": "~5.8.3",
+    "typescript-eslint": "^8.33.1",
+    "vitest": "^4.1.5"
+  }
+}

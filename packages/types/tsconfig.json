@@ -1,0 +1,12 @@
+{
+  "extends": "@fortress/config-typescript/library.json",
+  "compilerOptions": {
+    "composite": false,
+    "rootDir": "src",
+    "outDir": "dist",
+    "noEmit": true,
+    "tsBuildInfoFile": "./node_modules/.tmp/types.tsbuildinfo"
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "dist"]
+}

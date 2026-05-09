@@ -2,12 +2,13 @@
 
 Last Updated: 2026-05-09
 
-CHAT_END (2026-05-09): Reconciled vs `origin/main` at `8f072fc`; YAML (`ci.yml`, `dependabot.yml`),
-`pnpm lint` + `pnpm typecheck` + `pnpm audit --audit-level=high` (clean), `bash -n scripts/setup.sh`,
-`grep -c replace-with-` `.env.example` (=27). Phase 0 complete; Phase 1 next.
+CHAT_END (2026-05-09): Phase 1 (`P1-T1`–`P1-T6`) complete — added `packages/types`, `crypto`,
+`auth-core`, `observability`, `sdk`, `testing` with Vitest smoke tests, ESLint presets, dual
+`tsconfig`; root `@types/node`; `pnpm lint` + `pnpm typecheck` + `pnpm test` + `pnpm audit
+--audit-level=high` (clean). Phase 2 (`apps/api` skeleton) next.
 
-Phase 0 is **complete** (P0-T1–P0-T8). Next work: **Phase 1** (shared packages) when started.
-Phase 1–8 placeholders are in Backlog; each will be decomposed when its phase becomes active.
+Phase 0 is **complete** (P0-T1–P0-T8). **Phase 1** is **complete** (P1-T1–P1-T6): shared library
+packages landed. Next: **Phase 2** (`apps/api` skeleton). Phase 2–8 remain in Backlog until decomposed.
 
 ---
 
@@ -26,6 +27,12 @@ to decide whether to execute a task fully, partially, or stop and ask for a huma
 | P0-T6   | Yes        | —                                |
 | P0-T7   | Yes        | —                                |
 | P0-T8   | Yes        | —                                |
+| P1-T1   | Yes        | —                                |
+| P1-T2   | Yes        | —                                |
+| P1-T3   | Yes        | —                                |
+| P1-T4   | Yes        | —                                |
+| P1-T5   | Yes        | —                                |
+| P1-T6   | Yes        | —                                |
 
 Definitions:
 - **Yes**: Fully automatable. Harness proceeds, claims Done on success.
@@ -74,20 +81,30 @@ Rough unattended profiles — refine when each phase becomes active.
 
 ---
 
+### P1-T1: Add `packages/types` (pure TS boundary types) — Done; see DONE_LOG.md.
+
+### P1-T2: Add `packages/crypto` (AES-GCM, HMAC, timing-safe helpers) — Done; see DONE_LOG.md.
+
+### P1-T3: Add `packages/auth-core` (CSRF/session identifier helpers) — Done; see DONE_LOG.md.
+
+### P1-T4: Add `packages/observability` (Pino baseline logger) — Done; see DONE_LOG.md.
+
+### P1-T5: Add `packages/sdk` (Zod + `/auth/me` client) — Done; see DONE_LOG.md.
+
+### P1-T6: Add `packages/testing` (fixtures for Vitest) — Done; see DONE_LOG.md.
+
+---
+
 ## Active Task
 
-None — Phase 0 complete. Begin Phase 1 per `/ai/ROADMAP.md` when ready.
+None — begin **Phase 2** (API skeleton) per `/ai/ROADMAP.md` / this file Backlog when picked up.
 
 ---
 
 ## Backlog
 
-Phase 1–8 placeholders. Each will be decomposed into atomic tasks when its phase becomes active.
-See `/ai/reference/NEW_TEMPLATE_PROMPT.md` for the authoritative scope of each phase.
-
-**P1 — Shared packages**: Create `packages/sdk`, `packages/types`, `packages/ui`,
-`packages/crypto`, `packages/auth-core`, `packages/observability`, `packages/testing`.
-Each package: source, exports, smoke tests, README. Estimated ~8 tasks.
+Phase 2–8. Decompose each phase into atomic tasks when it becomes active.
+See `/ai/reference/NEW_TEMPLATE_PROMPT.md` for authoritative scope.
 
 **P2 — API skeleton**: Scaffold `apps/api` (NestJS 11) with env validation, security
 middleware chain (headers → rate limit → Zod validation → logging → exception filter),

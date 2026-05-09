@@ -6,48 +6,33 @@ Last Updated: 2026-05-09
 
 ## Current Phase
 
-Phase 0 (Repo skeleton) — **complete**. P0-T1–P0-T8 done. Next: Phase 1 (shared packages).
+**Phase 1 (Shared packages) — complete.** `P1-T1`–`P1-T6` landed. Next: **Phase 2** (API skeleton).
 
 ## Current Task
 
-None active — plan/decompose Phase 1 before coding (`/ai/ROADMAP.md`).
+None active — decompose Phase 2 in `/ai/TASKS.md` before coding `apps/api`.
 
 ## What Exists Now
 
-- Root monorepo skeleton: `pnpm-workspace.yaml`, `turbo.json`, `package.json` (pnpm
-  10.33.4 + turbo 2.9.12), `typescript` 5.8.3 (root `devDependencies`), `pnpm-lock.yaml`,
-  `.node-version` (24.15.0), `.editorconfig`, `.prettierrc`. Existing `.gitignore`
-  already met Phase 0 secret/output patterns.
-- `packages/config-typescript/` — `@fortress/config-typescript` presets (`base`,
-  `next`, `node`, `library`) + tooling stub + package-path `tsconfig` check.
-- `packages/config-eslint/` — `@fortress/config-eslint` flat configs (`base`, `next`,
-  `node`), self-lint via `eslint.config.js`; `pnpm run lint` runs this package.
-- `docker-compose.yml` — Postgres 18, Redis 8, Mailpit, Azurite, Unleash; images
-  pinned by digest; `docker/postgres/docker-entrypoint-initdb.d/` creates `unleash`
-  database on the shared Postgres instance.
-- `.env.example` — canonical env template (`replace-with-*` placeholders; local URLs
-  use `127.0.0.1` ports aligned with `docker-compose.yml`).
-- `scripts/setup.sh`, `scripts/setup.ps1` — idempotent local `.env` + `docker compose up -d`.
-- `.github/workflows/ci.yml` — nine-job CI (install, lint, typecheck, test, dep-audit,
-  gitleaks, semgrep, codeql, sbom); actions pinned by SHA; push + `pull_request`.
-- `.github/dependabot.yml` — weekly `npm` + `github-actions` updates.
-- `.gitleaks.toml` — baseline secret scan config (allowlists `.env.example`).
-- `.well-known/security.txt` — disclosure placeholders (forks must replace).
-- `AGENTS.md` — AI layer rules + non-negotiables.
-- `PROJECT_STATUS.md` — phase/decision/status snapshot with doc links.
-- No `apps/` yet; Phase 1+ pending.
+- Root monorepo skeleton (unchanged from Phase 0): `pnpm-workspace.yaml`, Turbo, CI, `docker-compose`,
+  `.env.example`, setup scripts — see prior entries.
+- **`packages/types`** — branded boundary types, `FORTRESS_API_VERSION`, pagination input shape; zero runtime deps.
+- **`packages/crypto`** — AES-256-GCM secret box, HMAC-SHA256, timing-safe compare, `randomOpaqueBytes`.
+- **`packages/auth-core`** — CSRF double-submit compare, base64url opaque tokens, canonical cookie/header names.
+- **`packages/observability`** — `createFortressLogger` (Pino + default redaction paths).
+- **`packages/sdk`** — `createFortressSdk`, `AuthMeResponseSchema` (Zod strict), `normalizeBaseUrl`; `engines.node` pinned.
+- **`packages/testing`** — Vitest fixtures importing `@fortress/types`.
+- **`@types/node`** — root `devDependencies` for workspace `tsc` with `types: ["node"]`.
+- No `apps/*` yet — Phase 2.
 
 ## What Works
 
-- `pnpm install` from repo root; `pnpm run typecheck` runs `@fortress/config-typescript`
-  via Turbo; `pnpm run lint` runs `@fortress/config-eslint` lint.
-- `docker compose config` validates the stack; `docker compose up -d` brings up
-  supporting services (manual smoke).
-- CI workflow present locally; green run after push is manual confirmation on GitHub.
+- `pnpm run build` / `lint` / `typecheck` / `test` via Turbo across all packages including new libraries.
+- Smoke tests in each new package (`vitest run`).
 
 ## What Is Not Built Yet
 
-- All application code and Phases 1–8 per roadmap (`packages/sdk` onward).
+- **`apps/api`** onward (Phases 2–8).
 
 ## Known Problems
 
@@ -55,23 +40,16 @@ None.
 
 ## Important Files or Folders
 
-- `/ai/HANDOFF.md` — next session baton
-- `/ai/TASKS.md` — Phase 0 done; Backlog = Phase 1+
-- `AGENTS.md`, `PROJECT_STATUS.md` — agent + status contract
-- `.github/workflows/ci.yml` — CI gates
-- `.env.example` — env var catalog for setup scripts and forks
-- `docker-compose.yml` — local backing services
-- `packages/config-typescript/` — shared TS configs
-- `packages/config-eslint/` — shared ESLint flat configs
+- `/ai/HANDOFF.md` — next-session baton  
+- `/packages/sdk` — web↔API typed boundary  
+- `/packages/crypto`, `/packages/auth-core` — security helpers for API (when built)
 
 ## Next Recommended Action
 
-1. Confirm CI green on `main` after P0-T8 lands.
-2. Decompose **Phase 1** in `/ai/TASKS.md` and start shared packages.
+1. Land Phase 1 on `main`; confirm GitHub Actions CI green.  
+2. Decompose Phase 2 in `/ai/TASKS.md` and scaffold `apps/api` (NestJS 11).
 
 ## Session reconciliation
 
-CHAT_END (2026-05-09): Reconciled vs `origin/main` at `8f072fc`; tree clean. Ran `/ai/templates/CHAT_END_PROMPT.md`
-checks (YAML parse `ci.yml` / `dependabot.yml`, `pnpm lint`, `pnpm typecheck`, `pnpm audit --audit-level=high`,
-`bash -n scripts/setup.sh`, `grep -c replace-with-` `.env.example` = 27). Phase 0 complete; next = Phase 1
-planning. ARCHITECTURE / ROADMAP / TESTING / DEPLOYMENT / DECISIONS unchanged this pass.
+Phase 1 implementation session: added six `packages/*`; planning files updated. Full verification:
+`pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm audit --audit-level=high`.

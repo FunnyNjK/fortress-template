@@ -11,7 +11,7 @@ for phase verification see [`/ai/ROADMAP.md`](ai/ROADMAP.md). Full spec:
 | Phase | Title | Status | Spec / notes |
 |-------|--------|--------|--------------|
 | 0 | Repo skeleton | **Complete** | Monorepo tooling, CI scaffold, `.env.example`, `docker-compose`, setup scripts, `security.txt`, this file — see [`/ai/TASKS.md`](ai/TASKS.md) |
-| 1 | Shared packages | TODO | `packages/sdk`, `types`, `ui`, `crypto`, `auth-core`, `observability`, `testing` (+ existing config packages) |
+| 1 | Shared packages | **Complete** | `packages/types`, `crypto`, `auth-core`, `observability`, `sdk`, `testing` (+ Phase 0 config packages). `packages/ui` deferred until a consumer needs it. |
 | 2 | API skeleton | TODO | NestJS 11, middleware chain, health, audit table — [`NEW_TEMPLATE_PROMPT.md` Phase 2](ai/reference/NEW_TEMPLATE_PROMPT.md) |
 | 3 | Web skeleton | TODO | Next.js 16 + Clerk + `@fortress/sdk` — Phase 3 |
 | 4 | Worker skeleton | TODO | BullMQ + Postmark example job — Phase 4 |
@@ -35,7 +35,7 @@ for phase verification see [`/ai/ROADMAP.md`](ai/ROADMAP.md). Full spec:
 | 7 | Postmark | **Pending** — placeholders in [`.env.example`](.env.example); Phase 4 |
 | 8 | Unleash + OpenFeature | **Partial** — Unleash in [docker-compose.yml](docker-compose.yml) + env placeholders; app integration Phase 2–3 |
 | 9 | Sentry | **Pending** — env placeholders; Phase 2+ |
-| 10 | Tempo + OTLP | **Pending** — env placeholders; observability package Phase 1+ |
+| 10 | Tempo + OTLP | **Partial** — `@fortress/observability` (Pino baseline only); OTLP wiring Phase 2+ |
 
 ---
 
@@ -46,7 +46,7 @@ for phase verification see [`/ai/ROADMAP.md`](ai/ROADMAP.md). Full spec:
   **TODO:** Rewrite for this template once Phases 1–8 narrow the real surface area.
 - **`security.txt`:** Contact, Policy URL, and Expires are **placeholders** in
   [`.well-known/security.txt`](.well-known/security.txt) — must be replaced per fork.
-- **No `apps/` yet** — application code starts Phase 1–2.
+- **No `apps/` yet** — application code starts Phase 2 (`apps/api`).
 
 ---
 
