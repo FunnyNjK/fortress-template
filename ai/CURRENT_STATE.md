@@ -58,4 +58,4 @@ None.
 1. Execute **P0-T6** (`scripts/setup.sh` / `setup.ps1`) per TASKS.md, then commit and push.  
 2. Continue Phase 0 toward P0-T8.
 
-CHAT_END (2026-05-09): Verified vs `origin/main` `2ba6e65`; clean tree; no `scripts/` yet (P0-T6 pending).
+CHAT_END (2026-05-09): Synced with `origin/main`; clean tree; no `scripts/` yet (P0-T6 pending).

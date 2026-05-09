@@ -39,4 +39,4 @@ None.
 ## Tests / Checks Last Run
 
 - CHAT_END (2026-05-09): `grep -c replace-with-` .env.example (=27); `npx pnpm@10.33.4 run typecheck`;
-  `npx pnpm@10.33.4 run lint`; `git status` clean; `main` = `origin/main` (`2ba6e65`).
+  `npx pnpm@10.33.4 run lint`; `git status` clean; `main` = `origin/main`.

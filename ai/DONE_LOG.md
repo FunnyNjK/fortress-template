@@ -5,7 +5,7 @@ Last Updated: 2026-05-09
 ## 2026-05-09
 
 - CHAT_END: Ran `/ai/templates/CHAT_END_PROMPT.md`; reconciled `CURRENT_STATE`, `TASKS`,
-  `HANDOFF`, `DONE_LOG` vs landed `origin/main` (`2ba6e65`); `.env.example` on tree;
+  `HANDOFF`, `DONE_LOG` vs landed `origin/main`; `.env.example` on tree;
   P0-T6 (`scripts/setup.*`) not started; typecheck/lint OK; conditional `/ai/*` unchanged.
 - P0-T5: Add `.env.example` — canonical env template: warning header; sections per
   TASKS (App URLs, Clerk, Postmark, Stripe, Sentry, OTLP, Database, Redis, Unleash,

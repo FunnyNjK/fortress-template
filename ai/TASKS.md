@@ -3,7 +3,7 @@
 Last Updated: 2026-05-09
 
 Phase 0 tasks are queued and ready for execution. **P0-T6** is Active.
-CHAT_END (2026-05-09): Planning reconciled to landed `origin/main` (`2ba6e65`); P0-T6 Active.
+CHAT_END (2026-05-09): Planning reconciled to landed `origin/main`; P0-T6 Active.
 Phase 1–8 placeholders are in Backlog; each will be decomposed when its phase becomes active.
 
 ---
