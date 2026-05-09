@@ -35,7 +35,7 @@ P0-T4: Add `docker-compose.yml` for local dev supporting services. Status: Activ
 
 ## Known Problems
 
-None. `origin/main` tip **`26fb7fc`** (P0-T3 `240606f` + planning sync).
+None.
 
 ## Important Files or Folders
 
