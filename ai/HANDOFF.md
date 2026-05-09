@@ -38,5 +38,6 @@ None.
 
 ## Tests / Checks Last Run
 
-- P0-T6: `bash -n scripts/setup.sh`; setup idempotence / `--force` / `NODE_ENV=production` guard;
-  `grep -c replace-with-` on generated `.env` (=0); `pnpm lint`; `pnpm typecheck`.
+- CHAT_END (2026-05-09): `git fetch` + clean vs `origin/main` (`53f1a4e`); `bash -n scripts/setup.sh`;
+  `grep -c replace-with-` `.env.example` (=27); `npx pnpm@10.33.4 run lint`; `npx pnpm@10.33.4 run typecheck`;
+  `.github/workflows/ci.yml` absent (P0-T7).

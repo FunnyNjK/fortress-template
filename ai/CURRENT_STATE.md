@@ -59,4 +59,5 @@ None.
 1. Execute **P0-T7** (CI workflow + Dependabot) per TASKS.md, then commit and push.  
 2. Continue Phase 0 toward P0-T8.
 
-CHAT_END (2026-05-09): P0-T6 landed (`scripts/setup.sh`, `scripts/setup.ps1`); P0-T7 next.
+CHAT_END (2026-05-09): Reconciled to `origin/main` at `53f1a4e`; clean tree; `.github/workflows/ci.yml`
+not present yet (P0-T7); `scripts/setup.*` on tree; `grep -c replace-with-` `.env.example` (=27); lint + typecheck OK.
