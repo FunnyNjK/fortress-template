@@ -9,7 +9,7 @@ Last Updated: 2026-05-09
   Unleash); images pinned with digest; `127.0.0.1` port bindings; named volumes;
   health checks; `POSTGRES_*` / `REDIS_PASSWORD` env wiring; Unleash uses DB `unleash`
   on shared Postgres via `docker/postgres/docker-entrypoint-initdb.d/01-create-unleash-database.sql`;
-  Postgres 18+ data volume mount at `/var/lib/postgresql`. (`ffed298`)
+  Postgres 18+ data volume mount at `/var/lib/postgresql`. (`7abb535`)
 - P0-T3: Add shared ESLint config package — `packages/config-eslint`
   (`@fortress/config-eslint`): `base.js` (`typescript-eslint` strict type-checked,
   `no-floating-promises`, `consistent-type-imports`, `no-unsafe-*`, `no-eval` /
