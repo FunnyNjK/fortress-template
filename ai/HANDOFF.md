@@ -40,4 +40,4 @@ None.
 
 - `dotenv.parse(.env.example)` (OK); `grep -c replace-with-` ≥ 1;
   `npx pnpm@10.33.4 run typecheck`; `npx pnpm@10.33.4 run lint`.
-- Push: `main` → `origin/main` at `43f2921` (P0-T5).
+- Push: `main` synced to `origin/main` (includes P0-T5 + handoff note).
