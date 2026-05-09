@@ -4,6 +4,10 @@ Last Updated: 2026-05-09
 
 ## 2026-05-09
 
+- P0-T8: Add `.well-known/security.txt` (RFC 9116 fields, fork placeholders), root `AGENTS.md`
+  (layer rules, 10 locked decisions, 10 security invariants, secrets-out-of-repo emphasis,
+  fork follow-up guidance), `PROJECT_STATUS.md` (phases 0–8 table, decision status, `REFRESH_PROMPT`
+  flag); `/ai/TASKS.md` / `HANDOFF` / `CURRENT_STATE` / `ROADMAP` Phase 0 closed.
 - CHAT_END: Ran `/ai/templates/CHAT_END_PROMPT.md`; reconciled `CURRENT_STATE`, `TASKS`, `HANDOFF`,
   `DONE_LOG` vs `origin/main` at start of pass; **P0-T8** still active; YAML parse `ci.yml` +
   `dependabot.yml`; `pnpm lint` + `pnpm typecheck` + `pnpm audit --audit-level=high` (clean); `bash -n scripts/setup.sh`; `grep -c replace-with-`

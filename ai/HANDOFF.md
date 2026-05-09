@@ -6,20 +6,21 @@ Last Updated: 2026-05-09
 
 ## Current State Summary
 
-P0-T7 complete: `.github/workflows/ci.yml` (9 jobs, SHA-pinned actions), `.github/dependabot.yml`,
-`.gitleaks.toml`. Active task is **P0-T8** (security.txt, AGENTS.md, PROJECT_STATUS.md).
+**Phase 0 complete** (P0-T1–P0-T8): monorepo config, ESLint/TS packages, `docker-compose.yml`,
+`.env.example`, setup scripts, CI + Dependabot + gitleaks, `.well-known/security.txt`, `AGENTS.md`,
+`PROJECT_STATUS.md`.
 
 ## Last Completed Task
 
-P0-T7: CI workflow + Dependabot — see DONE_LOG.md.
+P0-T8: `security.txt`, `AGENTS.md`, `PROJECT_STATUS.md` — see DONE_LOG.md.
 
 ## Active Task
 
-P0-T8: Disclosure/docs files. Status: Active.
+None — decompose and start **Phase 1** (shared packages) per `/ai/ROADMAP.md` / `/ai/TASKS.md`.
 
 ## Next Recommended Task
 
-Execute P0-T8 per `/ai/TASKS.md`, then commit, push, and confirm CI green.
+Break Phase 1 into atomic tasks in `/ai/TASKS.md`, then implement `packages/*` per roadmap.
 
 ## What Is Blocked
 
@@ -27,17 +28,14 @@ None.
 
 ## Important Instructions for Next AI
 
-- Do not start Phase 1 until P0-T8 is done and pushed; CI should be green per project rules.
-- No application/business logic in Phase 0 packages beyond config files.
+- Confirm CI green on `main` after the P0-T8 push.
+- No application/business logic in shared packages beyond their stated roles; honor `AGENTS.md`.
 - Honor `/ai/AI_RULES.md` and `/ai/DEV_ENVIRONMENT.md`.
 
 ## Known Risks
 
-- `REFRESH_PROMPT.md` still starter-era; flag when P0-T8 creates `PROJECT_STATUS.md`.
+- `REFRESH_PROMPT.md` (`/ai/templates/`) still starter-era; tracked in `PROJECT_STATUS.md`.
 
 ## Tests / Checks Last Run
 
-- CHAT_END (2026-05-09): `git fetch`; clean tree before edits; `python3` YAML parse
-  `ci.yml` + `dependabot.yml`; `npx pnpm@10.33.4 run lint`; `npx pnpm@10.33.4 run typecheck`;
-  `npx pnpm@10.33.4 audit --audit-level=high` (clean); `bash -n scripts/setup.sh`;
-  `grep -c replace-with-` `.env.example` (=27).
+- P0-T8 (2026-05-09): `test -f` on the three new files + `echo P0-T8 OK`; `pnpm lint`; `pnpm typecheck`.

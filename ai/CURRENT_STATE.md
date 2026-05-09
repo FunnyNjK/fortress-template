@@ -6,11 +6,11 @@ Last Updated: 2026-05-09
 
 ## Current Phase
 
-Phase 0 (Repo skeleton) — in progress. P0-T1–P0-T7 complete; **P0-T8** active.
+Phase 0 (Repo skeleton) — **complete**. P0-T1–P0-T8 done. Next: Phase 1 (shared packages).
 
 ## Current Task
 
-P0-T8: Add `.well-known/security.txt`, `AGENTS.md`, and `PROJECT_STATUS.md`. Status: Active.
+None active — plan/decompose Phase 1 before coding (`/ai/ROADMAP.md`).
 
 ## What Exists Now
 
@@ -32,7 +32,10 @@ P0-T8: Add `.well-known/security.txt`, `AGENTS.md`, and `PROJECT_STATUS.md`. Sta
   gitleaks, semgrep, codeql, sbom); actions pinned by SHA; push + `pull_request`.
 - `.github/dependabot.yml` — weekly `npm` + `github-actions` updates.
 - `.gitleaks.toml` — baseline secret scan config (allowlists `.env.example`).
-- No `apps/` yet; P0-T8+ pending.
+- `.well-known/security.txt` — disclosure placeholders (forks must replace).
+- `AGENTS.md` — AI layer rules + non-negotiables.
+- `PROJECT_STATUS.md` — phase/decision/status snapshot with doc links.
+- No `apps/` yet; Phase 1+ pending.
 
 ## What Works
 
@@ -44,7 +47,7 @@ P0-T8: Add `.well-known/security.txt`, `AGENTS.md`, and `PROJECT_STATUS.md`. Sta
 
 ## What Is Not Built Yet
 
-- P0-T8; all application code and Phases 1–8 per roadmap.
+- All application code and Phases 1–8 per roadmap (`packages/sdk` onward).
 
 ## Known Problems
 
@@ -53,7 +56,8 @@ None.
 ## Important Files or Folders
 
 - `/ai/HANDOFF.md` — next session baton
-- `/ai/TASKS.md` — P0-T8 active
+- `/ai/TASKS.md` — Phase 0 done; Backlog = Phase 1+
+- `AGENTS.md`, `PROJECT_STATUS.md` — agent + status contract
 - `.github/workflows/ci.yml` — CI gates
 - `.env.example` — env var catalog for setup scripts and forks
 - `docker-compose.yml` — local backing services
@@ -62,9 +66,9 @@ None.
 
 ## Next Recommended Action
 
-1. Execute **P0-T8** per TASKS.md, then commit and push; confirm CI green on `main`.
-2. Begin Phase 1 after Phase 0 closes.
+1. Confirm CI green on `main` after P0-T8 lands.
+2. Decompose **Phase 1** in `/ai/TASKS.md` and start shared packages.
 
 ## Session reconciliation
 
-CHAT_END (2026-05-09): Planning files refreshed per `/ai/templates/CHAT_END_PROMPT.md`; **P0-T8** still active.
+CHAT_END (2026-05-09): **P0-T8** completed; disclosure + agent/status files added; Phase 0 closed.

@@ -1,0 +1,7 @@
+# PLACEHOLDER — Replace all values below with fork-specific contacts and URLs
+# before pointing production traffic at this repository or its deployed sites.
+
+Contact: mailto:replace-with-security-contact@example.invalid
+Policy: https://replace-with-your-domain.example/.well-known/security-policy
+Preferred-Languages: en
+Expires: 2027-05-09T00:00:00.000Z
