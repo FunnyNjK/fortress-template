@@ -7,12 +7,15 @@ export interface CreateFortressLoggerOptions {
   readonly level?: string | undefined;
 }
 
-function defaultRedactPaths(): string[] {
+/** Pino/nestjs-pino redaction paths (API + observability baseline). */
+export function fortressPinoRedactPaths(): readonly string[] {
   return [
     'req.headers.authorization',
     'req.headers.cookie',
     '*.password',
     '*.token',
+    '*.secret',
+    '*.apiKey',
     '*.accessToken',
     '*.refreshToken',
   ];
@@ -27,7 +30,7 @@ export function createFortressLogger(options: CreateFortressLoggerOptions): Fort
     name: options.serviceName,
     level: options.level ?? 'info',
     redact: {
-      paths: defaultRedactPaths(),
+      paths: [...fortressPinoRedactPaths()],
       censor: '[redacted]',
     },
   });

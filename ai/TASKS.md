@@ -2,9 +2,7 @@
 
 Last Updated: 2026-05-09
 
-CHAT_END (2026-05-09): Reconciled vs `origin/main` (clean). YAML (`ci.yml`, `dependabot.yml`);
-`pnpm lint` + `pnpm typecheck` + `pnpm test` + `pnpm audit --audit-level=high` (clean); `bash -n scripts/setup.sh`;
-`grep -c replace-with-` `.env.example` (=27). Phase 0–1 complete; Phase 2 next.
+CHAT_END (2026-05-09): P2-T1 scaffolded `apps/api` (NestJS 11, env Zod + production placeholder guard, nestjs-pino with `fortressPinoRedactPaths()`). Prior CHAT_END: YAML + `pnpm` checks clean; Phase 0–1 complete.
 
 Phase 0 is **complete** (P0-T1–P0-T8). **Phase 1** is **complete** (P1-T1–P1-T6): shared library
 packages landed. Next: **Phase 2** (`apps/api` skeleton). Phase 2–8 remain in Backlog until decomposed.
@@ -102,87 +100,11 @@ Rough unattended profiles — refine when each phase becomes active.
 
 ## Active Task
 
-P2-T1 (Backlog → Ready when harness picks up). Phase 2 has 6 atomic tasks
-(P2-T1 through P2-T6); see entries below. All six are Unattended: Yes.
+**P2-T2** — Wire Drizzle ORM + Postgres connection + users table (details below). **P2-T1** landed; see DONE_LOG.md.
 
 ---
 
-### P2-T1: Scaffold `apps/api` (NestJS 11) with env validation
-Status: Backlog
-Owner: TBD
-Priority: High
-
-## Goal
-Stand up `apps/api` as a NestJS 11 workspace with strict env validation
-and structured logging. No business modules, no DB, no security chain yet —
-just a bootable shell that other Phase 2 tasks build on.
-
-## Scope Included
-- `apps/api/package.json`, `tsconfig.json`, `eslint.config.js` extending the
-  Phase 0 shared configs (`@fortress/config-typescript/node`,
-  `@fortress/config-eslint/node`).
-- NestJS 11 `AppModule`, `main.ts`, graceful shutdown hooks.
-- `ConfigModule` loading `.env` via Zod schema. Schema rejects any value
-  matching `replace-with-*` when `NODE_ENV === 'production'` (per security
-  baseline; see `/ai/reference/NEW_TEMPLATE_PROMPT.md` "Secrets" section).
-- `nestjs-pino` wired with redaction list seeded from `@fortress/observability`
-  (Phase 1 P1-T4 baseline).
-- `pnpm --filter api dev` script via `nest start --watch`.
-- Smoke test: app instantiates, `/` returns 404 (no controllers yet).
-
-## Scope Excluded
-- Drizzle / Postgres (P2-T2).
-- New DB tables (P2-T3).
-- Security middleware chain (P2-T4).
-- Session/audit service, CSRF, JWKS (P2-T5).
-- Health endpoints (P2-T6).
-
-## Files Likely Involved
-- `apps/api/package.json`
-- `apps/api/tsconfig.json`
-- `apps/api/eslint.config.js`
-- `apps/api/src/main.ts`
-- `apps/api/src/app.module.ts`
-- `apps/api/src/config/env.schema.ts`
-- `apps/api/src/config/config.module.ts`
-- `apps/api/test/app.bootstrap.test.ts`
-- `pnpm-workspace.yaml` (no change expected; verify `apps/*` glob already covers it)
-
-## Acceptance Criteria
-- `pnpm --filter api typecheck` clean.
-- `pnpm --filter api lint` clean.
-- `pnpm --filter api test` runs at least one smoke test green.
-- `pnpm --filter api dev` boots the API on the configured port.
-- Starting the API with `NODE_ENV=production` and a `replace-with-*` value
-  in the env exits non-zero before listening.
-- No business controllers, modules, or routes added.
-
-## Test Requirements
-- Vitest + supertest: bootstrap the Nest test app, assert it instantiates.
-- Vitest unit: env schema rejects placeholder values in production mode,
-  accepts them in development mode.
-
-## Security Considerations
-- Pino redaction baseline must include `req.headers.authorization`,
-  `req.headers.cookie`, `*.password`, `*.token`, `*.secret`, `*.apiKey`.
-- No real secrets in `apps/api/.env.example`; only placeholder `replace-with-*`
-  values that the schema explicitly forbids in production.
-
-## Dev Environment Constraints
-- All work runs natively on Ubuntu 26 (`~/repos/<project>`).
-- Docker is for supporting services only (Postgres, Redis, mailpit, Azurite,
-  Unleash) via `docker-compose up -d`.
-- Apps run as native Node processes via `pnpm dev`. No Windows paths anywhere
-  in the repo.
-
-## Handoff Notes
-- Foundational; P2-T2 through P2-T6 all depend on this.
-- Use exact pinned versions for `@nestjs/*` (NestJS 11.x), `nestjs-pino`,
-  `pino`, `zod` (4.x — already in `@fortress/sdk` Phase 1).
-- Do NOT add `@nestjs/typeorm`, `@nestjs/mongoose`, or any ORM here; Drizzle
-  is wired in P2-T2.
-
----
+### P2-T1: Scaffold `apps/api` (NestJS 11) with env validation — Done; see DONE_LOG.md.
 
 ### P2-T2: Wire Drizzle ORM + Postgres connection + users table
 Status: Backlog
