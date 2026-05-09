@@ -62,7 +62,7 @@ its full block. Then on the actual repo:
   g. Security Considerations → check each. For example: any `latest` Docker
      image tags? Any `^` or `~` version ranges in package.json? Any secrets
      committed in .env or other tracked files? Any /mnt/c or Windows paths?
-     Any references to setup.ps1 (which was dropped per ADR-023)?
+     Any references to setup.ps1 (which was dropped per ADR-026)?
 
 ### Step 3 — Cross-check HANDOFF/DONE_LOG claims against reality
 
@@ -88,8 +88,8 @@ workflows), do a focused engineering review. Look for:
   - Version ranges with `^` or `~` in any package.json (YELLOW per the spec)
   - Missing `permissions:` blocks in GitHub Actions jobs (YELLOW)
   - .env, .env.local, or any secret-bearing file tracked in git (RED)
-  - Path violations (Windows paths, /mnt/c, etc., per ADR-023) (RED)
-  - .ps1 setup scripts (RED — dropped per ADR-023)
+  - Path violations (Windows paths, /mnt/c, etc., per ADR-026) (RED)
+  - .ps1 setup scripts (RED — dropped per ADR-026)
   - Code style: doesn't match Prettier/ESLint config in the repo (YELLOW)
 
 If the engineering:code-review skill is available in this Claude Code

@@ -4,7 +4,7 @@ Last Updated: 2026-05-09
 
 ## Status
 Stable / Cross-project standard (Ubuntu-native). Supersedes the WSL-on-Windows
-profile that was in place through 2026-05-08; see ADR-023.
+profile that was in place through 2026-05-08; see ADR-026.
 
 ## Where development happens
 

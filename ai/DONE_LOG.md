@@ -1,6 +1,49 @@
 # Done Log
 
-Last Updated: 2026-05-09
+Last Updated: 2026-05-10
+
+## 2026-05-10
+
+- **Post-Phase-1 cleanup commit** — addresses findings from the Phase 0+1 review:
+  - **Restored the migration ADR as ADR-026.** Original was written as ADR-023 on
+    2026-05-09 but was lost during a CHAT_END reconciliation that reverted the
+    ADR-001 supersession marker and overwrote the ADR body. ADR-023 was subsequently
+    reused for an unrelated "typescript at workspace root" decision (now retained
+    in place). ADR-001 is again marked Superseded by ADR-026 with a number-history
+    note.
+  - **Added ADR-027** documenting that `config-typescript` and `config-eslint` are
+    scaffolded in Phase 0 (P0-T2 / P0-T3), not Phase 1 as the original spec listed
+    them. Phase 1 task count is therefore 6, not 8; total across P0+P1 is 14.
+  - **Removed `scripts/setup.ps1`.** Cursor produced it during P0-T6 against the
+    explicit "Scope Excluded" line and against ADR-026 (Ubuntu-only target). The
+    historical P0-T6 DONE_LOG entry is preserved (it accurately records what the
+    harness produced); this entry records the corrective deletion.
+  - **Reconciled `/PHASE_MANIFEST.md` and `/phase-manifest.json`.** Both now mark
+    P0 and P1 as `Complete`; P1 has `task_count: 6` and `task_ids: ["P1-T1"…"P1-T6"]`.
+    Added a phase-boundary discipline note to PHASE_MANIFEST.md.
+  - **Updated all references from "ADR-023" → "ADR-026"** where they meant the
+    Ubuntu migration: `AI_RULES.md`, `DEV_ENVIRONMENT.md`, `KICKOFF_PROMPT.md`,
+    `COWORK_PICKUP_PROMPT.md`, `NEW_TEMPLATE_PROMPT.md`, `INIT_PROMPT.md`,
+    `REFRESH_PROMPT.md`, `REVIEW_PHASE_PROMPT.md`, `TASKS.md`. Legitimate
+    references to the new ADR-023 (typescript) are unchanged.
+  - **Hardened `docker-compose.yml`.** Removed inline fallback values for
+    `POSTGRES_USER` / `POSTGRES_PASSWORD` / `POSTGRES_DB` / `REDIS_PASSWORD` and
+    Unleash's `DATABASE_URL`. Compose now fails loudly if `.env` is not loaded
+    (per the AGENTS.md "secrets never live in code or in the repository" rule).
+  - **Upgraded `/ai/templates/CHAT_END_PROMPT.md`** with a "Hard rules" section:
+    pull-rebase first, edit deltas not files, read before edit, verify after.
+    These exist specifically to prevent future planning-content loss like the
+    ADR-026 incident and the `d0224ab` DONE_LOG-entry restoration earlier.
+  - **Added `/CLAUDE.md` stub** at the repo root (spec listed it; it didn't
+    exist) pointing at `/AGENTS.md` and `/ai/START_HERE.md`.
+  - Per-task entries in TASKS.md updated: P0-T6 one-liner now references
+    `setup.sh` only with a note about the cleanup deletion.
+  - Updated `/ai/CURRENT_STATE.md` and `/ai/HANDOFF.md` to reflect the cleanup
+    pass and point the next session at Phase 2 decomposition.
+  - Open YELLOW findings deferred (not blocking Phase 2): caret/tilde version
+    ranges across `package.json` files (Dependabot manages bumps; lockfile is the
+    actual pinned source of truth). Will be addressed in a follow-up if/when
+    reproducibility issues surface.
 
 ## 2026-05-09
 

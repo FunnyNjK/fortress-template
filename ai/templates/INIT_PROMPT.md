@@ -35,8 +35,9 @@ Before editing files, confirm:
   Tempo, SOC 2/GDPR baseline, single-tenant, Astro marketing) are inherited
   and remain in force unless the user explicitly requests an override and a new
   ADR is written.
-- Per-product overrides require ADRs starting at ADR-023 (ADR-011 through
-  ADR-022 belong to the template).
+- Per-product overrides require ADRs starting at the next available number
+  after the template's last ADR (ADR-011 through the highest number in the
+  template's `/ai/DECISIONS.md` belong to the template; do not reuse).
 
 ## Step 1 — Read AI files
 
@@ -44,7 +45,7 @@ Read /ai/START_HERE.md first, then follow its Context Loading Strategy.
 Because this is first-time initialization, load the full planning context
 instead of only the Fast Context set.
 Honor /ai/AI_RULES.md and /ai/DEV_ENVIRONMENT.md as non-negotiable
-(Ubuntu-native per ADR-023, no Docker for the application itself, no Windows
+(Ubuntu-native per ADR-026, no Docker for the application itself, no Windows
 paths anywhere in the repo, push after every commit, planning-file size caps).
 
 Glance at /ai/templates/ — HANDOFF.template.md and CURRENT_STATE.template.md
@@ -84,10 +85,10 @@ Make /ai/*.md files product-specific. Change:
   domain logic warrants it. Leave the base testing strategy unchanged.
 - /ai/DEPLOYMENT.md: add any product-specific env vars not already covered.
   Leave the standard variable table intact.
-- /ai/DECISIONS.md: add product-specific ADRs starting at ADR-023. Do NOT
-  edit ADR-001 through ADR-022 (template-level). If a locked decision is
-  being overridden, write a new ADR that supersedes the original and mark
-  the original Superseded.
+- /ai/DECISIONS.md: add product-specific ADRs starting at the next number
+  after the template's last ADR. Do NOT edit any template-level ADR. If a
+  locked decision is being overridden, write a new ADR that supersedes the
+  original and mark the original Superseded.
 - /ai/CURRENT_STATE.md: reset to "Phase 0 Ready; product identity initialized."
 - /ai/HANDOFF.md: update to point at P0-T1 as the next task (or wherever the
   Phase 0 cursor is).

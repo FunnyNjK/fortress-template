@@ -27,7 +27,7 @@ Ubuntu 26 dev machine.
 
 - Stage 1 (realign /ai/ planning files from ai-starter to Fortress) — done.
 - Stage 2 (Phase 0 task breakdown + phase manifest) — done.
-- WSL-on-Windows → native Ubuntu 26 dev migration (ADR-023) — done.
+- WSL-on-Windows → native Ubuntu 26 dev migration (ADR-026; originally ADR-023, restored after CHAT_END loss) — done.
 - Phase 0: <fill in current state — e.g., "P0-T1 done, T2–T8 in progress
   via ./run-phase-cursor.sh 7" or "Phase 0 complete, awaiting review">.
 
@@ -53,7 +53,7 @@ Ubuntu 26 dev machine.
 - /ai/ARCHITECTURE.md — three-subdomain architecture
 - /ai/ROADMAP.md — 9-phase plan
 - /ai/TASKS.md — current task breakdown (Unattended matrix included)
-- /ai/DECISIONS.md — ADR-001 through ADR-023
+- /ai/DECISIONS.md — ADR-001 through ADR-027
 - /ai/CURRENT_STATE.md — snapshot of where we are
 - /ai/HANDOFF.md — pickup baton for the next AI session
 - /PHASE_MANIFEST.md and /phase-manifest.json — 9-phase manifest

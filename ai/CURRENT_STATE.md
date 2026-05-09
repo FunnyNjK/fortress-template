@@ -1,12 +1,15 @@
 # Current State
 
-Last Updated: 2026-05-09
+Last Updated: 2026-05-10
 
 > **Target shape: ≤ 80 lines.** Snapshot only — implementation detail in DONE_LOG.md.
 
 ## Current Phase
 
-**Phase 1 (Shared packages) — complete.** `P1-T1`–`P1-T6` landed. Next: **Phase 2** (API skeleton).
+**Phase 1 (Shared packages) — complete.** `P1-T1`–`P1-T6` landed. Post-Phase-1
+cleanup commit (2026-05-10) restored the migration ADR, fixed manifest drift,
+removed stray `scripts/setup.ps1`, hardened docker-compose env handling, and
+upgraded the CHAT_END process. Next: **Phase 2** (API skeleton).
 
 ## Current Task
 
@@ -46,8 +49,9 @@ None.
 
 ## Next Recommended Action
 
-1. Confirm **GitHub Actions CI is green** on `origin/main` (manual check on GitHub).
+1. Confirm **GitHub Actions CI is green** on `origin/main` after the cleanup commit (manual check on GitHub).
 2. Decompose Phase 2 in `/ai/TASKS.md` and scaffold `apps/api` (NestJS 11).
+3. When passing `<N>` to `./run-phase-cursor.sh`, pass exactly the Phase 2 task count — do not let the harness cross a phase boundary unattended (per `/PHASE_MANIFEST.md` discipline note and ADR-022).
 
 ## Session reconciliation
 

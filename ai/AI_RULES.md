@@ -13,7 +13,7 @@ in `/ai/DECISIONS.md` if the change should persist.
 ## Development Environment Rules (Hard)
 
 - **All development happens natively on Ubuntu 26 LTS.** Not WSL, not Windows,
-  not inside a container. See ADR-023 for the rationale.
+  not inside a container. See ADR-026 for the rationale.
 - **Docker is for supporting services ONLY** (Postgres, Redis, mailpit,
   Azurite, Unleash) via `docker-compose up -d` at the repo root. Never use
   Docker to run the application, build steps, tests, or dev servers. Apps run

@@ -6,15 +6,15 @@
       "task_count": 8,
       "task_ids": ["P0-T1", "P0-T2", "P0-T3", "P0-T4", "P0-T5", "P0-T6", "P0-T7", "P0-T8"],
       "verification": "pnpm install && pnpm typecheck && pnpm lint succeed; CI green on initial commit",
-      "status": "Ready"
+      "status": "Complete"
     },
     {
       "id": "P1",
       "title": "Shared packages",
-      "task_count": null,
-      "task_ids": [],
+      "task_count": 6,
+      "task_ids": ["P1-T1", "P1-T2", "P1-T3", "P1-T4", "P1-T5", "P1-T6"],
       "verification": "Each package has smoke tests; all build, lint, and link correctly",
-      "status": "Backlog"
+      "status": "Complete"
     },
     {
       "id": "P2",

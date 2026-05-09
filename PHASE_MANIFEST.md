@@ -1,14 +1,14 @@
 # Phase Manifest
 
-Last Updated: 2026-05-08
+Last Updated: 2026-05-10
 
-All 9 phases of the Fortress Template build. Phase 0 is ready to execute.
-Phases 1–8 task counts are estimates; each will be decomposed when its phase becomes active.
+All 9 phases of the Fortress Template build. Phases 0 and 1 are complete.
+Phases 2–8 task counts are estimates; each will be decomposed when its phase becomes active.
 
-| Phase | Title               | Tasks  | Run command          | Verification                                                                                       | Status  |
-|-------|---------------------|--------|----------------------|----------------------------------------------------------------------------------------------------|---------|
-| P0    | Repo skeleton       | 8      | `./run-phase.sh 8`   | `pnpm install && pnpm typecheck && pnpm lint` pass; CI green on initial commit                     | Ready   |
-| P1    | Shared packages     | ~8     | `./run-phase.sh <N>` | Each package has smoke tests; all build, lint, and link correctly                                  | Backlog |
+| Phase | Title               | Tasks  | Run command          | Verification                                                                                       | Status   |
+|-------|---------------------|--------|----------------------|----------------------------------------------------------------------------------------------------|----------|
+| P0    | Repo skeleton       | 8      | `./run-phase.sh 8`   | `pnpm install && pnpm typecheck && pnpm lint` pass; CI green on initial commit                     | Complete |
+| P1    | Shared packages     | 6      | `./run-phase.sh 6`   | Each package has smoke tests; all build, lint, and link correctly                                  | Complete |
 | P2    | API skeleton        | ~6     | `./run-phase.sh <N>` | API boots; security middleware integration test passes; rate-limit smoke test passes               | Backlog |
 | P3    | Web skeleton        | ~5     | `./run-phase.sh <N>` | E2E: sign up via Clerk → land in app → see "hello, [name]" → sign out                             | Backlog |
 | P4    | Worker skeleton     | ~4     | `./run-phase.sh <N>` | Worker consumes test job; retry/backoff demonstrated; Postmark webhook signature verifies          | Backlog |
@@ -26,6 +26,14 @@ Phases 1–8 task counts are estimates; each will be decomposed when its phase b
   The harness uses the task count to know when a phase is complete.
 - **Unattended profile**: P0, P1, P2, P5, P7 are fully unattended. P3, P4, P6, P8 are
   Partial — see the Human pairing matrix in `/ai/TASKS.md` for details.
-- **Estimated total tasks across all 9 phases**: ~53 (8 confirmed + ~45 estimated).
+- **Estimated total tasks across all 9 phases**: ~51 (14 complete: 8 in P0 + 6 in P1; ~37 estimated for P2–P8).
 - **Cursor CLI variant**: `./run-phase-cursor.sh <N>` runs the same phase via the
   Cursor CLI harness.
+- **Phase boundary discipline.** The harness scripts run `<N>` consecutive
+  tasks then exit. The boundary between phases is enforced by the human
+  passing the right `<N>` — not by the script. Per ADR-022, every phase
+  must be reviewed before the next one starts. If the harness picks up the
+  next phase's first task because there's a Ready task in TASKS.md and you
+  passed too large an `<N>`, that's a process violation. The fix is in your
+  hands: pass exactly the remaining task count for the active phase, then
+  review before kicking off the next phase.

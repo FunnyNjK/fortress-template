@@ -14,31 +14,39 @@ except to mark them "Superseded" and add a pointer to the new one.
 
 ## ADR-001: WSL-native development, no Docker for app code
 Date: 2026-05-02
-Status: Accepted
+Status: Superseded by ADR-026 (2026-05-09)
 
-### Decision
+**Superseded.** This ADR established WSL-on-Windows as the dev environment.
+That decision has been replaced by ADR-026, which moves to a dedicated native
+Ubuntu 26 LTS development host. The core principle of the original decision —
+no Docker for the *application* itself, only for supporting services — is
+preserved in ADR-026. The original Decision/Reason/Tradeoffs are kept below
+for historical context.
+
+> **Number-history note:** the migration ADR was originally written as ADR-023
+> on 2026-05-09. During subsequent CHAT_END reconciliation passes that same
+> day, the supersession marker on ADR-001 was reverted and the migration ADR
+> body was lost; ADR-023 was then reused for an unrelated decision
+> ("typescript at workspace root for Phase 0 config packages"). The migration
+> ADR was restored as ADR-026 on 2026-05-10. References to "ADR-023" elsewhere
+> in the planning files that mean the migration have been updated to ADR-026.
+
+### Decision (original)
 All development (dev server, tests, build, lint, type-check) runs as native
 processes inside WSL Ubuntu. Docker is reserved exclusively for hosting
 external dependencies the app talks to (databases, queues, cache).
 
-**Fortress Template carve-out:** This template uses `docker-compose up -d` at
-the repo root to host the full set of supporting services for local dev:
-Postgres 18, Redis 8, mailpit (SMTP testing), Azurite (Blob testing), and
-Unleash (feature flags). Apps (`apps/web`, `apps/api`, `apps/worker`,
-`apps/marketing`) still run as native Node processes via `pnpm dev` orchestrated
-by Turbo. The original principle — no Docker for the *application* — holds.
-
-### Reason
+### Reason (original)
 Mixed dev environments (host Windows + WSL + Docker containers) create
 ambiguous file paths and confuse AI agents into editing the wrong copy of a
 file. WSL2 native filesystem is fast (5-20x faster than `/mnt/c`), and modern
 editor tooling (VS Code/Cursor WSL Remote) handles the host/guest boundary
 cleanly without containers.
 
-### Tradeoffs
+### Tradeoffs (original)
 - Slightly different from prod if prod runs in containers — mitigated by
   keeping app code framework-aware but environment-agnostic.
-- Onboarding requires a working WSL setup. Documented in `/ai/DEV_ENVIRONMENT.md`.
+- Onboarding requires a working WSL setup.
 
 ---
 
@@ -671,6 +679,98 @@ Minor duplication of `devDependencies` across six packages; bumping Vitest/Zod i
 
 ### Related Tasks
 P1-T1–P1-T6
+
+---
+
+## ADR-026: Migration to native Ubuntu 26 LTS development environment
+Date: 2026-05-10 (originally written 2026-05-09 as ADR-023; restored after
+CHAT_END reconciliation loss — see ADR-001 number-history note)
+Status: Accepted
+Supersedes: ADR-001 (WSL-native development, no Docker for app code)
+
+### Decision
+All development for this template — and for any product forked from it —
+happens on a dedicated **Ubuntu 26 LTS** development host. The host is
+reserved for software development with Claude Code, Cursor CLI, and GitHub
+Copilot CLI. WSL on Windows is no longer used.
+
+This template uses `docker-compose up -d` at the repo root to host the full
+set of supporting services for local development: Postgres 18, Redis 8,
+mailpit (SMTP testing), Azurite (Blob testing), and Unleash (feature flags).
+Apps (`apps/web`, `apps/api`, `apps/worker`, `apps/marketing`) still run as
+native Node processes via `pnpm dev` orchestrated by Turbo. The principle
+inherited from ADR-001 — no Docker for the *application* itself — holds; the
+docker-compose carve-out is for supporting services only.
+
+The repo lives at `~/repos/<project>` on the Ubuntu host. Windows paths
+(`C:\`, `/mnt/c`, `\\wsl.localhost\...`) must not appear in source code,
+scripts, configs, or planning docs.
+
+### Reason
+- Dedicated Ubuntu hardware eliminates the WSL/Windows boundary class of bugs:
+  path-translation confusion, line-ending corruption, file-watcher quirks,
+  performance penalties on cross-filesystem operations.
+- AI tooling (Claude Code, Cursor CLI, GitHub Copilot CLI) is first-class on
+  Linux. Running natively avoids the WSL Remote round-trip and runs on the
+  host's full CPU/memory.
+- Server-class Ubuntu has better tooling for long-running background processes
+  (systemd, journald, cgroups) than WSL Ubuntu.
+- The `/mnt/c` ↔ `~/repos` path-ambiguity surface that ADR-001 was designed
+  to mitigate goes away entirely.
+
+### Tradeoffs
+- Requires a working Ubuntu 26 install (one-time, documented in
+  `/ai/DEV_ENVIRONMENT.md`).
+- The user can no longer edit files via Windows-side editors browsing
+  `\\wsl.localhost\...`. Mitigated by VS Code Remote SSH or Cursor Remote SSH
+  extensions to reach the Ubuntu host from any workstation.
+- Requires a network-reachable dev machine if development is done from a
+  separate workstation (LAN, Tailscale, or WireGuard).
+- The `setup.ps1` PowerShell variant of the setup script is no longer
+  required by this template (Ubuntu-only target). Forks targeting other
+  operating systems can re-introduce it via a per-project ADR.
+
+### Related Tasks
+All Phase 0 tasks were authored under this decision. The cleanup commit
+that restored this ADR also removed `scripts/setup.ps1` from the repo
+(Cursor produced it during P0-T6 against the spec; this ADR is the
+authoritative reason it should not exist).
+
+---
+
+## ADR-027: `config-typescript` and `config-eslint` packaged in Phase 0, not Phase 1
+Date: 2026-05-10
+Status: Accepted
+
+### Decision
+The shared TypeScript config package (`@fortress/config-typescript`) and the
+shared ESLint config package (`@fortress/config-eslint`) are scaffolded in
+**Phase 0** as tasks P0-T2 and P0-T3, not in Phase 1 as the original spec
+listed them. The remaining six shared packages (`types`, `crypto`,
+`auth-core`, `observability`, `sdk`, `testing`) are scaffolded in Phase 1.
+
+### Reason
+- The Phase 0 verification step requires `pnpm install && pnpm typecheck &&
+  pnpm lint` to pass. That requires shared `tsconfig` and ESLint configs to
+  exist before the workspace can be type-checked or linted.
+- Decoupling the config packages from the runtime packages lets Phase 1
+  focus on application-relevant code (crypto, auth helpers, SDK schemas)
+  rather than tooling plumbing.
+- Originally documented implicitly by Stage 2 of the kickoff (the
+  decomposition that put config packages at P0-T2/T3); promoted to an
+  explicit ADR after the Phase 0+1 review surfaced the spec divergence.
+
+### Tradeoffs
+- The spec at `/ai/reference/NEW_TEMPLATE_PROMPT.md` Phase plan section
+  lists all eight `packages/*` under Phase 1. That section now describes
+  intent, not the actual decomposition; the canonical decomposition is
+  TASKS.md / DONE_LOG.md / DECISIONS.md.
+- Phase 0 task count is 8 (not 6), Phase 1 task count is 6 (not 8). The
+  total (14 tasks across two phases) is the same as the spec.
+
+### Related Tasks
+P0-T2, P0-T3 (Phase 0 config packages); P1-T1 through P1-T6 (Phase 1
+runtime packages).
 
 ---
 

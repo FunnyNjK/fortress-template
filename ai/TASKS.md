@@ -70,7 +70,7 @@ Rough unattended profiles — refine when each phase becomes active.
 
 ### P0-T5: Add .env.example — Done; see DONE_LOG.md.
 
-### P0-T6: Add scripts/setup.sh and scripts/setup.ps1 — Done; see DONE_LOG.md.
+### P0-T6: Add scripts/setup.sh — Done; see DONE_LOG.md. (`scripts/setup.ps1` was produced by the harness against the spec; removed in cleanup commit per ADR-026.)
 
 ---
 
