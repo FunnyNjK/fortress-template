@@ -23,7 +23,7 @@ Last Updated: 2026-05-09
 - Post-P0-T1 planning: DONE_LOG hash footnote (`9bce76f`); HANDOFF/CURRENT_STATE push sync (`0dc397f`).
 - CHAT_END (2026-05-09): Ran `/ai/templates/CHAT_END_PROMPT.md`; fixed `CURRENT_STATE` next-action
   (P0-T3 already on `origin/main`); `ARCHITECTURE` / `ROADMAP` / `TESTING` / `DEPLOYMENT` / `DECISIONS`
-  unchanged (not touched this pass). (`00060cd`)
+  unchanged (not touched this pass). (`c01b3e2`)
 
 ## 2026-05-02
 - Created customized AI project starter for WSL-native dev with Astro 5 +
