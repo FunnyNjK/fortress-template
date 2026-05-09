@@ -64,3 +64,7 @@ None.
 
 1. Execute **P0-T8** per TASKS.md, then commit and push; confirm CI green on `main`.
 2. Begin Phase 1 after Phase 0 closes.
+
+## Session reconciliation
+
+CHAT_END (2026-05-09): Local `main` matches `origin/main` (`7a0d1f2`); P0-T8 still active.
