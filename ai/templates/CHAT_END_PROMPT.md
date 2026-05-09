@@ -23,4 +23,4 @@ Final response must include:
 - Known issues
 - Project files updated
 - Next recommended task
-- Confirmation that no `/mnt/c` paths or Docker-for-dev usage was introduced
+- Confirmation that no Windows paths or Docker-for-app usage was introduced

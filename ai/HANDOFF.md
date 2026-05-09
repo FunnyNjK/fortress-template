@@ -1,19 +1,22 @@
 # AI Handoff
 
-Last Updated: 2026-05-08
+Last Updated: 2026-05-09
 
 > **Target shape: ≤ 50 lines.** Baton, not a diary.
 
 ## Current State Summary
 
-Stage 2 of the Fortress Template kickoff is complete. Phase 0 task breakdown
-(P0-T1 through P0-T8) produced. `/PHASE_MANIFEST.md` and `/phase-manifest.json`
-created. `/ai/TASKS.md` fully populated. Phase 0 is `Ready`; P0-T1 is `Active`.
-No application code has been written. No packages installed. No infra applied.
+Dev environment migrated from WSL-on-Windows to native Ubuntu 26 LTS per
+ADR-023 (supersedes ADR-001). `/ai/AI_RULES.md`, `/ai/DEV_ENVIRONMENT.md`,
+`/ai/TASKS.md` (Dev Environment Constraints in all 8 tasks), `/ai/DECISIONS.md`,
+`/ai/templates/*`, `KICKOFF_PROMPT.md`, and several other files updated. P0-T6
+narrowed to `setup.sh` only (`setup.ps1` dropped per ADR-023). Phase 0 is still
+`Ready`; P0-T1 is still `Active`.
 
 ## Last Completed Task
 
-Stage 2: Phase 0 task breakdown + phase manifest (this session).
+WSL → Ubuntu 26 migration realignment (this session). Stage 2 of the Fortress
+Template kickoff completed in the prior session.
 
 ## Active Task
 

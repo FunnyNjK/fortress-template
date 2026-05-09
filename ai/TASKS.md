@@ -113,9 +113,9 @@ Prettier config. No apps or packages yet.
 
 ### Dev Environment Constraints
 
-- All work runs natively in WSL Ubuntu (`~/repos/fortress-template`).
-- No Docker for application processes.
-- No `/mnt/c` paths in code or scripts.
+- All work runs natively on Ubuntu 26 (`~/repos/fortress-template`).
+- Docker is for supporting services only (Postgres, Redis, mailpit, Azurite, Unleash) via `docker-compose up -d`.
+- Apps run as native Node processes via `pnpm dev`. No Windows paths anywhere in the repo.
 
 ### Handoff Notes
 
@@ -183,9 +183,9 @@ workspace members. Strict compiler settings, ES2023 target, and per-app variants
 
 ### Dev Environment Constraints
 
-- All work runs natively in WSL Ubuntu (`~/repos/fortress-template`).
-- No Docker for application processes.
-- No `/mnt/c` paths in code or scripts.
+- All work runs natively on Ubuntu 26 (`~/repos/fortress-template`).
+- Docker is for supporting services only (Postgres, Redis, mailpit, Azurite, Unleash) via `docker-compose up -d`.
+- Apps run as native Node processes via `pnpm dev`. No Windows paths anywhere in the repo.
 
 ### Handoff Notes
 
@@ -249,9 +249,9 @@ enforced across all apps and packages.
 
 ### Dev Environment Constraints
 
-- All work runs natively in WSL Ubuntu (`~/repos/fortress-template`).
-- No Docker for application processes.
-- No `/mnt/c` paths in code or scripts.
+- All work runs natively on Ubuntu 26 (`~/repos/fortress-template`).
+- Docker is for supporting services only (Postgres, Redis, mailpit, Azurite, Unleash) via `docker-compose up -d`.
+- Apps run as native Node processes via `pnpm dev`. No Windows paths anywhere in the repo.
 
 ### Handoff Notes
 
@@ -321,10 +321,10 @@ services live in Docker.
 
 ### Dev Environment Constraints
 
-- All work runs natively in WSL Ubuntu (`~/repos/fortress-template`).
+- All work runs natively on Ubuntu 26 (`~/repos/fortress-template`).
 - Supporting services (Postgres, Redis, etc.) run in Docker via `docker-compose up -d`.
 - App processes must NOT run in Docker locally.
-- No `/mnt/c` paths in code or scripts.
+- No Windows paths anywhere in the repo.
 
 ### Handoff Notes
 
@@ -392,14 +392,14 @@ to `localhost` ports matching `docker-compose.yml`.
 
 ### Dev Environment Constraints
 
-- All work runs natively in WSL Ubuntu (`~/repos/fortress-template`).
-- No Docker for application processes.
-- No `/mnt/c` paths in code or scripts.
+- All work runs natively on Ubuntu 26 (`~/repos/fortress-template`).
+- Docker is for supporting services only (Postgres, Redis, mailpit, Azurite, Unleash) via `docker-compose up -d`.
+- Apps run as native Node processes via `pnpm dev`. No Windows paths anywhere in the repo.
 
 ### Handoff Notes
 
 - Depends on P0-T4 (ports and service names must match `docker-compose.yml`).
-- `scripts/setup.sh` and `scripts/setup.ps1` (P0-T6) read this file to generate `.env`.
+- `scripts/setup.sh` (P0-T6) reads this file to generate `.env`.
 
 ### Verification Step
 
@@ -407,7 +407,7 @@ to `localhost` ports matching `docker-compose.yml`.
 
 ---
 
-### P0-T6: Add scripts/setup.sh and scripts/setup.ps1
+### P0-T6: Add scripts/setup.sh
 
 Status: Ready
 Owner: AI CLI (unattended)
@@ -416,33 +416,33 @@ Unattended: Yes
 
 ### Goal
 
-Provide idempotent setup scripts for both WSL/Linux (`setup.sh`) and Windows
-PowerShell (`setup.ps1`) that generate `.env` with strong cryptographic randoms,
-start Docker supporting services, and print next steps. Both scripts refuse to
-overwrite an existing `.env` without `--force`.
+Provide an idempotent setup script (`scripts/setup.sh`) that generates `.env`
+with strong cryptographic randoms, starts the Docker supporting services, and
+prints next steps. The script refuses to overwrite an existing `.env` without
+`--force`. Ubuntu-only target per ADR-023; no PowerShell variant.
 
 ### Scope Included
 
-- `scripts/setup.sh` — bash script (WSL/Linux/macOS) that:
-  - Reads `.env.example`, replaces every `replace-with-*` value with a 32-byte hex
-    random (`openssl rand -hex 32`), writes to `.env`
-  - Skips vars that already have non-placeholder values in `.env.example` (URL defaults, etc.)
-  - Runs `docker-compose up -d`
+- `scripts/setup.sh` — bash script for Ubuntu 26 that:
+  - Reads `.env.example`, replaces every `replace-with-*` value with a 32-byte
+    hex random (`openssl rand -hex 32`), writes to `.env`
+  - Skips vars that already have non-placeholder values in `.env.example`
+    (URL defaults, ports, etc.)
+  - Runs `docker compose up -d` (Compose v2 plugin)
   - Prints a "next steps" summary: `pnpm install`, then `pnpm dev`
   - Guards idempotency: if `.env` exists, prints warning and exits unless `--force`
-- `scripts/setup.ps1` — PowerShell 7+ script with the same logic using
-  `[System.Security.Cryptography.RandomNumberGenerator]` for entropy
+  - Refuses to run if `NODE_ENV=production`
 
 ### Scope Excluded
 
 - Database migration or seeding (Phase 2+)
 - `pnpm install` invocation (explicit separate step)
 - Production secret generation (use Azure Key Vault / AWS Secrets Manager)
+- A `setup.ps1` PowerShell variant — not in scope per ADR-023 (Ubuntu-only target)
 
 ### Files Likely Involved
 
 - `scripts/setup.sh` (create)
-- `scripts/setup.ps1` (create)
 
 ### Acceptance Criteria
 
@@ -451,7 +451,7 @@ overwrite an existing `.env` without `--force`.
   values remaining for secret vars
 - Running a second time without `--force` does NOT overwrite `.env`
 - Running with `--force` DOES overwrite `.env`
-- Both scripts print generated-secret notification but NOT the secret values
+- Script prints generated-secret notification but NOT the secret values
 
 ### Test Requirements
 
@@ -462,15 +462,15 @@ overwrite an existing `.env` without `--force`.
 ### Security Considerations
 
 - Generated secrets must use 32-byte cryptographic entropy (256-bit)
-- Scripts must NOT print generated secret values to stdout
+- Script must NOT print generated secret values to stdout
 - `--force` must require an explicit flag; not triggered by any env var
-- Scripts must refuse to run if `NODE_ENV=production` is set
+- Script must refuse to run if `NODE_ENV=production` is set
 
 ### Dev Environment Constraints
 
-- `setup.sh` targets WSL Ubuntu; uses `openssl rand -hex 32` for secret generation.
-- `setup.ps1` targets PowerShell 7+; uses `[System.Security.Cryptography.RandomNumberGenerator]`.
-- No `/mnt/c` paths in code or scripts.
+- All work runs natively on Ubuntu 26 (`~/repos/fortress-template`).
+- `setup.sh` uses `openssl rand -hex 32` for secret generation (available in default Ubuntu).
+- `docker compose` v2 plugin (not the legacy `docker-compose` v1) is required.
 
 ### Handoff Notes
 
@@ -547,9 +547,9 @@ trivial output for lint and test (no app code yet), but must be green.
 
 ### Dev Environment Constraints
 
-- All work runs natively in WSL Ubuntu (`~/repos/fortress-template`).
-- No Docker for application processes.
-- No `/mnt/c` paths in code or scripts.
+- All work runs natively on Ubuntu 26 (`~/repos/fortress-template`).
+- Docker is for supporting services only (Postgres, Redis, mailpit, Azurite, Unleash) via `docker-compose up -d`.
+- Apps run as native Node processes via `pnpm dev`. No Windows paths anywhere in the repo.
 
 ### Handoff Notes
 
@@ -625,9 +625,9 @@ living template-state document.
 
 ### Dev Environment Constraints
 
-- All work runs natively in WSL Ubuntu (`~/repos/fortress-template`).
-- No Docker for application processes.
-- No `/mnt/c` paths in code or scripts.
+- All work runs natively on Ubuntu 26 (`~/repos/fortress-template`).
+- Docker is for supporting services only (Postgres, Redis, mailpit, Azurite, Unleash) via `docker-compose up -d`.
+- Apps run as native Node processes via `pnpm dev`. No Windows paths anywhere in the repo.
 
 ### Handoff Notes
 

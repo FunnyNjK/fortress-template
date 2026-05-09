@@ -114,7 +114,7 @@ fortress-template/
 │   ├── adrs/                   # Architecture Decision Records
 │   └── legal/                  # Privacy policy + ToS templates
 ├── scripts/
-│   ├── setup.sh / setup.ps1
+│   ├── setup.sh
 │   ├── rotate-keys.ts
 │   └── new-migration.ts
 ├── .github/

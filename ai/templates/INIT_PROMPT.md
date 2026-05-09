@@ -44,8 +44,8 @@ Read /ai/START_HERE.md first, then follow its Context Loading Strategy.
 Because this is first-time initialization, load the full planning context
 instead of only the Fast Context set.
 Honor /ai/AI_RULES.md and /ai/DEV_ENVIRONMENT.md as non-negotiable
-(WSL-native, no Docker for app code, no /mnt/c paths, push after every
-commit, planning-file size caps).
+(Ubuntu-native per ADR-023, no Docker for the application itself, no Windows
+paths anywhere in the repo, push after every commit, planning-file size caps).
 
 Glance at /ai/templates/ — HANDOFF.template.md and CURRENT_STATE.template.md
 are the target shapes for the compact files you'll write.

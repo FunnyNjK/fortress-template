@@ -30,7 +30,7 @@ Supporting services and their local ports:
 | Azurite (Blob testing) | `mcr.microsoft.com/azure-storage/azurite` | 10000 (Blob) |
 | Unleash (feature flags) | `unleashorg/unleash-server` | 4242 |
 
-All apps run as native Node processes in WSL — never inside containers.
+All apps run as native Node processes on Ubuntu — never inside containers.
 
 ---
 

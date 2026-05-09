@@ -27,9 +27,9 @@ TBD
 - TBD
 
 ## Dev Environment Constraints
-- All work runs natively in WSL Ubuntu (`~/repos/<project>`).
-- No Docker for application processes.
-- No `/mnt/c` paths in code or scripts.
+- All work runs natively on Ubuntu 26 (`~/repos/<project>`).
+- Docker is for supporting services only (Postgres, Redis, mailpit, Azurite, Unleash) via `docker-compose up -d`.
+- Apps run as native Node processes via `pnpm dev`. No Windows paths anywhere in the repo.
 
 ## Handoff Notes
 - TBD

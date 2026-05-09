@@ -17,7 +17,7 @@ schemas, and UI on top — without re-litigating any of the decisions below.
 
 1. Click "Use this template" (or `git clone` + set a new remote).
 2. Open an AI CLI session (Claude Code, Cursor CLI) with the working directory
-   set to the new repo root inside WSL.
+   set to the new repo root on your Ubuntu dev host.
 3. Paste the contents of `/KICKOFF_PROMPT.md` and run Stage 1 (planning
    realignment) followed by Stage 2 (Phase 0 task breakdown).
 4. Execute Phase 0 onward via `./run-phase.sh <task-count>` or task-by-task

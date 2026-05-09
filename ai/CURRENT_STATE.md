@@ -1,6 +1,6 @@
 # Current State
 
-Last Updated: 2026-05-08
+Last Updated: 2026-05-09
 
 > **Target shape: ≤ 80 lines.** Snapshot only — implementation detail in DONE_LOG.md.
 
@@ -17,7 +17,9 @@ P0-T1: Initialize the monorepo skeleton. Status: Active (ready to execute).
 - `/ai/` planning files realigned to Fortress Template stack (Stage 1 complete).
 - `/ai/TASKS.md` populated with P0-T1 through P0-T8 and Phase 1–8 placeholders (Stage 2 complete).
 - `/PHASE_MANIFEST.md` and `/phase-manifest.json` created (Stage 2 complete).
+- Dev environment realigned from WSL-on-Windows to native Ubuntu 26 LTS (ADR-023 supersedes ADR-001).
 - `run-phase.sh` and `run-phase-cursor.sh` present and ready for Phase 0.
+- `.gitattributes` and `.gitignore` in place.
 - No application code. No `package.json`. No `pnpm-workspace.yaml`. No infra applied.
 
 ## What Works
@@ -42,7 +44,7 @@ None.
 - `/ai/reference/NEW_TEMPLATE_PROMPT.md` — authoritative spec
 - `/KICKOFF_PROMPT.md` — kickoff instructions (historical reference)
 - `/ai/START_HERE.md` — AI workflow entry point
-- `/ai/AI_RULES.md` — hard rules (WSL-native, push after commit, etc.)
+- `/ai/AI_RULES.md` — hard rules (Ubuntu-native, push after commit, etc.)
 - `/ai/DECISIONS.md` — ADR-001 through ADR-022
 - `/ai/TASKS.md` — P0-T1 through P0-T8 queued; Phases 1–8 placeholders in Backlog
 - `/PHASE_MANIFEST.md` — human-readable 9-phase manifest

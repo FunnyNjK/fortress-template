@@ -81,8 +81,8 @@ Load these files when the current task touches their area:
 - `/ai/DECISIONS.md` - dependency, architecture, security, deployment,
   data-model, or scope decisions. Prefer reading the relevant ADR section
   instead of the whole history when the task is narrow.
-- `/ai/DEV_ENVIRONMENT.md` - tooling, package management, shell, WSL,
-  Docker-for-database usage, editor setup, or environment troubleshooting.
+- `/ai/DEV_ENVIRONMENT.md` - tooling, package management, shell, Ubuntu setup,
+  Docker for supporting services, editor setup, or environment troubleshooting.
 - `/ai/DONE_LOG.md` - historical implementation details when needed to
   understand why completed work happened. Do not load it by default.
 - `/ai/reference/*` - inactive reference material. Load only when the user

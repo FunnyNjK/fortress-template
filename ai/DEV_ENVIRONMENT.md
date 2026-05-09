@@ -1,45 +1,49 @@
 # Development Environment
 
-Last Updated: 2026-05-08
+Last Updated: 2026-05-09
 
 ## Status
-Stable / Cross-project standard
+Stable / Cross-project standard (Ubuntu-native). Supersedes the WSL-on-Windows
+profile that was in place through 2026-05-08; see ADR-023.
 
 ## Where development happens
 
-- **OS:** Windows 11 host
-- **Dev shell:** WSL Ubuntu (current default: Ubuntu 24.04 LTS)
-- **Project location inside WSL:** `~/repos/<project-name>`
-  (canonical: `/home/<user>/repos/<project>`)
-- **From Windows tools:** `\\wsl.localhost\Ubuntu\home\<user>\repos\<project>`
-  (used only by Windows-side editors and Explorer; never referenced in code)
+- **OS:** Ubuntu 26 LTS, dedicated dev machine
+- **Project location:** `~/repos/<project-name>` (canonical: `/home/<user>/repos/<project>`)
+- **Editors / IDEs:** VS Code, Cursor, or any preferred editor — running directly
+  on Ubuntu (desktop session or Remote SSH from a workstation)
+- **AI CLIs:** Claude Code, Cursor CLI (`agent`), GitHub Copilot CLI — all run
+  natively on the Ubuntu host
 
 ## Hard rules (mirrors `/ai/AI_RULES.md` for emphasis)
 
-- **No Docker for development.** Docker is reserved for hosting databases or
-  external services that the app depends on. The app itself, its dev server,
-  its tests, and its build all run as native processes in WSL.
-- **No `/mnt/c` paths in code or config.** WSL's mount of the Windows
-  filesystem is slow (~5-20x slower than the Linux filesystem) and creates
-  ambiguous "where does this code really live" situations that AI agents
-  routinely get wrong.
-- **No `wsl --exec` or `wsl --` wrappers in scripts.** If a script needs WSL,
-  it runs inside WSL.
+- **No Docker for the application.** Docker is reserved for the supporting
+  services declared in `docker-compose.yml`: Postgres, Redis, mailpit,
+  Azurite, Unleash. The app itself, its dev server, its tests, and its build
+  all run as native processes on Ubuntu.
+- **No Windows paths anywhere in the repo.** `C:\`, `/mnt/c`, and
+  `\\wsl.localhost\...` are not used. The dev host is Ubuntu; treat any
+  appearance of these paths in code or docs as a bug.
+- **No `wsl --exec`, `wsl --` or any WSL-bridge invocation.** WSL is no
+  longer in the picture.
+- **Code runs as the logged-in user.** Don't `sudo` for `pnpm install`, dev
+  servers, or tests. Configure user-owned npm/pnpm prefixes per the setup
+  below.
 
 ## Required tools (one-time setup)
 
 These should already be installed on the dev machine. If not, install before
 starting work.
 
-| Tool                    | Install path                                            |
-| ----------------------- | ------------------------------------------------------- |
-| Git                     | `sudo apt install -y git`                               |
-| GitHub CLI              | `sudo apt install -y gh` then `gh auth login`           |
-| Node.js (LTS)           | NodeSource repo: `setup_lts.x` script                   |
-| pnpm                    | `corepack enable && corepack prepare pnpm@latest --activate` |
-| Build essentials        | `sudo apt install -y build-essential curl wget jq unzip` |
-| WSL ↔ browser bridge    | `sudo apt install -y wslu`                              |
-| Docker (DB hosting)     | Docker Desktop on Windows + WSL Integration enabled     |
+| Tool                 | Install                                                       |
+| -------------------- | ------------------------------------------------------------- |
+| Git                  | `sudo apt install -y git`                                     |
+| GitHub CLI           | `sudo apt install -y gh` then `gh auth login`                 |
+| Node.js (LTS)        | NodeSource repo: `setup_lts.x` script (Node 24 LTS or newer)  |
+| pnpm                 | `corepack enable && corepack prepare pnpm@latest --activate`  |
+| Build essentials     | `sudo apt install -y build-essential curl wget jq unzip`      |
+| Docker Engine        | Official `docker.io` packages or the upstream Docker apt repo |
+| Docker Compose v2    | `sudo apt install -y docker-compose-plugin` (the v2 plugin)   |
 
 User-owned global npm prefix (so `npm install -g` doesn't need sudo):
 
@@ -50,29 +54,33 @@ echo 'export PATH=~/.npm-global/bin:$PATH' >> ~/.bashrc
 source ~/.bashrc
 ```
 
-## AI CLIs (optional but recommended)
+Add the dev user to the `docker` group so `docker` and `docker compose`
+commands run without sudo:
+
+```bash
+sudo usermod -aG docker $USER
+# log out and back in for the group change to take effect
+```
+
+## AI CLIs (recommended)
 
 ```bash
 npm install -g @anthropic-ai/claude-code @openai/codex @github/copilot @google/gemini-cli
+# Cursor CLI (the `agent` command):
+curl https://cursor.com/install -fsS | bash
 ```
+
+After installing Cursor CLI, ensure `~/.local/bin` is on `PATH`. Run
+`agent login` once to authenticate (or set `CURSOR_API_KEY` for headless use).
 
 ## Editors
 
-- VS Code installed on Windows; WSL Remote extension auto-installs on first
-  `code .` from inside WSL.
-- Cursor installed on Windows; WSL Remote auto-installs on first `cursor .`.
-
-If `code` resolves to Cursor (because Cursor's `code` shim hijacks PATH), add
-this function to `~/.bashrc`:
-
-```bash
-code() {
-  "/mnt/c/Users/<user>/AppData/Local/Programs/Microsoft VS Code/bin/code" "$@"
-}
-```
-
-(This is the one acceptable use of `/mnt/c` in the dev shell — invoking a
-Windows-side editor binary. It still must not appear in project code.)
+- **VS Code:** install on Ubuntu directly (`.deb` from the official repo).
+- **Cursor:** install on Ubuntu directly (`.AppImage` or upstream `.deb`).
+- **Remote SSH option:** if you want to develop from another workstation,
+  install the Remote SSH extension in your local editor and connect to the
+  Ubuntu host. The editor GUI runs on the workstation; everything else runs
+  on the dev box.
 
 ## How to start a project (typical day-one)
 
@@ -80,66 +88,57 @@ Windows-side editor binary. It still must not appear in project code.)
 cd ~/repos
 gh repo clone <owner>/<repo>
 cd <repo>
+./scripts/setup.sh                # generates .env, starts docker-compose services
 pnpm install
-cp .env.example .env.local      # then edit secrets
-pnpm dev                         # runs natively in WSL, hot reload
+pnpm dev                          # runs natively, hot reload
 ```
 
-## Database services (the only acceptable use of Docker for dev)
+## Supporting services (Docker)
 
-When a project needs a Postgres or Mongo instance for local development,
-run a single shared container per database engine, not per-project. Default
-ports:
+When this repo is checked out, `docker-compose.yml` at the root defines the
+full set of services needed for local development:
 
-- Postgres: `localhost:5432`
-- MongoDB:  `localhost:27017`
-- Redis:    `localhost:6379`
+- Postgres 18 — `localhost:5432`
+- Redis 8 — `localhost:6379`
+- mailpit (SMTP testing) — SMTP `localhost:1025`, web UI `localhost:8025`
+- Azurite (Blob storage emulator) — `localhost:10000`
+- Unleash (feature flags) — `localhost:4242`
 
-A shared `~/repos/_infra/docker-compose.yml` runs the DB containers; each
-project connects via `localhost:<port>` with its own database/schema name.
-
-The application itself (Astro, Node, tests, build) does NOT run in a
-container — it runs directly in WSL.
-
-**Fortress Template exception:** This template uses a `docker-compose.yml` at
-the repo root (`~/repos/fortress-template/docker-compose.yml`) to host the
-full set of supporting services for local dev: Postgres 18, Redis 8, mailpit
-(SMTP testing), Azurite (Blob testing), and Unleash (feature flags). This is
-distinct from the per-engine shared-container pattern described above — the
-template is intentionally self-contained so a fresh clone + `pnpm setup` boots
-all services without any external infra. Apps (`apps/web`, `apps/api`,
-`apps/worker`, `apps/marketing`) still run as native Node processes via
-`pnpm dev` orchestrated by Turbo. Do NOT run apps inside containers locally.
+Boot them with `docker compose up -d` from the repo root. The app processes
+(`apps/web`, `apps/api`, `apps/worker`, `apps/marketing`) are NOT in this
+compose file — they run as native Node processes via `pnpm dev`.
 
 ## Common pitfalls
 
-- **Cloning into `/mnt/c/...`** — don't. Always clone into `~/repos/`.
-- **Running `pnpm install` from `/mnt/c/...`** — extremely slow due to
-  cross-filesystem npm operations. Always run from `~/repos/...`.
-- **Editing files in Notepad / Windows tools by browsing `\\wsl.localhost\...`**
-  — possible but slow and risks line-ending corruption. Use VS Code/Cursor
-  WSL Remote instead.
-- **Storing secrets in `~/repos/.../.env.local`** — fine, but never commit.
-  `.env.local` should already be in `.gitignore` for any project using this
-  starter.
+- **`docker compose` permission errors** — the dev user isn't in the `docker`
+  group. Run `sudo usermod -aG docker $USER`, log out, log back in.
+- **`pnpm install` fails on first run** — `corepack enable` not yet run. Run
+  it once and reopen the shell.
+- **Storing secrets in `~/repos/.../.env`** — fine, but never commit. `.env`
+  is in `.gitignore` for any project using this template.
+- **Running app inside a container** — don't. Apps run native; only the
+  supporting services from `docker-compose.yml` are containerized.
 
 ## Backup considerations
 
-The Linux filesystem lives inside `ext4.vhdx` on the Windows host. Standard
-practice:
+Standard Linux practice:
 
-- Push to GitHub frequently.
-- Periodic snapshots: `wsl --export Ubuntu C:\backups\ubuntu-YYYY-MM-DD.tar`.
-- The user's `.wslconfig` should have `sparseVhd=true` so deleted space is
-  reclaimed on the Windows side.
+- Push to GitHub frequently (the source of truth for code).
+- For local state (working trees, env files, Docker volumes) use whatever
+  backup tool you prefer: `restic` to a remote target, `rsync` snapshots,
+  ZFS/Btrfs snapshots if your filesystem supports them.
+
+Docker volumes for the supporting services are throwaway by default — they
+hold local-dev data only. Production data lives in Azure (or AWS), not on
+the dev box.
 
 ## Troubleshooting
 
 | Symptom                                          | Fix                                                                |
 | ------------------------------------------------ | ------------------------------------------------------------------ |
-| `code .` opens Cursor                            | Add `code()` shell function (see Editors section above).           |
-| `gh auth login` browser doesn't open             | Install `wslu`. Verify with `explorer.exe .`.                      |
-| `WSL Interoperability is disabled`               | `wsl --shutdown` from PowerShell, then re-enter the distro.        |
-| `npm install -g` errors with EACCES              | Set user-owned npm prefix (see Required tools section).            |
-| Slow `pnpm install` or `git status`              | Verify project is at `~/repos/...`, not `/mnt/c/...`.              |
-| Container DB unreachable from app                | Confirm Docker Desktop's WSL Integration is on for this distro.    |
+| `gh auth login` browser doesn't open             | Set `BROWSER=xdg-open` (or `firefox`/`chromium`) in your shell rc. |
+| `npm install -g` errors with `EACCES`            | Set the user-owned npm prefix shown in "Required tools" above.     |
+| `docker: permission denied` on the socket        | Add user to `docker` group; log out/in.                            |
+| Container DB unreachable from app                | `docker compose ps` to confirm services are up; check `localhost` ports match `.env`. |
+| Slow `pnpm install` on a network mount           | Move the repo to local disk under `~/repos/`.                      |
+| Cursor CLI `agent` not found                     | `curl https://cursor.com/install -fsS \| bash`; ensure `~/.local/bin` on `PATH`. |

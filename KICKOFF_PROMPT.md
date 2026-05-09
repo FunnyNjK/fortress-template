@@ -1,6 +1,6 @@
 # Kickoff Prompt — Fortress Template
 
-> **One-time prompt.** Paste this into a fresh AI CLI session (Cursor CLI or Claude Code) running with the working directory set to `~/repos/fortress-template` inside WSL. After Phase 0 begins, this file becomes historical reference and the AI workflow is driven by `/ai/HANDOFF.md`.
+> **One-time prompt.** Paste this into a fresh AI CLI session (Cursor CLI or Claude Code) running with the working directory set to `~/repos/fortress-template` on the Ubuntu 26 dev host. After Phase 0 begins, this file becomes historical reference and the AI workflow is driven by `/ai/HANDOFF.md`. *(Stage 1 and Stage 2 are complete; Phase 0 has not yet started. The dev host migrated from WSL-on-Windows to native Ubuntu 26 per ADR-023.)*
 
 ---
 
@@ -24,7 +24,7 @@ Read these files in order before doing anything else:
 1. **`/ai/reference/NEW_TEMPLATE_PROMPT.md`** — the authoritative spec. Tech stack, locked decisions, security baseline, phase plan, acceptance criteria. When `/ai/` planning files conflict with this file, this file wins.
 2. **`/ai/START_HERE.md`** — the AI workflow rules for this repo.
 3. **`/ai/AI_RULES.md`** — non-negotiable hard rules. Especially the Git Rules (push after every commit) and Planning-File Hygiene rules (line caps, dating).
-4. **`/ai/DEV_ENVIRONMENT.md`** — WSL-native conventions.
+4. **`/ai/DEV_ENVIRONMENT.md`** — Ubuntu-native conventions (ADR-023).
 5. **`/ai/PROJECT.md`, `/ai/ARCHITECTURE.md`, `/ai/ROADMAP.md`, `/ai/TASKS.md`, `/ai/DECISIONS.md`, `/ai/TESTING.md`, `/ai/DEPLOYMENT.md`, `/ai/CURRENT_STATE.md`, `/ai/HANDOFF.md`** — current state of the planning files. **These currently describe a static-site starter (Astro + Azure SWA + Functions + Postmark + Turnstile contact form).** They will be substantially rewritten in Stage 1.
 6. **`/ai/templates/INIT_PROMPT.md`, `/ai/templates/REFRESH_PROMPT.md`, `/ai/templates/CHAT_START_PROMPT.md`, `/ai/templates/CHAT_END_PROMPT.md`, `/ai/templates/HANDOFF.template.md`, `/ai/templates/CURRENT_STATE.template.md`, `/ai/templates/TASK_TEMPLATE.md`** — reusable patterns. Use `TASK_TEMPLATE.md` as the shape for new task entries; use `HANDOFF.template.md` and `CURRENT_STATE.template.md` as the shape for those compact files.
 7. **`/README.md`** — currently the `ai-starter` README. Will be rewritten.
@@ -39,7 +39,7 @@ Read these files in order before doing anything else:
 
 - This repo is the **template itself**, not an application. Forks of it become applications. So `/ai/` should describe the template, not a specific product.
 - The 10 locked decisions in `NEW_TEMPLATE_PROMPT.md` override every conflicting baked-in ADR.
-- Some existing ADRs survive (ADR-001 WSL-native dev, ADR-003 Tailwind 4 via Vite plugin, ADR-004 pnpm only, ADR-006 OIDC federated GitHub Actions, ADR-008 TypeScript strict + ESM, ADR-009 Vitest, ADR-010 CI on push/PR).
+- Some existing ADRs survive (ADR-003 Tailwind 4 via Vite plugin, ADR-004 pnpm only, ADR-006 OIDC federated GitHub Actions, ADR-008 TypeScript strict + ESM, ADR-009 Vitest, ADR-010 CI on push/PR). ADR-001 (WSL-native dev) was originally kept with a docker-compose carve-out, then later superseded by ADR-023 (native Ubuntu 26 dev environment).
 - Some are superseded by the locked decisions (ADR-002 Astro-only, ADR-005 Azure SWA + Functions, ADR-007 Postmark + Turnstile contact form pattern).
 
 ---
@@ -115,7 +115,7 @@ Add a one-line note at the top: `Phase 0 tasks are populated by Stage 2 of the k
 #### `/ai/DECISIONS.md` — keep what's portable, supersede the rest, add new ADRs
 
 **Keep as Accepted (light edits only if needed for clarity):**
-- ADR-001 (WSL-native dev, no Docker for app code) — **add a carve-out**: this template uses `docker-compose up` to host supporting services for local dev (Postgres, Redis, mailpit, Azurite, Unleash). Apps still run as native Node processes via `pnpm dev` orchestrated by Turbo. The original principle (no Docker for the *application*) holds.
+- ADR-001 (WSL-native dev, no Docker for app code) — was originally kept with a docker-compose carve-out during Stage 1; later **superseded by ADR-023 (native Ubuntu 26 dev environment)**. The principle of no-Docker-for-the-application is preserved in ADR-023; the docker-compose carve-out for supporting services is also preserved.
 - ADR-003 (Tailwind 4 via the Vite plugin) — still valid for marketing and web.
 - ADR-004 (pnpm only) — still valid.
 - ADR-006 (GitHub Actions OIDC federated auth) — still valid for Azure deployments generally.
@@ -280,7 +280,7 @@ Decompose Phase 0 into atomic tasks sized for one focused AI session each. The a
 3. **P0-T3: Add shared ESLint config package** (`packages/config-eslint`). Configs: `base.js`, `next.js`, `node.js`. Type-checked rules, no-floating-promises, consistent-type-imports. Smoke test: applied to itself; `eslint .` passes.
 4. **P0-T4: Add `docker-compose.yml`** at the repo root with services: Postgres 18, Redis 8, mailpit (SMTP testing), Azurite (Blob testing), Unleash (feature flags). Verify `docker-compose up -d` boots all services cleanly and they're reachable on documented ports.
 5. **P0-T5: Add `.env.example`** with every required environment variable from `/ai/DEPLOYMENT.md`. Each var has a comment explaining what it's for and where to source it. Use `replace-with-*` placeholders for required-but-not-yet-set values.
-6. **P0-T6: Add `scripts/setup.sh` and `scripts/setup.ps1`.** Both: generate `.env` files with strong randoms, run `docker-compose up -d`, print next steps. Scripts must be idempotent (re-runnable without breaking state) and refuse to overwrite existing `.env` without `--force`.
+6. **P0-T6: Add `scripts/setup.sh`.** Generates `.env` files with strong randoms, runs `docker-compose up -d`, prints next steps. The script must be idempotent (re-runnable without breaking state) and refuse to overwrite existing `.env` without `--force`. (PowerShell variant `setup.ps1` was originally in scope; dropped per ADR-023 — Ubuntu-only target.)
 7. **P0-T7: Add CI workflow scaffolding** at `.github/workflows/ci.yml`. Jobs: install (with pnpm cache), lint, typecheck, test, dep-audit, gitleaks, semgrep, codeql, SBOM (CycloneDX). Initial run can be no-op-passing until apps are added — the goal is the workflow exists and is green on the first commit. Triggers: `push` and `pull_request`. Dependabot config at `.github/dependabot.yml`.
 8. **P0-T8: Add `/.well-known/security.txt`, `/AGENTS.md`, `/PROJECT_STATUS.md`.**
    - `security.txt`: vulnerability disclosure, contact, policy URL.

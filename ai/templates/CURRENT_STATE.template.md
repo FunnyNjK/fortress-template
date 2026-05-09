@@ -28,7 +28,7 @@ Headings, not paragraphs. Examples:
 
 ## What Works
 - Verified end-to-end: {what's been confirmed working}.
-- Local dev loop ({lint / typecheck / test / build} all green in WSL).
+- Local dev loop ({lint / typecheck / test / build} all green on Ubuntu).
 - {Other concrete confirmations.}
 
 ## What Is Not Built Yet

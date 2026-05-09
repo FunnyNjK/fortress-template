@@ -12,26 +12,22 @@ in `/ai/DECISIONS.md` if the change should persist.
 
 ## Development Environment Rules (Hard)
 
-- **All development happens natively inside WSL Ubuntu.** Never on the
-  Windows host directly.
-- **Docker is for databases ONLY** (Postgres, MongoDB, Redis, etc.). Never use
-  Docker to run the application, build steps, tests, or dev servers.
-  - For this template repo (`fortress-template`), `docker-compose up -d` is the
-    canonical local-dev boot for supporting services (Postgres, Redis, mailpit,
-    Azurite, Unleash). Apps still run as native Node processes via `pnpm dev`
-    orchestrated by Turbo. Do NOT run apps inside containers locally.
-- **Never reference `/mnt/c`, `C:\`, or any Windows path from project code,
-  scripts, configs, or commands.** The project lives at `~/repos/<project>`
-  inside WSL. From Windows, the same folder is reachable as
-  `\\wsl.localhost\Ubuntu\home\<user>\repos\<project>` — that path is for
-  Windows tools only and must never appear in source code.
-- **Run `node`, `pnpm`, `astro`, `vitest`, `git`, etc. directly in the WSL
-  shell.** Not through `wsl --exec`, not through a container, not through
-  `/mnt/c/...`.
-- **VS Code and Cursor run on Windows** with their WSL Remote extension.
-  The user opens projects with `code .` or `cursor .` from inside WSL. The
-  editor's GUI runs on Windows; the file ops, terminal, and language servers
-  run inside WSL.
+- **All development happens natively on Ubuntu 26 LTS.** Not WSL, not Windows,
+  not inside a container. See ADR-023 for the rationale.
+- **Docker is for supporting services ONLY** (Postgres, Redis, mailpit,
+  Azurite, Unleash) via `docker-compose up -d` at the repo root. Never use
+  Docker to run the application, build steps, tests, or dev servers. Apps run
+  as native Node processes via `pnpm dev` orchestrated by Turbo.
+- **The project lives at `~/repos/<project>`** on the Ubuntu host. Windows
+  paths (`C:\`, `/mnt/c`, `\\wsl.localhost\...`) must never appear in source
+  code, scripts, configs, or planning docs. They are not used.
+- **Run `node`, `pnpm`, `vitest`, `git`, etc. directly in the shell.** Not
+  through `wsl --*` wrappers, not inside a container, not via a remote-shell
+  proxy.
+- **Editors and AI CLIs run on the Ubuntu host directly.** VS Code, Cursor,
+  Claude Code, Cursor CLI (`agent`), and GitHub Copilot CLI all run natively
+  on Ubuntu — either at the desktop session or via Remote SSH from another
+  workstation. The Ubuntu host is the canonical workspace.
 
 ## General Rules
 

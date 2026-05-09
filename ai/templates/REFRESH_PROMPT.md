@@ -114,8 +114,9 @@ If it DOES exist, leave it alone unless the user asks for a refresh.
 Confirm `AI_RULES.md` contains all of these rule blocks. If any are
 missing, add them (do not duplicate if already present):
 
-- "Development Environment Rules (Hard)" — WSL-native, no Docker for
-  dev, no `/mnt/c` paths.
+- "Development Environment Rules (Hard)" — Ubuntu-native (ADR-023), no
+  Docker for the application itself (only supporting services), no
+  Windows paths anywhere in the repo.
 - "Git Rules (Hard)" — push after every successful commit unless
   explicitly told otherwise; surface push failures; `origin/main` is
   the source of truth for planning files.

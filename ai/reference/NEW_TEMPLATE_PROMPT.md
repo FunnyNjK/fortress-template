@@ -187,7 +187,7 @@ fortress-template/
 │   ├── legal/                  # Privacy policy + ToS templates
 │   └── onboarding.md
 ├── scripts/
-│   ├── setup.sh / setup.ps1    # Generate .env, seed local DB, install hooks
+│   ├── setup.sh                # Generate .env, seed local DB, install hooks (Ubuntu-only per ADR-023)
 │   ├── rotate-keys.ts
 │   └── new-migration.ts
 ├── .github/
