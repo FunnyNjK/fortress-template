@@ -12,7 +12,7 @@ Root `devDependencies` includes `@types/node` (for `typescript` `types: ["node"]
 
 ## Last Completed Task
 
-Phase 1 batch: shared library packages — see `DONE_LOG.md` (`47e85b5`).
+Phase 1 batch: shared library packages — see `DONE_LOG.md` (`df43b73`).
 
 ## Active Task
 
