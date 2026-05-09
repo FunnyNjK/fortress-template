@@ -40,3 +40,4 @@ None.
 
 - `docker compose config` (OK); `docker compose up -d` smoke (all services healthy);
   `npx pnpm@10.33.4 run typecheck`; `npx pnpm@10.33.4 run lint`.
+- CHAT_END (2026-05-09): `git status` clean; `main` matches `origin/main`.

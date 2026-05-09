@@ -54,3 +54,5 @@ None.
 
 1. Execute **P0-T5** (`.env.example`) per TASKS.md, then commit and push.  
 2. Continue Phase 0 toward P0-T8.
+
+CHAT_END (2026-05-09): planning files reviewed; no drift vs landed tree.
