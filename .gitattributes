@@ -1,0 +1,10 @@
+# Default: let Git auto-detect text vs binary, normalize to LF in repo.
+* text=auto eol=lf
+
+# Shell scripts MUST be LF — CRLF breaks them on Linux/WSL.
+*.sh text eol=lf
+
+# Windows-specific scripts stay CRLF.
+*.ps1 text eol=crlf
+*.bat text eol=crlf
+*.cmd text eol=crlf
