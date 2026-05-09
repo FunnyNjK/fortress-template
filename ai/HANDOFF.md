@@ -6,20 +6,20 @@ Last Updated: 2026-05-09
 
 ## Current State Summary
 
-P0-T4 complete: root `docker-compose.yml` + init SQL for `unleash` DB. Active task is
-**P0-T5** (`.env.example`).
+P0-T5 complete: root `.env.example` mirrors `/ai/DEPLOYMENT.md` required vars. Active task is
+**P0-T6** (`scripts/setup.sh` / `setup.ps1`).
 
 ## Last Completed Task
 
-P0-T4: Add docker-compose.yml for local dev supporting services — see DONE_LOG.md.
+P0-T5: Add `.env.example` — see DONE_LOG.md.
 
 ## Active Task
 
-P0-T5: Add `.env.example`. Status: Active.
+P0-T6: Add `scripts/setup.sh` and `scripts/setup.ps1`. Status: Active.
 
 ## Next Recommended Task
 
-Execute P0-T5 per `/ai/TASKS.md`, then commit and push.
+Execute P0-T6 per `/ai/TASKS.md`, then commit and push.
 
 ## What Is Blocked
 
@@ -27,7 +27,7 @@ None.
 
 ## Important Instructions for Next AI
 
-- Do not start P0-T6 until P0-T5 is done, committed, and pushed (or push is
+- Do not start P0-T7 until P0-T6 is done, committed, and pushed (or push is
   explicitly skipped), CI-green per project rules.
 - No application/business logic in Phase 0 packages beyond config files.
 - Honor `/ai/AI_RULES.md` and `/ai/DEV_ENVIRONMENT.md`.
@@ -38,6 +38,5 @@ None.
 
 ## Tests / Checks Last Run
 
-- `docker compose config` (OK); `docker compose up -d` smoke (all services healthy);
+- `dotenv.parse(.env.example)` (OK); `grep -c replace-with-` ≥ 1;
   `npx pnpm@10.33.4 run typecheck`; `npx pnpm@10.33.4 run lint`.
-- CHAT_END (2026-05-09): `git status` clean; `main` matches `origin/main`.

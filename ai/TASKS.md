@@ -2,8 +2,8 @@
 
 Last Updated: 2026-05-09
 
-Phase 0 tasks are queued and ready for execution. **P0-T5** is Active.
-CHAT_END (2026-05-09): active and ready tasks verified against repo.
+Phase 0 tasks are queued and ready for execution. **P0-T6** is Active.
+CHAT_END (2026-05-09): P0-T5 landed; P0-T6 active per HANDOFF.
 Phase 1–8 placeholders are in Backlog; each will be decomposed when its phase becomes active.
 
 ---
@@ -59,85 +59,15 @@ Rough unattended profiles — refine when each phase becomes active.
 
 ### P0-T4: Add docker-compose.yml for local dev supporting services — Done; see DONE_LOG.md.
 
+### P0-T5: Add .env.example — Done; see DONE_LOG.md.
+
 ---
 
 ## Active Task
 
-### P0-T5: Add .env.example
-
-Status: Active
-Owner: AI CLI (unattended)
-Priority: High
-Unattended: Yes
-
-### Goal
-
-Create `.env.example` as the canonical source of truth for every environment variable
-required by the Fortress stack. Every var has a comment with its purpose and where
-to obtain the value. Secrets use `replace-with-*` placeholders; service URLs default
-to `localhost` ports matching `docker-compose.yml`.
-
-### Scope Included
-
-- `.env.example` with sections for: App URLs, Clerk, Postmark, Stripe, Sentry,
-  OTLP/Tempo, Database, Redis, Unleash, Encryption, CSP report URI, and miscellaneous
-- Every variable from `/ai/DEPLOYMENT.md` "Required Environment Variables" section
-- Comments: purpose + source (e.g., `# Clerk Dashboard → API Keys`)
-- `replace-with-*` placeholders for all secrets and required external keys
-- `localhost:*` defaults for all service URLs (matching `docker-compose.yml` ports)
-- Warning comment at the top: DO NOT commit a populated `.env`
-
-### Scope Excluded
-
-- Actual secret values (never in `.env.example`)
-- `.env` file generation (handled by `scripts/setup.sh` in P0-T6)
-- App-level env validation schemas (scaffolded with apps in Phases 2–5)
-
-### Files Likely Involved
-
-- `.env.example` (create)
-
-### Acceptance Criteria
-
-- Every env var from `/ai/DEPLOYMENT.md` is present
-- All secret vars use `replace-with-*` placeholder pattern
-- All service URL defaults point at `localhost` with ports matching `docker-compose.yml`
-- No real secrets or real-looking credentials present
-- File is parseable by `dotenv` without error
-
-### Test Requirements
-
-- `grep -c "replace-with-" .env.example` returns a count ≥ 1
-- Manual review: all `/ai/DEPLOYMENT.md` vars present
-
-### Security Considerations
-
-- This file IS committed to git — it must never contain real secrets
-- All values must be obviously fake (e.g., `replace-with-clerk-secret-key`)
-- Warning comment at top of file required
-
-### Dev Environment Constraints
-
-- All work runs natively in WSL Ubuntu (`~/repos/fortress-template`).
-- No Docker for application processes.
-- No `/mnt/c` paths in code or scripts.
-
-### Handoff Notes
-
-- Depends on P0-T4 (ports and service names must match `docker-compose.yml`).
-- `scripts/setup.sh` and `scripts/setup.ps1` (P0-T6) read this file to generate `.env`.
-
-### Verification Step
-
-`grep -c "replace-with-" .env.example` returns ≥ 1.
-
----
-
-## Ready
-
 ### P0-T6: Add scripts/setup.sh and scripts/setup.ps1
 
-Status: Ready
+Status: Active
 Owner: AI CLI (unattended)
 Priority: High
 Unattended: Yes
@@ -210,6 +140,8 @@ overwrite an existing `.env` without `--force`.
 `bash -n scripts/setup.sh` exits 0.
 
 ---
+
+## Ready
 
 ### P0-T7: Add CI workflow scaffolding
 
