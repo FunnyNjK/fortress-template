@@ -51,7 +51,7 @@ None.
 
 ## Session reconciliation
 
-CHAT_END (2026-05-09): Ran `/ai/templates/CHAT_END_PROMPT.md`; `origin/main` at `7c0417f`, tree clean; YAML parse
+CHAT_END (2026-05-09): Ran `/ai/templates/CHAT_END_PROMPT.md`; matched `origin/main` (clean); YAML parse
 (`ci.yml`, `dependabot.yml`); `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm audit --audit-level=high` (clean);
 `bash -n scripts/setup.sh`; `grep -c replace-with-` `.env.example` (=27). ARCHITECTURE / ROADMAP / TESTING /
 DEPLOYMENT / DECISIONS untouched this pass.

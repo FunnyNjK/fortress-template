@@ -2,7 +2,7 @@
 
 Last Updated: 2026-05-09
 
-CHAT_END (2026-05-09): Reconciled vs `origin/main` at `7c0417f` (clean). YAML (`ci.yml`, `dependabot.yml`);
+CHAT_END (2026-05-09): Reconciled vs `origin/main` (clean). YAML (`ci.yml`, `dependabot.yml`);
 `pnpm lint` + `pnpm typecheck` + `pnpm test` + `pnpm audit --audit-level=high` (clean); `bash -n scripts/setup.sh`;
 `grep -c replace-with-` `.env.example` (=27). Phase 0–1 complete; Phase 2 next.
 

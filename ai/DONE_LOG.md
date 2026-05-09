@@ -5,10 +5,10 @@ Last Updated: 2026-05-09
 ## 2026-05-09
 
 - CHAT_END (2026-05-09): Ran `/ai/templates/CHAT_END_PROMPT.md`; reconciled `CURRENT_STATE`, `TASKS`, `HANDOFF`,
-  `DONE_LOG` vs `origin/main` at `7c0417f` (clean); YAML parse `ci.yml` + `dependabot.yml`; `pnpm lint` +
+  `DONE_LOG` vs `origin/main` (clean); YAML parse `ci.yml` + `dependabot.yml`; `pnpm lint` +
   `pnpm typecheck` + `pnpm test` + `pnpm audit --audit-level=high` (clean); `bash -n scripts/setup.sh`;
   `grep -c replace-with-` `.env.example` (=27); ARCHITECTURE / ROADMAP / TESTING / DEPLOYMENT / DECISIONS
-  unchanged this pass. (`7c0417f`)
+  unchanged this pass.
 - Phase 1 (`P1-T1`–`P1-T6`): Shared packages — `packages/types` (branded IDs, constants), `crypto`
   (AES-256-GCM, HMAC-SHA256, timing-safe compare), `auth-core` (CSRF/helpers, `__Host-fs_session` name),
   `observability` (Pino logger + redaction defaults), `sdk` (Zod `AuthMeResponse`, `createFortressSdk`),
