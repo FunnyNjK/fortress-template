@@ -6,7 +6,7 @@ Last Updated: 2026-05-09
 
 ## Current Phase
 
-**Phase 2** — **`P2-T7`** (**`origin/main`** **HEAD** **`git rev-parse`** **`after`** **`pull`**)**; **`CHAT_END`** payloads in **`DONE_LOG`** record planning chain **`67b7036`** (**code**) **`→`** **`c4c5ad5`** **`→`** **`d68e722`** **`→`** **`ee84249`** (**re-verify** **`workflow`** **`CI`** **`headSha`** **`==`** **`origin/main`** **`HEAD`**). **`phase-manifest`** **`Ready`** until **`REVIEW_PHASE_PROMPT`** **APPROVED**. **`Latest`** (**`during`** **`this`** **`CHAT_END`** **pass**) **`workflow`** **`CI`**: **`ee84249`** **`25610859927`** **`success`**; **`d68e722`** **`25610807641`**; **`c4c5ad5`** **`25610756184`** (**`DONE_LOG`**); **`67b7036`** **`25610665643`** (historical).
+**Phase 2** — **`P2-T7`** (**`origin/main`** **HEAD** **`git rev-parse`** **`after`** **`pull`**)**; **`CHAT_END`** payloads in **`DONE_LOG`** record planning chain **`67b7036`** (**code**) **`→`** **`c4c5ad5`** **`→`** **`d68e722`** **`→`** **`ee84249`** **`→`** **`d9355f9`** (**re-verify** **`workflow`** **`CI`** **`headSha`** **`==`** **`origin/main`** **`HEAD`**). **`phase-manifest`** **`Ready`** until **`REVIEW_PHASE_PROMPT`** **APPROVED**. **`Latest`** (**`during`** **`this`** **`CHAT_END`** **pass**) **`workflow`** **`CI`**: **`ee84249`** **`25610859927`** **`success`**; **`d68e722`** **`25610807641`**; **`c4c5ad5`** **`25610756184`**; **`d9355f9`** (**`databaseId`** **`25610975290`**) **`success`**; **`67b7036`** **`25610665643`** (historical).
 
 ## Current Task
 
@@ -46,4 +46,4 @@ None (**human reviewer** **APPROVED** owed; **`CI`** (**`workflow`** **`name`** 
 
 ## Session reconciliation
 
-**Planning tip **`ee84249`** (**`full`** **`ee84249e9203c5a937daefe80f071fc0fd0a9fa9`**) **`CI`** **`25610859927`** **`success`** (**`DONE_LOG`** **`CHAT_END`** entries cover **`c4`/`d68`/`ee`**).
+**Planning tip **`d9355f9`** (**`DONE_LOG`** **`CHAT_END`**) **`CI`** **`25610975290`** **`success`**; entries also cover **`ee84249`/…**.
