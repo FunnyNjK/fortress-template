@@ -6,7 +6,7 @@ Last Updated: 2026-05-09
 
 ## Current Phase
 
-**Phase 2** — remediation task **P2-T7** landed in working tree (**`phase-manifest`** still **`Ready`** pending human **`REVIEW_PHASE_PROMPT` → APPROVED** + green **`origin/main`** per **`gh run list`**).
+**Phase 2** — **`P2-T7`** remediation on **`origin/main`** (**Vitest Postgres race fix **`eb64d1b`**). **`phase-manifest`** **`Ready`** until **`REVIEW_PHASE_PROMPT`** **APPROVED**. **`gh`** **`CI`** run **`25610557287`** on **`eb64d1b`**: **`conclusion`** **`success`**.
 
 ## Current Task
 
@@ -15,7 +15,7 @@ Last Updated: 2026-05-09
 ## What Exists Now
 
 - Monorepo + packages through **Phase 1** (**unchanged**).
-- **`apps/api`**: **`RateLimitGuard` → `AuthenticatedGuard` → `CsrfGuard`**; **`FortressRequestIdMiddleware`**; inbound journal **`FortressRequestLoggingInterceptor`**; **429** access line from **`FortressExceptionFilter`**; **`Secure` CSRF **`__Host-`**; **`NODE_ENV` required env schema** + **`main.ts`** production JWKS class assertion; **`ADR-029`**-documented RL fail-open **pino.warning** (**`evt`/`metric`**); health/auth/security integration suites updated.
+- **`apps/api`**: **`RateLimitGuard` → `AuthenticatedGuard` → `CsrfGuard`**; **`FortressRequestIdMiddleware`**; inbound journal **`FortressRequestLoggingInterceptor`**; **429** access line from **`FortressExceptionFilter`**; **`Secure`** **`__Host-`** cookie (CSRF); **`NODE_ENV` required env schema** + **`main.ts`** production JWKS class assertion; **`ADR-029`**-documented RL fail-open **pino.warning** (**`evt`/`metric`**); health/auth/security integration suites updated.
 - **CI / Turbo**: **`lint`/`test`** depend on **`^build`**; **`test` DATABASE_URL localhost** pattern; **`api-integration` build** prerequisite.
 - **`CHAT_END_PROMPT`**: mandates **`gh run list`** verification before phase-complete claims.
 
@@ -30,19 +30,20 @@ Last Updated: 2026-05-09
 
 ## Known Problems
 
-None code-side (**CI post-push verdict TBD**).
+None (human reviewer **APPROVED** still owed; **`CI`** **`main`** at **`eb64d1b`** is green).
 
 ## Important Files or Folders
 
 - **`turbo.json`**, **`.github/workflows/ci.yml`**
 - **`apps/api/src/security/request-logger.interceptor.ts`**, **`request-id.middleware.ts`**, **`exception.filter.ts`**, **`rate-limit.guard.ts`**
+- **`apps/api/vitest.config.ts`** (serial **`test/db/*`** migrants)
 - **`apps/api/test/integration/rate-limit-unauth.integration.test.ts`**
 
 ## Next Recommended Action
 
-1. **Human / CI**: **`git push`**, **`gh run list`**, reviewer **`APPROVED`**.
+1. **Human**: **`./ai/templates/REVIEW_PHASE_PROMPT.md`** → **APPROVED** ( **`CI`** already **`success`** on **`eb64d1b`**).
 2. After gate: backlog **Phase 3** scaffold (**Partial** unattended matrix).
 
 ## Session reconciliation
 
-**P2-T7**: **`1dea680`** on local **`main`** (push + **`gh run list`** verification still owed before calling Phase 2 done).
+**P2-T7** (**`origin/main`** **`eb64d1b`**) CI **`success`** (**`25610557287`**); remediation commit **`1dea680`** (+ **`1f84951`** baton SHA + **`eb64d1b`** Vitest).

@@ -6,35 +6,35 @@ Last Updated: 2026-05-09
 
 ## Current State Summary
 
-**`P2-T7`** landed as **`1dea680`** (await **`git push`**). Highlights: **`turbo`** **`lint`/`test`** **`dependsOn:^build`**; **`test` JOB `DATABASE_URL`** uses **`127.0.0.1`** (+ **`NODE_ENV=test`** CI); **`api-integration`** runs **`pnpm run build`** pre-suite; **`RateLimitGuard` before `AuthenticatedGuard`**; **`FortressRequestIdMiddleware` + **`FortressRequestLoggingInterceptor`** (429 via **`FortressExceptionFilter`** **pino**); **`__Host-` CSRF always `Secure`**; **`NODE_ENV` required** (**`main.ts`** prod JWKS guard); **`ADR-029`**; integration **`rate-limit-unauth`** (`test/integration/`); **`CHAT_END_PROMPT`** requires **`gh run list`**.
+**`origin/main`** **`eb64d1b`**: **`P2-T7`** remediation (**`1dea680`**) + baton (**`1f84951`**) + **Vitest Postgres race** (**`eb64d1b`**). **`gh`** CI **`25610557287`** → **`success`**. Highlights: **`turbo`** **`lint`/`test`** **`dependsOn:^build`**; **`DATABASE_URL`** **`127.0.0.1`** in **`test`** + **`NODE_ENV=test`** CI; **`api-integration`** **`pnpm build`** prelude; **`RateLimitGuard` before `AuthenticatedGuard`**; **`FortressRequestIdMiddleware`** + **`FortressRequestLoggingInterceptor`** + **429** **`FortressExceptionFilter`** **pino**; **`Secure`** **`__Host-`** **CSRF**; **`NODE_ENV` required** + **`main.ts`** JWKS prod guard; **`ADR-029`**; **`rate-limit-unauth.integration`**; **`CHAT_END_PROMPT`** **`gh`** rule.
 
 ## Last Completed Task
 
-**`P2-T7`** — **`1dea680`**. Prior **`origin/main`** tip **`72b07fb`** (**pre-remediation `HANDOFF`** overstated Phase 2 completeness vs **`TASKS`**).
+**`P2-T7`** (plus CI follow-ups): implementation **`1dea680`**, planning SHA reconcile **`1f84951`**, **`Vitest`** serial DB tests **`eb64d1b`**.
 
 ## Active Task
 
-None (**human reviewer + CI verdict** owns the phase boundary).
+Phase **reviewer gate**: **`./ai/templates/REVIEW_PHASE_PROMPT.md`** must return **APPROVED** (`phase-manifest` stays **`Ready`** until then).
 
 ## Next Recommended Task
 
-Human: **`./ai/templates/REVIEW_PHASE_PROMPT.md`** on **`origin/main`** post-push; **`gh run list --branch main --limit 1 --json status,conclusion,headSha`**. Phase 3 only after **`APPROVED`** (**`Partial`** Clerk harness rules).
+Human reviewer on **`origin/main`** **`eb64d1b`**. **`gh run list --branch main --limit 3`** for history (latest green **CI** vs docs-only workflow noise). Phase 3 only after **`APPROVED`** + ADR-022 (**`Partial`** Clerk).
 
 ## What Is Blocked
 
-**Phase 2 NOT “Complete” in manifest sense** until reviewer **APPROVED** + **`conclusion.success`**.
+Manifest **Phase 2 Complete**: still **blocked** pending **human APPROVED** (CI is green on **`eb64d1b`**).
 
 ## Important Instructions for Next AI
 
-- **Commit message** cites **interceptor/logger + guards + **`ADR-029`****.
-- **`pnpm`** locally: **`npx pnpm@10.33.4`** fallback.
-- **Integration**: Compose Redis password → **`redis://:…@127.0.0.1:6379/0`** in CI (**`ALLOW_DEV_AUTH`**, **`NODE_ENV=test`**).
+- **`pnpm`**: **`npx pnpm@10.33.4`** fallback.
+- **Redis CI**: Compose password URL **`redis://:test@127.0.0.1:6379/0`** pattern.
+- **`api`** unit **`Vitest`**: **`fileParallelism:false`** — do not re-enable parallel **`test/db/*`** migrants against shared Postgres.
 
 ## Known Risks
 
-- Redis RL tests patch **`Redis#ping`** in other suites — restore **`finally`**.
-- **`/healthz`** burst still logs loudly (baseline behavior).
+- **`/healthz`** load tests log volume (expected).
+- Dependabot/other non-CI workflows may appear **`success`** beside **`72b07fb`** — filter **`name==CI`** when interpreting **`gh`** output.
 
 ## Tests / Checks Last Run
 
-CHAT_END (pre-push): **`npx pnpm@10.33.4`** **`lint`**, **`typecheck`**, **`test`**, **`build`**; **`pnpm --filter api test`**; **`pnpm --filter api test:integration`** (**local `.env`** + Postgres/Redis + migrate). **`pnpm audit --audit-level=high`** (**1 moderate**, below **`high`** gate). **`gh run list`** not evaluated until after **`git push`**.
+Latest **`CI`** (**`25610557287`**) on **`eb64d1b`**: **`conclusion`** **`success`** (**`main`**). Locally: **`npx pnpm@10.33.4`** **`lint`** **`typecheck`** **`test`** **`build`**; **`pnpm --filter api test`**; **`pnpm --filter api test:integration`**; **`pnpm audit --audit-level=high`** (**1 moderate**, below **`high`** gate).
