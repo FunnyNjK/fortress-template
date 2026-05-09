@@ -2,7 +2,7 @@
 
 Last Updated: 2026-05-09
 
-CHAT_END (2026-05-09): **`origin/main`** at **`260e8a4`** (clean after **`git fetch`**); YAML parse **`ci.yml`** / **`dependabot.yml`**; **`npx pnpm@10.33.4`** `lint` + `typecheck` + `test` + `build`; **`pnpm audit --audit-level=high`** (**1 moderate**); **`bash -n`** **`scripts/setup.sh`**; **`grep -c replace-with-`** **`.env.example`** (=27); **`TESTING.md`** delta; **`ARCHITECTURE` / `ROADMAP` / `DEPLOYMENT` / `DECISIONS`** unchanged. Prior: **`P2-T4`** complete; next **`P2-T5`**.
+CHAT_END (2026-05-09): **`P2-T5`** complete (auth module, `/auth/me`, CSRF, SDK `AuthMeResponse`); next **`P2-T6`**.
 
 Phase 0 is **complete** (P0-T1–P0-T8). **Phase 1** is **complete** (P1-T1–P1-T6): shared library
 packages landed. Next: **Phase 2** (`apps/api` skeleton). Phase 2–8 remain in Backlog until decomposed.
@@ -100,7 +100,7 @@ Rough unattended profiles — refine when each phase becomes active.
 
 ## Active Task
 
-**P2-T5** — Server-side session/audit record service + JWKS verifier (stub) + CSRF (`Unattended: Yes`). Depends on **`P2-T1`–`P2-T4`**.
+**P2-T6** — Health endpoints + Phase 2 verification harness (`Unattended: Yes`). Depends on **`P2-T1`–`P2-T5`**.
 
 ---
 
@@ -116,111 +116,7 @@ Rough unattended profiles — refine when each phase becomes active.
 
 ---
 
-### P2-T5: Server-side session/audit record service + JWKS verifier (stub) + CSRF
-Status: Backlog
-Owner: TBD
-Priority: High
-
-## Goal
-Implement the ADR-021 server-side session/audit record service, a JWKS
-verifier interface (with a dev-only stub implementation; real Clerk wiring
-lands in Phase 3), the `__Host-` CSRF cookie + double-submit verification,
-an `AuthenticatedGuard`, and a single guarded `/auth/me` endpoint that
-exercises the full auth path end-to-end.
-
-## Scope Included
-- `apps/api/src/auth/jwks.verifier.ts`: interface + dev stub. Stub accepts
-  `x-debug-user-id` header ONLY when `NODE_ENV !== 'production'` and the
-  config flag `ALLOW_DEV_AUTH=true` is set; produces fabricated claims
-  `{ sub: <header>, iss: 'dev', exp, iat }`. Production NestJS module
-  composition refuses to bind the stub.
-- `apps/api/src/auth/session.service.ts`: `upsert(claims, request)` →
-  hashes the bearer token (via `@fortress/crypto` HMAC), hashes the
-  client IP and User-Agent, upserts into `sessions` keyed on
-  `hashed_session_token`, refreshes `last_seen_at`, returns `{ sessionId,
-  userId }`. Redis-backed hot cache for `stepped_up_at` (write-through;
-  Postgres is source of truth).
-- `apps/api/src/auth/audit.service.ts`: `log({ userId, sessionId, action,
-  resource?, metadata? })` → inserts into `audit_events` with hashed
-  IP/UA from the request context. Sync write; do not swallow errors.
-- `apps/api/src/auth/authenticated.guard.ts`: runs the verifier, calls
-  `SessionService.upsert`, attaches `{ userId, sessionId }` to the request,
-  rejects with 401 on any failure.
-- `apps/api/src/auth/csrf.middleware.ts`: issues a `__Host-fortress-csrf`
-  cookie (HttpOnly: false, Secure, SameSite=Strict, Path=/) on session
-  creation; verifies the double-submit token on all state-changing methods
-  (POST/PUT/PATCH/DELETE) for authenticated routes; rejects 403 on mismatch.
-- `apps/api/src/auth/auth.controller.ts`: `GET /auth/me` (guarded) returns
-  `{ id, clerkUserId }` from the session row.
-- Wire the rate limiter (P2-T4) to also key on `sessionId` once the request
-  is authenticated.
-
-## Scope Excluded
-- Real Clerk JWKS verifier (Phase 3 swaps the stub via the same interface).
-- `@RequireRoles()` / RBAC (Phase 3).
-- Step-up auth UX flow on the web side (Phase 3).
-- API keys (separate concern; later phase).
-
-## Files Likely Involved
-- `apps/api/src/auth/auth.module.ts`
-- `apps/api/src/auth/jwks.verifier.ts`
-- `apps/api/src/auth/jwks.dev-stub.ts`
-- `apps/api/src/auth/session.service.ts`
-- `apps/api/src/auth/audit.service.ts`
-- `apps/api/src/auth/authenticated.guard.ts`
-- `apps/api/src/auth/csrf.middleware.ts`
-- `apps/api/src/auth/auth.controller.ts`
-- `apps/api/src/app.module.ts` (wire AuthModule, attach CSRF middleware)
-- `apps/api/src/security/rate-limit.guard.ts` (extend keying on sessionId)
-- `apps/api/test/auth/session-lifecycle.integration.test.ts`
-- `apps/api/test/auth/csrf.integration.test.ts`
-- `apps/api/test/auth/auth-me.integration.test.ts`
-
-## Acceptance Criteria
-- First request with `x-debug-user-id: u1` (dev mode) creates exactly one
-  `users` row (if missing) and one `sessions` row, and writes one
-  `audit_events` row tagged `auth.session.created`.
-- Second request with the same identity reuses the same session row
-  (no new row), updates `last_seen_at`, and does NOT write a duplicate
-  `auth.session.created` audit event.
-- Request without the dev header to a guarded endpoint returns 401.
-- Production-mode build refuses to register the dev stub verifier
-  (composition-time error if attempted).
-- POST to a guarded route without a valid CSRF double-submit returns 403.
-- GET `/auth/me` (guarded) returns the current user payload.
-- All `audit_events` writes survive an attempted `UPDATE` (regression-tests
-  the P2-T3 trigger).
-
-## Test Requirements
-- Integration tests as above; supertest against the full Nest app with
-  Postgres + Redis up.
-- Unit test: `session.service.upsert` is idempotent for the same hashed
-  token within a request burst.
-
-## Security Considerations
-- The dev stub MUST be fail-closed in production. Test the composition-time
-  refusal.
-- Bearer tokens are hashed before they touch the DB. Plain tokens never
-  log.
-- IP and User-Agent hashing uses a key from env (validated in P2-T1) so
-  hashes are stable across instances but unjoinable to raw values without
-  the key.
-- CSRF cookie uses `__Host-` prefix → must be Secure, no Domain attribute,
-  Path=/.
-
-## Dev Environment Constraints
-- All work runs natively on Ubuntu 26 (`~/repos/<project>`).
-- Docker is for supporting services only (Postgres, Redis, mailpit, Azurite,
-  Unleash) via `docker-compose up -d`.
-- Apps run as native Node processes via `pnpm dev`. No Windows paths anywhere
-  in the repo.
-
-## Handoff Notes
-- Depends on P2-T1, P2-T2, P2-T3, P2-T4.
-- Phase 3 will replace `JwksDevStub` with `JwksClerkVerifier` (same
-  interface). No other changes to this module expected.
-- Keep the `JwksVerifier` interface narrow: `verify(token: string):
-  Promise<{ sub: string; iss: string; exp: number; iat: number }>`.
+### P2-T5: Server-side session/audit record service + JWKS verifier (stub) + CSRF — Done; see DONE_LOG.md.
 
 ---
 

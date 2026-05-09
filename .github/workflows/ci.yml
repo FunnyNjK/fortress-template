@@ -125,6 +125,8 @@ jobs:
     env:
       DATABASE_URL: postgresql://fortress:test@postgres:5432/fortress
       REDIS_URL: redis://127.0.0.1:6379/0
+      FORTRESS_REQUEST_HMAC_KEY: ci-test-fortress-request-hmac-key-32c
+      ALLOW_DEV_AUTH: 'true'
     steps:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2

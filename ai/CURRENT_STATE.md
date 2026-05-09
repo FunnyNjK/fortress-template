@@ -6,11 +6,11 @@ Last Updated: 2026-05-09
 
 ## Current Phase
 
-**Phase 2 (API skeleton).** **`P2-T4`** complete (security chain + Redis rate limit). Next: **`P2-T5`**–**`P2-T6`**.
+**Phase 2 (API skeleton).** **`P2-T5`** complete. Next: **`P2-T6`**.
 
 ## Current Task
 
-**`P2-T5`** — Session/audit service + JWKS stub + CSRF. See `/ai/TASKS.md`.
+**`P2-T6`** — Health endpoints + Phase 2 verification harness. See **`/ai/TASKS.md`**.
 
 ## What Exists Now
 
@@ -20,9 +20,9 @@ Last Updated: 2026-05-09
 - **`packages/crypto`** — AES-256-GCM secret box, HMAC-SHA256, timing-safe compare, `randomOpaqueBytes`.
 - **`packages/auth-core`** — CSRF double-submit compare, base64url opaque tokens, canonical cookie/header names.
 - **`packages/observability`** — `createFortressLogger`, **`fortressPinoRedactPaths()`** export for nestjs-pino.
-- **`packages/sdk`** — `createFortressSdk`, `AuthMeResponseSchema` (Zod strict), `normalizeBaseUrl`; `engines.node` pinned.
+- **`packages/sdk`** — `createFortressSdk`, **`AuthMeResponseSchema`** (`id` + `clerkUserId`), `normalizeBaseUrl`; `engines.node` pinned.
 - **`packages/testing`** — Vitest fixtures importing `@fortress/types`.
-- **`apps/api`** — Nest + Drizzle + **P2-T4 security**: **`SecurityModule`** (headers, dynamic JSON body limits, Redis **`RateLimitGuard`**, Zod **`ValidationPipe`**, request logger, exception filter); **`REDIS_URL`** required in env; CI runs Redis service for tests; non-prod **`/__security_chain__/*`** test controller.
+- **`apps/api`** — Nest + Drizzle + **P2-T4 security** + **P2-T5 auth**: **`AuthModule`**, dev JWKS stub, session/audit services, CSRF, **`GET /auth/me`**, global guard ordering; env **`FORTRESS_REQUEST_HMAC_KEY`**, **`ALLOW_DEV_AUTH`**.
 - **`@types/node`** — root `devDependencies` for workspace `tsc` with `types: ["node"]`.
 
 ## What Works
@@ -32,7 +32,7 @@ Last Updated: 2026-05-09
 
 ## What Is Not Built Yet
 
-- Auth / session service / health (**`P2-T5`**+).
+- **`/healthz`** / **`/readyz`** and Phase 2 verification harness (**`P2-T6`**).
 
 ## Known Problems
 
@@ -43,18 +43,17 @@ None.
 - `/apps/api` — Nest API + Drizzle.  
 - `/apps/api/drizzle` — SQL migrations + meta.  
 - `/apps/api/src/security` — inbound boundary middleware and guards.  
+- `/apps/api/src/auth` — session, audit, CSRF, JWKS stub.  
 - `/ai/HANDOFF.md` — next-session baton  
 - `/packages/sdk` — web↔API typed boundary  
-- `/packages/crypto`, `/packages/auth-core` — security helpers for API (when built)
+- `/packages/crypto`, `/packages/auth-core` — security helpers for API  
 
 ## Next Recommended Action
 
 1. Confirm **GitHub Actions CI is green** on `origin/main` after push.
-2. Implement **`P2-T5`** per `/ai/TASKS.md`.
-3. When passing `<N>` to `./run-phase-cursor.sh`, pass exactly the Phase 2 task count — do not cross a phase boundary unattended (ADR-022).
+2. Implement **`P2-T6`** per **`/ai/TASKS.md`**.
+3. When passing `<N>` to **`./run-phase-cursor.sh`**, pass exactly the Phase 2 task count — do not cross a phase boundary unattended (ADR-022).
 
 ## Session reconciliation
 
-2026-05-10 — **P2-T4**: full workspace `lint` / `typecheck` / `test` / `build`; **`ADR-028`** (security deps + rate-limit note).
-
-CHAT_END (2026-05-09): **`git fetch`** / status vs **`origin/main`** at **`260e8a4`** (clean); YAML **`ci.yml`** / **`dependabot.yml`** (**python3** `yaml.safe_load`); **`npx pnpm@10.33.4`** `lint` / `typecheck` / `test` / `build`; **`pnpm audit --audit-level=high`** (**1 moderate**, below gate); **`bash -n`** **`scripts/setup.sh`**; **`grep -c replace-with-`** **`.env.example`** (=27); **`TESTING.md`** (P2-T4 security integration bullet); **`ARCHITECTURE.md`** / **`ROADMAP.md`** / **`DEPLOYMENT.md`** / **`DECISIONS.md`** unchanged.
+2026-05-09 — **P2-T5**: auth + session/audit + CSRF + SDK **`AuthMeResponse`**; CI env keys; **`pnpm-lock.yaml`** updated.

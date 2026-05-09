@@ -1,6 +1,6 @@
 import { MiddlewareConsumer, Module, NestModule, OnModuleDestroy, Inject } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { APP_FILTER, APP_GUARD, APP_PIPE, DiscoveryModule } from '@nestjs/core';
+import { APP_FILTER, APP_PIPE, DiscoveryModule } from '@nestjs/core';
 import { fortressPinoRedactPaths } from '@fortress/observability';
 import type { Redis } from 'ioredis';
 import pino from 'pino';
@@ -37,10 +37,11 @@ const securityChainControllers =
     SecurityHeadersMiddleware,
     DynamicJsonBodyMiddleware,
     FortressRequestLoggerMiddleware,
-    { provide: APP_GUARD, useClass: RateLimitGuard },
+    RateLimitGuard,
     { provide: APP_PIPE, useClass: ZodValidationPipe },
     { provide: APP_FILTER, useClass: FortressExceptionFilter },
   ],
+  exports: [redisFactoryProvider, RateLimitGuard],
 })
 export class SecurityModule implements NestModule, OnModuleDestroy {
   constructor(@Inject(FORTRESS_REDIS) private readonly redis: Redis) {}

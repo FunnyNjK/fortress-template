@@ -1,8 +1,8 @@
 import { z } from 'zod';
 
 export const AuthMeResponseSchema = z.strictObject({
+  id: z.uuid(),
   clerkUserId: z.string(),
-  displayName: z.string(),
 });
 
 export type AuthMeResponse = z.output<typeof AuthMeResponseSchema>;

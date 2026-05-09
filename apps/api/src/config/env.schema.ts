@@ -17,12 +17,23 @@ const redisUrlSchema = z
     message: 'REDIS_URL must be a redis:// connection string',
   });
 
+const requestHmacKeySchema = z
+  .string()
+  .min(32)
+  .describe('Secret for HMAC-SHA256 of bearer tokens, IP, and User-Agent (min 32 UTF-8 characters)');
+
+function coerceBool(value: unknown): boolean {
+  return value === true || value === 'true' || value === '1';
+}
+
 export const envSchema = z.object({
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
   PORT: z.coerce.number().int().min(1).max(65_535).default(4000),
   LOG_LEVEL: logLevelSchema.default('info'),
   DATABASE_URL: postgresUrlSchema,
   REDIS_URL: redisUrlSchema,
+  FORTRESS_REQUEST_HMAC_KEY: requestHmacKeySchema,
+  ALLOW_DEV_AUTH: z.preprocess(coerceBool, z.boolean()).default(false),
 });
 
 export type AppEnvConfig = z.infer<typeof envSchema>;

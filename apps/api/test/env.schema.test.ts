@@ -5,14 +5,20 @@ import {
   validateEnv,
 } from '../src/config/env.schema.js';
 
+const base = {
+  DATABASE_URL: 'postgresql://u:p@127.0.0.1:5432/db',
+  REDIS_URL: 'redis://127.0.0.1:6379/0',
+  FORTRESS_REQUEST_HMAC_KEY: 'unit-test-fortress-request-hmac-key-32c',
+  ALLOW_DEV_AUTH: false,
+} as const;
+
 describe('env validation', () => {
   it('parses coerced PORT and respects NODE_ENV', () => {
     const env = validateEnv({
+      ...base,
       NODE_ENV: 'test',
       PORT: '4010',
       LOG_LEVEL: 'debug',
-      DATABASE_URL: 'postgresql://u:p@127.0.0.1:5432/db',
-      REDIS_URL: 'redis://127.0.0.1:6379/0',
     });
     expect(env.PORT).toBe(4010);
     expect(env.NODE_ENV).toBe('test');
@@ -22,10 +28,9 @@ describe('env validation', () => {
   it('rejects invalid PORT', () => {
     expect(() =>
       validateEnv({
+        ...base,
         NODE_ENV: 'development',
         PORT: 'not-a-port',
-        DATABASE_URL: 'postgresql://u:p@127.0.0.1:5432/db',
-        REDIS_URL: 'redis://127.0.0.1:6379/0',
       }),
     ).toThrow();
   });
@@ -36,11 +41,10 @@ describe('env validation', () => {
     try {
       expect(() =>
         validateEnv({
+          ...base,
           NODE_ENV: 'production',
           PORT: 4000,
           LOG_LEVEL: 'info',
-          DATABASE_URL: 'postgresql://u:p@127.0.0.1:5432/db',
-          REDIS_URL: 'redis://127.0.0.1:6379/0',
         }),
       ).toThrow(/replace-with-/);
     } finally {

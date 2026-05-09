@@ -11,7 +11,7 @@ describe('@fortress/sdk', () => {
   it('parses /auth/me responses through Zod', async () => {
     const fetchMock: typeof fetch = () =>
       Promise.resolve(
-        new Response(JSON.stringify({ clerkUserId: 'user_1', displayName: 'Ada' }), {
+        new Response(JSON.stringify({ id: '550e8400-e29b-41d4-a716-446655440001', clerkUserId: 'user_1' }), {
           status: 200,
           headers: { 'content-type': 'application/json' },
         }),
@@ -23,14 +23,14 @@ describe('@fortress/sdk', () => {
     });
 
     await expect(sdk.fetchAuthMe()).resolves.toEqual({
+      id: '550e8400-e29b-41d4-a716-446655440001',
       clerkUserId: 'user_1',
-      displayName: 'Ada',
     });
   });
 
   it('rejects schema drift', () => {
     expect(() =>
-      AuthMeResponseSchema.parse({ clerkUserId: 'x', displayName: 1 }),
+      AuthMeResponseSchema.parse({ id: 'not-a-uuid', clerkUserId: 'x' }),
     ).toThrow();
   });
 });

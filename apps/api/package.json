@@ -20,6 +20,8 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "@fortress/auth-core": "workspace:*",
+    "@fortress/crypto": "workspace:*",
     "@fortress/observability": "workspace:*",
     "@nestjs/common": "11.1.19",
     "@nestjs/config": "4.0.4",

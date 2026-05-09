@@ -20,6 +20,12 @@ importers:
 
   apps/api:
     dependencies:
+      '@fortress/auth-core':
+        specifier: workspace:*
+        version: link:../../packages/auth-core
+      '@fortress/crypto':
+        specifier: workspace:*
+        version: link:../../packages/crypto
       '@fortress/observability':
         specifier: workspace:*
         version: link:../../packages/observability

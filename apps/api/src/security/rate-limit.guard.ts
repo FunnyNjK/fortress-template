@@ -9,6 +9,7 @@ import { Reflector } from '@nestjs/core';
 import type { Request, Response } from 'express';
 import type { Redis } from 'ioredis';
 
+import { clientIp } from '../util/client-ip.js';
 import {
   AUTH_ROUTE_KEY,
   FORTRESS_SESSION_PLACEHOLDER_HEADER,
@@ -18,21 +19,11 @@ import {
 } from './constants.js';
 import { FORTRESS_REDIS } from './redis.tokens.js';
 
-function clientIp(req: Request): string {
-  const xff = req.headers['x-forwarded-for'];
-  if (typeof xff === 'string' && xff.length > 0) {
-    return xff.split(',')[0]?.trim() ?? 'unknown';
-  }
-  if (Array.isArray(xff)) {
-    const first = xff[0];
-    if (typeof first === 'string') {
-      return first.split(',')[0]?.trim() ?? 'unknown';
-    }
-  }
-  return req.socket.remoteAddress ?? req.ip ?? 'unknown';
-}
-
 function sessionFingerprint(req: Request): string {
+  const sid = req.fortressAuth?.sessionId;
+  if (typeof sid === 'string' && sid.length > 0) {
+    return sid;
+  }
   const raw = req.headers[FORTRESS_SESSION_PLACEHOLDER_HEADER];
   if (typeof raw === 'string' && raw.length > 0) {
     return raw;

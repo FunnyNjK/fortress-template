@@ -1,6 +1,7 @@
 import { Body, Controller, Get, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { z } from 'zod';
 
+import { Public } from '../auth/public.decorator.js';
 import { AllowLargeBody } from './decorators/allow-large-body.decorator.js';
 import { AuthRoute } from './decorators/auth-route.decorator.js';
 
@@ -14,6 +15,7 @@ export class SecurityEchoBodyDto {
  * Non-production routes exercising the inbound security chain (P2-T4).
  * Registered only when `NODE_ENV !== 'production'`.
  */
+@Public()
 @Controller('__security_chain__')
 export class SecurityChainTestController {
   @Get('rate-general')
