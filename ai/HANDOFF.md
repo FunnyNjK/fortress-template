@@ -6,11 +6,11 @@ Last Updated: 2026-05-09
 
 ## Current State Summary
 
-**`origin/main`** (**`CHAT_END_PROMPT`** planning **atop** **P2‑T7** **`67b7036`): **`HEAD`** (**`git rev-parse`** **`origin/main`** **`after`** **`pull`**)**; **`workflow`** **`CI`** (**match **`name`** **`CI`** in **`JSON`**) **`conclusion`** via **`gh run list --workflow CI --branch main --limit 3 --json`** ( **`DONE_LOG`** **`CHAT_END`** tail holds **`workflow`** **`CI`** **`JSON`** through **`4ac0763`**). **`P2‑T7`** subtree (**`67b7036`**) reference **`CI`** (**`25610665643`**) (**historical code gate** **`success`**). Highlights: **`turbo`** **`lint`/`test`** **`dependsOn:^build`**; **`DATABASE_URL`** **`127.0.0.1`** in **`test`** + **`NODE_ENV=test`** CI; **`api-integration`** **`pnpm build`** prelude; **`RateLimitGuard` before `AuthenticatedGuard`**; **`FortressRequestIdMiddleware`** + **`FortressRequestLoggingInterceptor`** + **429** **`FortressExceptionFilter`** **pino**; **`Secure`** **`__Host-`** **CSRF**; **`NODE_ENV` required** + **`main.ts`** JWKS prod guard; **`ADR-029`**; **`rate-limit-unauth.integration`**; **`CHAT_END_PROMPT`** **`gh`** rule.
+**`origin/main`** (**`CHAT_END_PROMPT`** planning **atop** **P2‑T7** **`67b7036`): **`HEAD`** (**`git rev-parse`** **`origin/main`** **`after`** **`pull`)**`; **`workflow`** **`CI`**: **`gh run list --workflow CI --branch main --limit 3 --json`** — **`filter`** **`name`** **`CI`**, **`then`** **`assert`** **`latest`** **`DONE_LOG`** **`CHAT_END`** **`headSha`** **`==`** **`origin/main`** **`HEAD`**. **`P2‑T7`** subtree (**`67b7036`**) reference **`CI`** (**`25610665643`**) (**historical code gate** **`success`**)**. **Highlights: **`turbo`** **`lint`/`test`** **`dependsOn:^build`**; **`DATABASE_URL`** **`127.0.0.1`** in **`test`** + **`NODE_ENV=test`** CI; **`api-integration`** **`pnpm build`** prelude; **`RateLimitGuard` before `AuthenticatedGuard`**; **`FortressRequestIdMiddleware`** + **`FortressRequestLoggingInterceptor`** + **429** **`FortressExceptionFilter`** **pino**; **`Secure`** **`__Host-`** **CSRF**; **`NODE_ENV` required** + **`main.ts`** JWKS prod guard; **`ADR-029`**; **`rate-limit-unauth.integration`**; **`CHAT_END_PROMPT`** **`gh`** rule.
 
 ## Last Completed Task
 
-**`P2-T7`** (plus CI + CHAT ritual): **`1dea680`** · **`1f84951`** · **`eb64d1b`** · **`67b7036`** (**code**) · planning stack **`c4c5ad5`** → **`d68e722`** → **`ee84249`** → **`d9355f9`** → **`ee27a77`** → **`4ac0763`** (**detail** **`DONE_LOG`**).
+**`P2-T7`** at **`67b7036`** (**`DONE_LOG`**); **`docs(ai)` **`CHAT_END`** payloads in **`DONE_LOG`** tail.
 
 ## Active Task
 
@@ -37,4 +37,4 @@ Manifest **Phase 2 Complete**: still **blocked** pending **human APPROVED** (**l
 
 ## Tests / Checks Last Run
 
-**Last **`CHAT_END`** **`gh`** **`watch`**: **`4ac0763`** (**`databaseId`** **`25611106980`**) (**`success`**)**; **`prior`** **`CHAT_END`** payloads (**`DONE_LOG`** **tail**). Locally: **`npx pnpm@10.33.4`** **`lint`** **`typecheck`** **`test`** **`build`**; **`pnpm --filter api test`**; **`pnpm --filter api test:integration`**; **`pnpm audit --audit-level=high`** (**1 moderate**, below **`high`** gate). This CHAT ritual: **`git fetch`**, **`gh`** (**`preflight`** **`run list`** **`+`** **`watch`** **`workflow`** **`CI`**) (**not full local suite unless CI regresses**).
+**Last **`CHAT_END`** **`gh`** **`watch`**: **`fef64d0`** (**`databaseId`** **`25611142953`**) (**`success`**)**; **`prior`** **`CHAT_END`** payloads (**`DONE_LOG`** **tail**). Locally: **`npx pnpm@10.33.4`** **`lint`** **`typecheck`** **`test`** **`build`**; **`pnpm --filter api test`**; **`pnpm --filter api test:integration`**; **`pnpm audit --audit-level=high`** (**1 moderate**, below **`high`** gate). This CHAT ritual: **`git fetch`**, **`gh`** (**`preflight`** **`run list`** **`+`** **`watch`** **`workflow`** **`CI`**) (**not full local suite unless CI regresses**).

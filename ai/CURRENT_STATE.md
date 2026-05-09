@@ -6,7 +6,7 @@ Last Updated: 2026-05-09
 
 ## Current Phase
 
-**Phase 2** — **`P2-T7`**: **authoritative** **`HEAD`** is **`origin/main`** (**`git rev-parse`** **`after`** **`pull`**). **`DONE_LOG`** **`CHAT_END`** tail documents **`workflow`** **`CI`** **`JSON`** (**`c4c5ad5`** **`→`** **`d68e722`** **`→`** **`ee84249`** **`→`** **`d9355f9`** **`→`** **`ee27a77`** **`→`** **`4ac0763`**); **re-verify** **`headSha`** **`==`** **`HEAD`** each session (**`pull`** **`+`** **`gh`** replace stale snapshots). **`phase-manifest`** **`Ready`** until **`REVIEW_PHASE_PROMPT`** **APPROVED**.
+**Phase 2** — **`P2-T7`**: After **`pull`**, treat **`git rev-parse origin/main`** as authoritative **`HEAD`**. **`DONE_LOG`** **`CHAT_END`** tail holds **`workflow`** **`CI`** **`gh`** payloads; **`re-verify`** **`headSha`** **`==`** **`HEAD`** each session (**`gh run list --workflow CI --branch main --limit 1 --json`** with **`name`** **`CI`**). **`phase-manifest`** **`Ready`** until **`REVIEW_PHASE_PROMPT`** **APPROVED**.
 
 ## Current Task
 
@@ -46,4 +46,4 @@ None (**human reviewer** **APPROVED** owed; **`CI`** (**`workflow`** **`name`** 
 
 ## Session reconciliation
 
-**Captured **`HEAD`** **`4ac07637c15880a137c76e55d3686e6d07b0ab2a`** (**`SHORT`** **`4ac0763`**) with **`workflow`** **`CI`** **`databaseId`** **`25611106980`** **`success`** — **no** Phase 2 **`Complete`** / **APPROVED** claim.
+**Captured **`HEAD`** **`fef64d07caa3b620c90b4fac810196a895b5a8d6`** (**`SHORT`** **`fef64d0`**) with **`workflow`** **`CI`** **`databaseId`** **`25611142953`** **`success`** — **no** Phase 2 **`Complete`** / **APPROVED** claim.
