@@ -2,7 +2,7 @@
 
 Last Updated: 2026-05-09
 
-CHAT_END (2026-05-09): **`origin/main`** **`f65aca4`** (**`P2-T6`** **`feat(api)`**); Ritual **`CHAT_END_PROMPT.md`**; **`npx pnpm@10.33.4`** `lint` `typecheck` `test` `build`; CI **`api-integration`** (**`ci.yml`**); **`pnpm audit --audit-level=high`** (**moderate: 1**); **`grep -c replace-with-`** **`.env.example`** (=28); **`TESTING.md`** (**`test/integration/`**, **`test:integration`**); Phase 2 complete — **human review before Phase 3** (**`Unattended: Partial`**). Next **`apps/web`** after approval.
+CHAT_END (2026-05-09): **`origin/main`** **`02c2faf`** (**P2-T6** doc tip; **`f65aca4`** feature commit); Ritual **`CHAT_END_PROMPT.md`**; **`npx pnpm@10.33.4`** `lint` `typecheck` `test` `build`; CI **`api-integration`** (**`ci.yml`**); **`pnpm audit --audit-level=high`** (**moderate: 1**); **`grep -c replace-with-`** **`.env.example`** (=28); **`TESTING.md`** (**`test/integration/`**, **`test:integration`**); Phase 2 complete — **human review before Phase 3** (**`Unattended: Partial`**). Next **`apps/web`** after approval.
 
 Phase 0 is **complete** (P0-T1–P0-T8). **Phase 1** is **complete** (P1-T1–P1-T6). **Phase 2**
 (`apps/api` skeleton): **complete** (**P2-T1–P2-T6**). Phase 3–8 remain Backlog until decomposed.
