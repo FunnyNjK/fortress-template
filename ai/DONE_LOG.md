@@ -47,6 +47,8 @@ Last Updated: 2026-05-09
 
 ## 2026-05-09
 
+- CHAT_END (2026-05-09): Ran `/ai/templates/CHAT_END_PROMPT.md`; `git fetch` clean vs `origin/main` at `fbed14e`; YAML `ci.yml` + `dependabot.yml` validated via **`python3`** (`yaml.safe_load`; `ruby` unavailable on host); `npx pnpm@10.33.4 lint` + `typecheck` + `test` + `build`; `pnpm audit --audit-level=high` (**1 moderate**, below gate); `bash -n scripts/setup.sh`; `grep -c replace-with-` `.env.example` (=27); ARCHITECTURE / ROADMAP / TESTING / DEPLOYMENT / DECISIONS unchanged.
+
 - **P2-T2** — Drizzle **`0.45.2`** + **`pg` `8.20.0`** + **`drizzle-kit` `0.31.10`** (**exact pins**): global **`DbModule`** (`PG_POOL`, **`DRIZZLE`** token, **`PgPoolLifecycle`** **`onModuleDestroy`**), **`src/db/schema/users`**, **`drizzle.config.ts`**, first migration **`drizzle/0000_sad_major_mapleleaf.sql`** + **`meta/`**, **`DATABASE_URL`** in Zod env schema, scripts **`db:generate`** / **`db:migrate`** / **`db:studio`**, **`test/setup-env.ts`**, **`test/db/users.integration.test.ts`** (skip w/ reason if unreachable); CI **`test`** job **Postgres 18-alpine** service + **`DATABASE_URL`**. (`70dab75`)
 
 - **P2-T1** — Scaffold `apps/api` (NestJS **11.x** pinned): Nest CLI `nest build` / `nest start --watch`, `EnvConfigModule` + Zod **`validateEnv`** (PORT coerced); **`assertNoPlaceholderSecretsInProduction`** scans `process.env` when `NODE_ENV=production`; `nestjs-pino` + `NestFactory.create(..., bufferLogs:true)` / `enableShutdownHooks()`; `.env` resolution `apps/api/.env` then repo-root `../../.env`. Vitest: supertest **`GET /` → 404**, env schema coverage. **`@fortress/observability`**: export **`fortressPinoRedactPaths()`** (includes **`*.secret`**, **`*.apiKey`**) shared with `createFortressLogger`. (`7b4cdb8`)

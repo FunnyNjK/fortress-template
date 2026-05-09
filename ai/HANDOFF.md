@@ -39,4 +39,4 @@ None.
 
 ## Tests / Checks Last Run
 
-- Workspace `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm build`; `pnpm audit --audit-level=high` (moderate finding below threshold).
+- CHAT_END (2026-05-09): `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm build`; `pnpm audit --audit-level=high` (moderate advisory, below gate); `python3` YAML load `ci.yml` / `dependabot.yml`; `bash -n scripts/setup.sh`; `grep -c replace-with-` `.env.example` (=27).

@@ -48,7 +48,7 @@ None.
 
 ## Next Recommended Action
 
-1. Confirm **GitHub Actions CI is green** after the P2-T2 push (manual check on GitHub).
+1. Confirm **GitHub Actions CI is green** on `origin/main` (manual check on GitHub).
 2. Implement **`P2-T3`** per `/ai/TASKS.md`.
 3. When passing `<N>` to `./run-phase-cursor.sh`, pass exactly the Phase 2 task count — do not cross a phase boundary unattended (ADR-022).
 
@@ -56,4 +56,4 @@ None.
 
 2026-05-09 — **P2-T1**: workspace `pnpm lint` / `typecheck` / `test` / `build` + `audit --audit-level=high` (clean). Older CHAT_END entries remain in `DONE_LOG.md`.
 
-CHAT_END (2026-05-09): `git fetch` vs `origin/main` at `1bedc16` (clean); YAML `ci.yml` / `dependabot.yml`; `npx pnpm@10.33.4` `lint` / `typecheck` / `test` / `build`; `audit --audit-level=high`; `bash -n scripts/setup.sh`; `grep -c replace-with-` `.env.example` (=27); ARCHITECTURE / ROADMAP / TESTING / DEPLOYMENT / DECISIONS unchanged.
+CHAT_END (2026-05-09): Ran `/ai/templates/CHAT_END_PROMPT.md`; `git fetch` vs `origin/main` at `fbed14e` (clean); YAML `ci.yml` + `dependabot.yml` (**python3**); `npx pnpm@10.33.4 lint` / `typecheck` / `test` / `build`; `pnpm audit --audit-level=high` (**1 moderate**); `bash -n scripts/setup.sh`; `grep -c replace-with-` `.env.example` (=27); ARCHITECTURE / ROADMAP / TESTING / DEPLOYMENT / DECISIONS unchanged.
