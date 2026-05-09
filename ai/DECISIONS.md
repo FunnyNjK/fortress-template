@@ -1,6 +1,6 @@
 # Architecture Decision Records
 
-Last Updated: 2026-05-08
+Last Updated: 2026-05-09
 
 This file records decisions that affect architecture, dependencies, security,
 deployment, testing, or scope. ADRs ADR-001 through ADR-010 are pre-populated
@@ -600,6 +600,27 @@ approval of the previous phase's verification evidence.
 
 ### Related Tasks
 All Phase 0 tasks (populated in Stage 2).
+
+---
+
+## ADR-023: `typescript` at workspace root for Phase 0 config packages
+Date: 2026-05-09
+Status: Accepted
+
+### Decision
+Add **`typescript`** (pinned in root `devDependencies`) as the single workspace-wide
+compiler for validating shared configs (e.g. `@fortress/config-typescript`) and
+for future app packages to align on one version via hoisting.
+
+### Reason
+`@fortress/config-typescript` must run `tsc --version` / `tsc --noEmit` in CI and
+locally without each consumer duplicating the dependency before apps exist.
+
+### Tradeoffs
+- Root owns the version pin; bumping TypeScript is a repo-wide choice (intended).
+
+### Related Tasks
+P0-T2 (shared `tsconfig` package), later Phase 1+ packages and apps.
 
 ---
 

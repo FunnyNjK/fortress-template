@@ -2,7 +2,7 @@
 
 Last Updated: 2026-05-09
 
-Phase 0 tasks are queued and ready for execution. P0-T2 is Active.
+Phase 0 tasks are queued and ready for execution. P0-T3 is Active.
 Phase 1–8 placeholders are in Backlog; each will be decomposed when its phase becomes active.
 
 ---
@@ -52,84 +52,15 @@ Rough unattended profiles — refine when each phase becomes active.
 
 ### P0-T1: Initialize the monorepo skeleton — Done; see DONE_LOG.md.
 
+### P0-T2: Add shared TypeScript config package — Done; see DONE_LOG.md.
+
 ---
 
 ## Active Task
 
-### P0-T2: Add shared TypeScript config package
-
-Status: Active
-Owner: AI CLI (unattended)
-Priority: High
-Unattended: Yes
-
-### Goal
-
-Create `packages/config-typescript` with shared `tsconfig` base files for all
-workspace members. Strict compiler settings, ES2023 target, and per-app variants
-(next, node, library).
-
-### Scope Included
-
-- `packages/config-typescript/package.json` — name: `@fortress/config-typescript`
-- `packages/config-typescript/base.json` — strict, noUncheckedIndexedAccess,
-  exactOptionalPropertyTypes, ES2023 target
-- `packages/config-typescript/next.json` — extends base, Next.js-specific lib/jsx
-- `packages/config-typescript/node.json` — extends base, Node module resolution
-- `packages/config-typescript/library.json` — extends base, declaration output, composite
-- `packages/config-typescript/README.md` — one paragraph on role and usage
-
-### Scope Excluded
-
-- No TypeScript source files in this package (configs only)
-- App-level `tsconfig.json` files (created when apps are scaffolded, Phases 2–5)
-
-### Files Likely Involved
-
-- `packages/config-typescript/` (create all files listed above)
-
-### Acceptance Criteria
-
-- `@fortress/config-typescript` resolves correctly in the workspace
-- `base.json` contains `"strict": true`, `"noUncheckedIndexedAccess": true`,
-  `"exactOptionalPropertyTypes": true`, `"target": "ES2023"`
-- `next.json`, `node.json`, `library.json` each extend `base.json`
-- A downstream `tsconfig.json` using `"extends": "@fortress/config-typescript/base.json"`
-  resolves without error
-
-### Test Requirements
-
-- Create a minimal `tsconfig.json` in the package root extending base; verify it
-  parses cleanly (`tsc --version` succeeds after workspace install)
-
-### Security Considerations
-
-- `exactOptionalPropertyTypes` and `noUncheckedIndexedAccess` prevent runtime bugs
-  caused by unsafe property access — these must not be disabled in any downstream config
-
-### Dev Environment Constraints
-
-- All work runs natively in WSL Ubuntu (`~/repos/fortress-template`).
-- No Docker for application processes.
-- No `/mnt/c` paths in code or scripts.
-
-### Handoff Notes
-
-- Depends on P0-T1 (workspace installable).
-- P0-T3 may run in parallel after P0-T1 completes.
-
-### Verification Step
-
-`pnpm install` exits 0 and `packages/config-typescript/base.json` is valid JSON
-with all four required strict flags present.
-
----
-
-## Ready
-
 ### P0-T3: Add shared ESLint config package
 
-Status: Ready
+Status: Active
 Owner: AI CLI (unattended)
 Priority: High
 Unattended: Yes
@@ -184,13 +115,15 @@ enforced across all apps and packages.
 ### Handoff Notes
 
 - Depends on P0-T1 (workspace installable).
-- May run in parallel with P0-T2 after P0-T1 completes.
+- Depends on P0-T2 (`@fortress/config-typescript` for workspace-wide TS version / presets).
 
 ### Verification Step
 
 `pnpm --filter @fortress/config-eslint exec eslint .` exits 0.
 
 ---
+
+## Ready
 
 ### P0-T4: Add docker-compose.yml for local dev supporting services
 

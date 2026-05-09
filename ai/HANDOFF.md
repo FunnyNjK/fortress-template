@@ -6,31 +6,31 @@ Last Updated: 2026-05-09
 
 ## Current State Summary
 
-P0-T1 complete: monorepo skeleton at repo root. Active task is P0-T2 (shared
-TypeScript config package). Local `main` is **ahead of** `origin` (P0-T1 + planning commits); run `git log origin/main..HEAD --oneline` before push.
+P0-T2 complete: `packages/config-typescript` + root `typescript` devDependency.
+Active task is **P0-T3** (shared ESLint config). Local `main` may still be
+**ahead of** `origin` until `git push` succeeds from an authenticated environment.
 
 ## Last Completed Task
 
-P0-T1: Initialize the monorepo skeleton — see DONE_LOG.md.
+P0-T2: Add shared TypeScript config package — see DONE_LOG.md.
 
 ## Active Task
 
-P0-T2: Add shared TypeScript config package. Status: Active.
+P0-T3: Add shared ESLint config package. Status: Active.
 
 ## Next Recommended Task
 
-Human: `git push` from WSL so `origin/main` catches up to local `main` (includes P0-T1 monorepo skeleton and subsequent `/ai` updates).
-Then pick up P0-T2, or paste:
-`Read /ai/START_HERE.md and follow it. Pick up P0-T2 per HANDOFF.md`
+Execute P0-T3 per `/ai/TASKS.md`, then commit and push. Human: `git push` from
+WSL if local is ahead of `origin` (HTTPS auth may fail in harness).
 
 ## What Is Blocked
 
-**Push** from this environment failed (`could not read Username for 'https://github.com'`).
-Planning files (`HANDOFF`, `CURRENT_STATE`) may say ahead of `origin` until push succeeds.
+**Push** from this environment may still fail (`could not read Username for 'https://github.com'`).
 
 ## Important Instructions for Next AI
 
-- Do not start P0-T3 until P0-T2 is done, committed, pushed, CI-green per project rules.
+- Do not start P0-T4 until P0-T3 is done, committed, and pushed (or push is
+  explicitly skipped), CI-green per project rules.
 - No application/business logic in Phase 0 packages beyond config files.
 - Honor `/ai/AI_RULES.md` and `/ai/DEV_ENVIRONMENT.md`.
 
@@ -40,4 +40,5 @@ Planning files (`HANDOFF`, `CURRENT_STATE`) may say ahead of `origin` until push
 
 ## Tests / Checks Last Run
 
-- `pnpm install` (via `npx pnpm@10.33.4 install`); `turbo.json` JSON parse.
+- `npx pnpm@10.33.4 install`; `pnpm --filter @fortress/config-typescript run typecheck`;
+  `pnpm run typecheck` (turbo).

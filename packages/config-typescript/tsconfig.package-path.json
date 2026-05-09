@@ -1,0 +1,7 @@
+{
+  "extends": "@fortress/config-typescript/base.json",
+  "compilerOptions": {
+    "noEmit": true
+  },
+  "include": ["./fortress-config-stub.d.ts"]
+}
