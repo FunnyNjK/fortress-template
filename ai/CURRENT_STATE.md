@@ -57,3 +57,5 @@ None.
 ## Session reconciliation
 
 2026-05-09 — **P2-T5**: auth + session/audit + CSRF + SDK **`AuthMeResponse`**; CI env keys; **`pnpm-lock.yaml`** updated.
+
+CHAT_END (2026-05-09): **`CHAT_END_PROMPT.md`** verification on **`d21487a`**: Turbo **`lint`** / **`typecheck`** / **`test`** / **`build`**; **`pnpm audit --audit-level=high`** (1 moderate); **`.env.example`** **`replace-with`** count **28**.

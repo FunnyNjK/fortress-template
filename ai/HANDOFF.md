@@ -38,4 +38,4 @@ None.
 
 ## Tests / Checks Last Run
 
-- Session: **`npx pnpm@10.33.4`** `lint`, **`turbo`** `typecheck` `test` `build` (**`api`**, **`@fortress/sdk`**).
+- CHAT_END (2026-05-09): **`npx pnpm@10.33.4`** root **`lint`**, **`typecheck`**, **`test`**, **`build`**; **`pnpm audit --audit-level=high`** (**1 moderate**); **`git`** **`d21487a`** vs **`origin/main`** (clean).

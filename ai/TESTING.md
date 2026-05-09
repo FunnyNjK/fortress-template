@@ -26,6 +26,7 @@ push and pull request.
 - Each integration test suite imports from `packages/testing` for factories
   and fixtures.
 - **API P2-T4 security chain:** `apps/api/test/security/security-chain.integration.test.ts` (supertest; Redis via **`REDIS_URL`** — CI **`redis`** service; skips locally if Redis unreachable unless **`CI=true`**).
+- **API P2-T5 auth / CSRF:** `apps/api/test/auth/auth-flow.integration.test.ts` (supertest; Postgres + Redis; **`describe.skipIf`** when DB or Redis unavailable locally — full run in CI with services + env); plus **`apps/api/test/auth/jwks-dev-stub.unit.test.ts`**.
 
 ### E2E tests (required for web)
 - Playwright for `apps/web` smoke tests.
