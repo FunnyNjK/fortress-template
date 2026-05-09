@@ -22,8 +22,8 @@ P0-T2: Add shared TypeScript config package. Status: Active.
 
 ## What Works
 
-- `pnpm install` succeeds (validated with `npx pnpm@10.33.4 install` when global
-  `pnpm` was unavailable in the harness environment).
+- `pnpm install` succeeds when run from repo root (validated with `npx pnpm@10.33.4 install`
+  here; install global/Corepack pnpm in WSL per `DEV_ENVIRONMENT.md` if desired).
 
 ## What Is Not Built Yet
 
@@ -31,7 +31,7 @@ P0-T2: Add shared TypeScript config package. Status: Active.
 
 ## Known Problems
 
-None.
+None. Local branch may be ahead of `origin` until `git push` succeeds (harness had no GitHub auth).
 
 ## Important Files or Folders
 

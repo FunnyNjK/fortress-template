@@ -7,7 +7,7 @@ Last Updated: 2026-05-09
 ## Current State Summary
 
 P0-T1 complete: monorepo skeleton at repo root. Active task is P0-T2 (shared
-TypeScript config package). No app code. Commit P0-T1 before starting P0-T2 if not on `origin`.
+TypeScript config package). Local `main` is 2 commits ahead of `origin` until a human runs `git push`.
 
 ## Last Completed Task
 
@@ -19,12 +19,14 @@ P0-T2: Add shared TypeScript config package. Status: Active.
 
 ## Next Recommended Task
 
-After P0-T2 is committed and pushed: P0-T3 (ESLint package) or paste:
-`Read /ai/START_HERE.md and follow it. Pick up P0-T2 per HANDOFF.md` if/resume.
+Human: `git push` from WSL so `origin/main` includes P0-T1 (`a58986b` + DONE_LOG `9bce76f`).
+Then pick up P0-T2, or paste:
+`Read /ai/START_HERE.md and follow it. Pick up P0-T2 per HANDOFF.md`
 
 ## What Is Blocked
 
-Nothing.
+**Push** from this environment failed (`could not read Username for 'https://github.com'`).
+Planning files (`HANDOFF`, `CURRENT_STATE`) may say ahead of `origin` until push succeeds.
 
 ## Important Instructions for Next AI
 
