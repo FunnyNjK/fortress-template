@@ -71,4 +71,7 @@ None.
 
 ## Session reconciliation
 
-CHAT_END (2026-05-09): **P0-T8** completed; disclosure + agent/status files added; Phase 0 closed.
+CHAT_END (2026-05-09): Reconciled vs `origin/main` at `8f072fc`; tree clean. Ran `/ai/templates/CHAT_END_PROMPT.md`
+checks (YAML parse `ci.yml` / `dependabot.yml`, `pnpm lint`, `pnpm typecheck`, `pnpm audit --audit-level=high`,
+`bash -n scripts/setup.sh`, `grep -c replace-with-` `.env.example` = 27). Phase 0 complete; next = Phase 1
+planning. ARCHITECTURE / ROADMAP / TESTING / DEPLOYMENT / DECISIONS unchanged this pass.

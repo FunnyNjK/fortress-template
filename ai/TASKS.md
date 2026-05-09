@@ -2,6 +2,10 @@
 
 Last Updated: 2026-05-09
 
+CHAT_END (2026-05-09): Reconciled vs `origin/main` at `8f072fc`; YAML (`ci.yml`, `dependabot.yml`),
+`pnpm lint` + `pnpm typecheck` + `pnpm audit --audit-level=high` (clean), `bash -n scripts/setup.sh`,
+`grep -c replace-with-` `.env.example` (=27). Phase 0 complete; Phase 1 next.
+
 Phase 0 is **complete** (P0-T1–P0-T8). Next work: **Phase 1** (shared packages) when started.
 Phase 1–8 placeholders are in Backlog; each will be decomposed when its phase becomes active.
 

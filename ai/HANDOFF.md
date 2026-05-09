@@ -38,4 +38,6 @@ None.
 
 ## Tests / Checks Last Run
 
-- P0-T8 (2026-05-09): `test -f` on the three new files + `echo P0-T8 OK`; `pnpm lint`; `pnpm typecheck`.
+- CHAT_END (2026-05-09): YAML parse `ci.yml` + `dependabot.yml`; `pnpm lint`; `pnpm typecheck`;
+  `pnpm audit --audit-level=high` (clean); `bash -n scripts/setup.sh`; `grep -c replace-with-`
+  `.env.example` (=27). Repo matched `origin/main` at `8f072fc` before edits.
