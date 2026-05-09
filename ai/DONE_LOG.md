@@ -11,7 +11,7 @@ Last Updated: 2026-05-09
   CycloneDX via `npx @cyclonedx/cyclonedx-npm@4.2.1 --ignore-npm-errors` + `upload-artifact`;
   all `uses:` refs commit-SHA pinned; job-level `permissions`. `.github/dependabot.yml` weekly
   `npm` + `github-actions`. Root `.gitleaks.toml` with `[extend] useDefault = true` and `.env.example`
-  allowlist.
+  allowlist. (`127971c`)
 - P0-T6: Add `scripts/setup.sh` and `scripts/setup.ps1` — idempotent `.env` from `.env.example`:
   `openssl rand -hex 32` (except `ENCRYPTION_KEY` base64); refuses `NODE_ENV=production`;
   existing `.env` requires `--force` / `-Force`; docker compose up after write; appends
