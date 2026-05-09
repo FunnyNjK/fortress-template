@@ -2,8 +2,8 @@
 
 Last Updated: 2026-05-09
 
-Phase 0 tasks are queued and ready for execution. **P0-T6** is Active.
-CHAT_END (2026-05-09): Planning reconciled to landed `origin/main`; P0-T6 Active.
+Phase 0 tasks are queued and ready for execution. **P0-T7** is Active.
+CHAT_END (2026-05-09): P0-T6 complete; P0-T7 Active.
 Phase 1–8 placeholders are in Backlog; each will be decomposed when its phase becomes active.
 
 ---
@@ -61,91 +61,15 @@ Rough unattended profiles — refine when each phase becomes active.
 
 ### P0-T5: Add .env.example — Done; see DONE_LOG.md.
 
+### P0-T6: Add scripts/setup.sh and scripts/setup.ps1 — Done; see DONE_LOG.md.
+
 ---
 
 ## Active Task
 
-### P0-T6: Add scripts/setup.sh and scripts/setup.ps1
-
-Status: Active
-Owner: AI CLI (unattended)
-Priority: High
-Unattended: Yes
-
-### Goal
-
-Provide idempotent setup scripts for both WSL/Linux (`setup.sh`) and Windows
-PowerShell (`setup.ps1`) that generate `.env` with strong cryptographic randoms,
-start Docker supporting services, and print next steps. Both scripts refuse to
-overwrite an existing `.env` without `--force`.
-
-### Scope Included
-
-- `scripts/setup.sh` — bash script (WSL/Linux/macOS) that:
-  - Reads `.env.example`, replaces every `replace-with-*` value with a 32-byte hex
-    random (`openssl rand -hex 32`), writes to `.env`
-  - Skips vars that already have non-placeholder values in `.env.example` (URL defaults, etc.)
-  - Runs `docker-compose up -d`
-  - Prints a "next steps" summary: `pnpm install`, then `pnpm dev`
-  - Guards idempotency: if `.env` exists, prints warning and exits unless `--force`
-- `scripts/setup.ps1` — PowerShell 7+ script with the same logic using
-  `[System.Security.Cryptography.RandomNumberGenerator]` for entropy
-
-### Scope Excluded
-
-- Database migration or seeding (Phase 2+)
-- `pnpm install` invocation (explicit separate step)
-- Production secret generation (use Azure Key Vault / AWS Secrets Manager)
-
-### Files Likely Involved
-
-- `scripts/setup.sh` (create)
-- `scripts/setup.ps1` (create)
-
-### Acceptance Criteria
-
-- `bash -n scripts/setup.sh` exits 0 (bash syntax valid)
-- Running `setup.sh` on a clean checkout creates `.env` with no `replace-with-*`
-  values remaining for secret vars
-- Running a second time without `--force` does NOT overwrite `.env`
-- Running with `--force` DOES overwrite `.env`
-- Both scripts print generated-secret notification but NOT the secret values
-
-### Test Requirements
-
-- `bash -n scripts/setup.sh` exits 0 (syntax check)
-- Manual smoke test (outside CI): run on clean checkout; `.env` created; Docker services start
-- Second run without `--force` shows warning and exits cleanly
-
-### Security Considerations
-
-- Generated secrets must use 32-byte cryptographic entropy (256-bit)
-- Scripts must NOT print generated secret values to stdout
-- `--force` must require an explicit flag; not triggered by any env var
-- Scripts must refuse to run if `NODE_ENV=production` is set
-
-### Dev Environment Constraints
-
-- `setup.sh` targets WSL Ubuntu; uses `openssl rand -hex 32` for secret generation.
-- `setup.ps1` targets PowerShell 7+; uses `[System.Security.Cryptography.RandomNumberGenerator]`.
-- No `/mnt/c` paths in code or scripts.
-
-### Handoff Notes
-
-- Depends on P0-T4 (`docker-compose.yml` must exist).
-- Depends on P0-T5 (`.env.example` must exist to copy from).
-
-### Verification Step
-
-`bash -n scripts/setup.sh` exits 0.
-
----
-
-## Ready
-
 ### P0-T7: Add CI workflow scaffolding
 
-Status: Ready
+Status: Active
 Owner: AI CLI (unattended)
 Priority: High
 Unattended: Yes
@@ -221,6 +145,8 @@ trivial output for lint and test (no app code yet), but must be green.
 `python3 -c "import yaml; yaml.safe_load(open('.github/workflows/ci.yml'))"` exits 0.
 
 ---
+
+## Ready
 
 ### P0-T8: Add .well-known/security.txt, AGENTS.md, and PROJECT_STATUS.md
 

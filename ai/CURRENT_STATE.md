@@ -6,11 +6,11 @@ Last Updated: 2026-05-09
 
 ## Current Phase
 
-Phase 0 (Repo skeleton) — in progress. P0-T1–P0-T5 complete; **P0-T6** active.
+Phase 0 (Repo skeleton) — in progress. P0-T1–P0-T6 complete; **P0-T7** active.
 
 ## Current Task
 
-P0-T6: Add `scripts/setup.sh` and `scripts/setup.ps1`. Status: Active.
+P0-T7: Add CI workflow scaffolding. Status: Active.
 
 ## What Exists Now
 
@@ -27,7 +27,8 @@ P0-T6: Add `scripts/setup.sh` and `scripts/setup.ps1`. Status: Active.
   database on the shared Postgres instance.
 - `.env.example` — canonical env template (`replace-with-*` placeholders; local URLs
   use `127.0.0.1` ports aligned with `docker-compose.yml`).
-- No `apps/` yet; P0-T6+ pending.
+- `scripts/setup.sh`, `scripts/setup.ps1` — idempotent local `.env` + `docker compose up -d`.
+- No `apps/` yet; P0-T7+ pending.
 
 ## What Works
 
@@ -38,7 +39,7 @@ P0-T6: Add `scripts/setup.sh` and `scripts/setup.ps1`. Status: Active.
 
 ## What Is Not Built Yet
 
-- P0-T6 through P0-T8; all application code and Phases 1–8 per roadmap.
+- P0-T7 through P0-T8; all application code and Phases 1–8 per roadmap.
 
 ## Known Problems
 
@@ -47,7 +48,7 @@ None.
 ## Important Files or Folders
 
 - `/ai/HANDOFF.md` — next session baton
-- `/ai/TASKS.md` — P0-T6 active
+- `/ai/TASKS.md` — P0-T7 active
 - `.env.example` — env var catalog for setup scripts and forks
 - `docker-compose.yml` — local backing services
 - `packages/config-typescript/` — shared TS configs
@@ -55,7 +56,7 @@ None.
 
 ## Next Recommended Action
 
-1. Execute **P0-T6** (`scripts/setup.sh` / `setup.ps1`) per TASKS.md, then commit and push.  
+1. Execute **P0-T7** (CI workflow + Dependabot) per TASKS.md, then commit and push.  
 2. Continue Phase 0 toward P0-T8.
 
-CHAT_END (2026-05-09): Synced with `origin/main`; clean tree; no `scripts/` yet (P0-T6 pending).
+CHAT_END (2026-05-09): P0-T6 landed (`scripts/setup.sh`, `scripts/setup.ps1`); P0-T7 next.
