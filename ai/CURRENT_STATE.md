@@ -6,7 +6,7 @@ Last Updated: 2026-05-09
 
 ## Current Phase
 
-**Phase 2** — **`P2-T7`** on **`origin/main`**, tip **`d68e722`** (**`1dea680`** → **`1f84951`** → **`eb64d1b`** → **`36d5c7e`** → **`67b7036`** (**code**) → **`c4c5ad5`** (**planning **`CHAT_END`**) → **`d68e722`** (**planning **`CHAT_END`** **tail/CI **`capture`**)). **`phase-manifest`** **`Ready`** until **`REVIEW_PHASE_PROMPT`** **APPROVED**. **`HEAD`** (**`d68e722632bbfc96f015c68f82cff34b81e9365d`**) **`CI`** (**`databaseId`** **`25610807641`**) **`success`**; **`HEAD`** (**`c4c5ad5`**) **`25610756184`** **`success`** (**`DONE_LOG`**); **code subtree **`67b7036`**: **`25610665643`** **`success`** (prior).
+**Phase 2** — **`P2-T7`** (**`origin/main`** **HEAD** **`git rev-parse`** **`after`** **`pull`**)**; **`CHAT_END`** payloads in **`DONE_LOG`** record planning chain **`67b7036`** (**code**) **`→`** **`c4c5ad5`** **`→`** **`d68e722`** **`→`** **`ee84249`** (**re-verify** **`workflow`** **`CI`** **`headSha`** **`==`** **`origin/main`** **`HEAD`**). **`phase-manifest`** **`Ready`** until **`REVIEW_PHASE_PROMPT`** **APPROVED**. **`Latest`** (**`during`** **`this`** **`CHAT_END`** **pass**) **`workflow`** **`CI`**: **`ee84249`** **`25610859927`** **`success`**; **`d68e722`** **`25610807641`**; **`c4c5ad5`** **`25610756184`** (**`DONE_LOG`**); **`67b7036`** **`25610665643`** (historical).
 
 ## Current Task
 
@@ -30,7 +30,7 @@ Last Updated: 2026-05-09
 
 ## Known Problems
 
-None (human reviewer **APPROVED** still owed; **`origin/main`** tip **`d68e722`** — verify **`HEAD`** (**`d68e722632bbfc96f015c68f82cff34b81e9365d`**) **`CI`** (**`DONE_LOG`** + **`gh run list`** **`name`** **`CI`**)).
+None (**human reviewer** **APPROVED** owed; **`CI`** (**`workflow`** **`name`** **`CI`**) **`success`** on **`origin/main`** (**`DONE_LOG`** + **`gh`**).
 
 ## Important Files or Folders
 
@@ -41,9 +41,9 @@ None (human reviewer **APPROVED** still owed; **`origin/main`** tip **`d68e722`*
 
 ## Next Recommended Action
 
-1. **Human**: **`./ai/templates/REVIEW_PHASE_PROMPT.md`** → **APPROVED** (**`CI`** **`success`** on **`d68e722632bbfc96f015c68f82cff34b81e9365d`** / **`d68e722`** via **`gh run list`** **`name`** **`CI`**).
+1. **Human**: **`./ai/templates/REVIEW_PHASE_PROMPT.md`** → **APPROVED** (**`CI`** **`success`** on latest **`origin/main`** via **`gh run list`** (**`workflow`** **`CI`**, **`name`** **`CI`**)).
 2. After gate: backlog **Phase 3** scaffold (**Partial** unattended matrix).
 
 ## Session reconciliation
 
-**Planning tip** **`d68e722`** (**`d68e722632bbfc96f015c68f82cff34b81e9365d`**) over **`c4c5ad5`** inherits **P2‑T7** subtree **`67b7036`**; **`HEAD`** **`workflow`** **`CI`** (**`25610807641`**) **`completed`** (**`success`**) (**`DONE_LOG`**).
+**Planning tip **`ee84249`** (**`full`** **`ee84249e9203c5a937daefe80f071fc0fd0a9fa9`**) **`CI`** **`25610859927`** **`success`** (**`DONE_LOG`** **`CHAT_END`** entries cover **`c4`/`d68`/`ee`**).

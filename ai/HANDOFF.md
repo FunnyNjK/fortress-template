@@ -6,11 +6,11 @@ Last Updated: 2026-05-09
 
 ## Current State Summary
 
-**`origin/main`** **`d68e722`** (**`CHAT_END_PROMPT`** planning; **P2‑T7** code merged at **`67b7036`**) **:** **`HEAD`** (**`d68e722`**) **`CI`** (**`25610807641`**) **`completed`** (**`success`**) (**prior **`HEAD`** **`c4c5ad5`**, **`CI`** **`25610756184`** **`success`**). **P2‑T7** subtree (**`67b7036`**) **`CI`** (**`25610665643`**) **`success`** (**code**). Highlights: **`turbo`** **`lint`/`test`** **`dependsOn:^build`**; **`DATABASE_URL`** **`127.0.0.1`** in **`test`** + **`NODE_ENV=test`** CI; **`api-integration`** **`pnpm build`** prelude; **`RateLimitGuard` before `AuthenticatedGuard`**; **`FortressRequestIdMiddleware`** + **`FortressRequestLoggingInterceptor`** + **429** **`FortressExceptionFilter`** **pino**; **`Secure`** **`__Host-`** **CSRF**; **`NODE_ENV` required** + **`main.ts`** JWKS prod guard; **`ADR-029`**; **`rate-limit-unauth.integration`**; **`CHAT_END_PROMPT`** **`gh`** rule.
+**`origin/main`** (**`CHAT_END_PROMPT`** planning **atop** **P2‑T7** **`67b7036`): **`HEAD`** (**`git rev-parse`** **`origin/main`** **`after`** **`pull`**)**; **`workflow`** **`CI`** (**match **`name`** **`CI`** in **`JSON`**) **`conclusion`** via **`gh run list --workflow CI --branch main --limit 3 --json`** ( **`DONE_LOG`** tail **`CHAT_END`** payloads document **`c4`/`d68`/`ee`** **planning-tip** runs). **`P2‑T7`** subtree (**`67b7036`**) reference **`CI`** (**`25610665643`**) (**historical code gate** **`success`**). Highlights: **`turbo`** **`lint`/`test`** **`dependsOn:^build`**; **`DATABASE_URL`** **`127.0.0.1`** in **`test`** + **`NODE_ENV=test`** CI; **`api-integration`** **`pnpm build`** prelude; **`RateLimitGuard` before `AuthenticatedGuard`**; **`FortressRequestIdMiddleware`** + **`FortressRequestLoggingInterceptor`** + **429** **`FortressExceptionFilter`** **pino**; **`Secure`** **`__Host-`** **CSRF**; **`NODE_ENV` required** + **`main.ts`** JWKS prod guard; **`ADR-029`**; **`rate-limit-unauth.integration`**; **`CHAT_END_PROMPT`** **`gh`** rule.
 
 ## Last Completed Task
 
-**`P2-T7`** (plus CI + CHAT ritual): **`1dea680`** · **`1f84951`** · **`eb64d1b`** · **`67b7036`** · **`c4c5ad5`** · **`d68e722`** (**planning **`CHAT_END_PROMPT`**).
+**`P2-T7`** (plus CI + CHAT ritual): **`1dea680`** · **`1f84951`** · **`eb64d1b`** · **`67b7036`** (**code**) · planning stack **`c4c5ad5`** → **`d68e722`** → **`ee84249`** (**detail** **`DONE_LOG`**).
 
 ## Active Task
 
@@ -18,11 +18,11 @@ Phase **reviewer gate**: **`./ai/templates/REVIEW_PHASE_PROMPT.md`** must return
 
 ## Next Recommended Task
 
-Human reviewer on **`origin/main`** **`d68e722`** — **`gh run list --branch main --limit 3 --json`** (filter **`name`** **`CI`** for phase gates vs Dependabot noise). Phase 3 only after **`APPROVED`** + ADR-022 (**`Partial`** Clerk).
+Human reviewer on **`origin/main`** **`HEAD`** (**`git`** **`rev-parse`** **`origin/main`**) — **`gh run list --branch main --limit 3 --json`** (filter **`name`** **`CI`** for phase gates vs Dependabot noise). Phase 3 only after **`APPROVED`** + ADR-022 (**`Partial`** Clerk).
 
 ## What Is Blocked
 
-Manifest **Phase 2 Complete**: still **blocked** pending **human APPROVED** (**latest **`origin/main`** tip **`d68e722`** **`CI`** must be **`success`** per **`DONE_LOG`** + **`gh run list`** **`name`** **`CI`**).
+Manifest **Phase 2 Complete**: still **blocked** pending **human APPROVED** (**latest **`origin/main`** **`HEAD`** (**`CI`** **`name`** **`CI`**) must be **`success`** per **`DONE_LOG`** + **`gh run list`** **`name`** **`CI`**).
 
 ## Important Instructions for Next AI
 
@@ -37,4 +37,4 @@ Manifest **Phase 2 Complete**: still **blocked** pending **human APPROVED** (**l
 
 ## Tests / Checks Last Run
 
-Latest **`HEAD`** (**`d68e722`**) **`CI`** (**`databaseId`** **`25610807641`**) **`completed`** (**`success`**); **parent **`HEAD`** (**`c4c5ad5`**) **`CI`** (**`databaseId`** **`25610756184`**) **`completed`** (**`success`**) (**`DONE_LOG`**); prior **P2‑T7** subtree **`67b7036`**: **`25610665643`** **`success`**. Locally: **`npx pnpm@10.33.4`** **`lint`** **`typecheck`** **`test`** **`build`**; **`pnpm --filter api test`**; **`pnpm --filter api test:integration`**; **`pnpm audit --audit-level=high`** (**1 moderate**, below **`high`** gate). This CHAT ritual: **`git fetch`**, **`gh`** (**`preflight`** **`run list`** **`+`** **`watch`** **`workflow`** **`CI`**) (**not full local suite unless CI regresses**).
+**Last **`CHAT_END`** **`gh`** **`watch`** (**planning-tip** stack): **`ee84249`** (**`databaseId`** **`25610859927`**) (**`success`**); **`parent`** (**`d68e722`** **`25610807641`**); **`parent`** (**`c4c5ad5`** **`25610756184`**); **`P2‑T7`** subtree (**`67b7036`): **`CI`** (**`25610665643`**) (**`success`**). Locally: **`npx pnpm@10.33.4`** **`lint`** **`typecheck`** **`test`** **`build`**; **`pnpm --filter api test`**; **`pnpm --filter api test:integration`**; **`pnpm audit --audit-level=high`** (**1 moderate**, below **`high`** gate). This CHAT ritual: **`git fetch`**, **`gh`** (**`preflight`** **`run list`** **`+`** **`watch`** **`workflow`** **`CI`**) (**not full local suite unless CI regresses**).
