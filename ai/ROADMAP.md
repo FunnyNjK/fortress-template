@@ -1,6 +1,6 @@
 # Roadmap
 
-Last Updated: 2026-05-08
+Last Updated: 2026-05-09
 
 ## Phase Plan (9 phases, mandatory)
 
@@ -10,8 +10,8 @@ phase begins.
 
 | Phase | Title | Scope | Verification | Status |
 |---|---|---|---|---|
-| 0 | Repo skeleton | `pnpm-workspace.yaml`, `turbo.json`, root `package.json`, `.gitignore`, `.nvmrc`, `.editorconfig`, `.prettierrc`, `docker-compose.yml`, `.env.example`, `scripts/setup.{sh,ps1}`, CI workflow scaffolding (`.github/workflows/ci.yml`, `dependabot.yml`), `.well-known/security.txt`, `AGENTS.md`, `PROJECT_STATUS.md` | `pnpm install`, `pnpm typecheck`, `pnpm lint` all pass; CI green on initial commit | Ready |
-| 1 | Shared packages | `packages/config-typescript`, `packages/config-eslint`, `packages/types`, `packages/crypto`, `packages/auth-core`, `packages/observability`, `packages/sdk`, `packages/testing` | Each package has smoke tests; all build, lint, and link correctly | Backlog |
+| 0 | Repo skeleton | `pnpm-workspace.yaml`, `turbo.json`, root `package.json`, `.gitignore`, `.nvmrc`, `.editorconfig`, `.prettierrc`, `docker-compose.yml`, `.env.example`, `scripts/setup.{sh,ps1}`, CI workflow scaffolding (`.github/workflows/ci.yml`, `dependabot.yml`), `.well-known/security.txt`, `AGENTS.md`, `PROJECT_STATUS.md` | `pnpm install`, `pnpm typecheck`, `pnpm lint` all pass; CI green on initial commit | Done |
+| 1 | Shared packages | `packages/config-typescript`, `packages/config-eslint`, `packages/types`, `packages/crypto`, `packages/auth-core`, `packages/observability`, `packages/sdk`, `packages/testing` | Each package has smoke tests; all build, lint, and link correctly | **Done** |
 | 2 | API skeleton | NestJS 11 app with env validation, security middleware chain (headers → size → rate-limit → auth → Zod → safe-log → exception filter), health endpoints, audit log table + service. No business modules yet. | API boots; security middleware chain integration test passes; rate-limit smoke test passes | Backlog |
 | 3 | Web skeleton | Next.js 16 App Router with Clerk integration, layout, protected route group, calls to `@fortress/sdk` for `/auth/me`. Tailwind 4. | E2E: user signs up via Clerk, lands in app, sees "hello [name]", signs out | Backlog |
 | 4 | Worker skeleton | BullMQ consumer with one example idempotent job (welcome email via Postmark). Dead-letter queue with alerting. | Worker consumes a test job; retry/backoff demonstrated; Postmark webhook signature verifies | Backlog |

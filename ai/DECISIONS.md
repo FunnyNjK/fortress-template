@@ -1,6 +1,6 @@
 # Architecture Decision Records
 
-Last Updated: 2026-05-08
+Last Updated: 2026-05-09
 
 This file records decisions that affect architecture, dependencies, security,
 deployment, testing, or scope. ADRs ADR-001 through ADR-010 are pre-populated
@@ -14,31 +14,31 @@ except to mark them "Superseded" and add a pointer to the new one.
 
 ## ADR-001: WSL-native development, no Docker for app code
 Date: 2026-05-02
-Status: Superseded by ADR-023 (2026-05-09)
+Status: Accepted
 
-**Superseded.** This ADR established WSL-on-Windows as the dev environment.
-That decision has been replaced by ADR-023, which moves to a dedicated native
-Ubuntu 26 LTS development host. The core principle of the original decision —
-no Docker for the *application* itself, only for supporting services — is
-preserved in ADR-023. The original Decision/Reason/Tradeoffs are kept below
-for historical context.
-
-### Decision (original)
+### Decision
 All development (dev server, tests, build, lint, type-check) runs as native
 processes inside WSL Ubuntu. Docker is reserved exclusively for hosting
 external dependencies the app talks to (databases, queues, cache).
 
-### Reason (original)
+**Fortress Template carve-out:** This template uses `docker-compose up -d` at
+the repo root to host the full set of supporting services for local dev:
+Postgres 18, Redis 8, mailpit (SMTP testing), Azurite (Blob testing), and
+Unleash (feature flags). Apps (`apps/web`, `apps/api`, `apps/worker`,
+`apps/marketing`) still run as native Node processes via `pnpm dev` orchestrated
+by Turbo. The original principle — no Docker for the *application* — holds.
+
+### Reason
 Mixed dev environments (host Windows + WSL + Docker containers) create
 ambiguous file paths and confuse AI agents into editing the wrong copy of a
 file. WSL2 native filesystem is fast (5-20x faster than `/mnt/c`), and modern
 editor tooling (VS Code/Cursor WSL Remote) handles the host/guest boundary
 cleanly without containers.
 
-### Tradeoffs (original)
+### Tradeoffs
 - Slightly different from prod if prod runs in containers — mitigated by
   keeping app code framework-aware but environment-agnostic.
-- Onboarding requires a working WSL setup.
+- Onboarding requires a working WSL setup. Documented in `/ai/DEV_ENVIRONMENT.md`.
 
 ---
 
@@ -603,55 +603,74 @@ All Phase 0 tasks (populated in Stage 2).
 
 ---
 
-## ADR-023: Migration to native Ubuntu 26 LTS development environment
+## ADR-023: `typescript` at workspace root for Phase 0 config packages
 Date: 2026-05-09
 Status: Accepted
-Supersedes: ADR-001 (WSL-native development, no Docker for app code)
 
 ### Decision
-All development for this template — and for any product forked from it —
-happens on a dedicated **Ubuntu 26 LTS** development host. The host is
-reserved for software development with Claude Code, Cursor CLI, and GitHub
-Copilot CLI. WSL on Windows is no longer used.
-
-This template uses `docker-compose up -d` at the repo root to host the full
-set of supporting services for local development: Postgres 18, Redis 8,
-mailpit (SMTP testing), Azurite (Blob testing), and Unleash (feature flags).
-Apps (`apps/web`, `apps/api`, `apps/worker`, `apps/marketing`) still run as
-native Node processes via `pnpm dev` orchestrated by Turbo. The principle
-inherited from ADR-001 — no Docker for the *application* itself — holds; the
-docker-compose carve-out is for supporting services only.
-
-The repo lives at `~/repos/<project>` on the Ubuntu host. Windows paths
-(`C:\`, `/mnt/c`, `\\wsl.localhost\...`) must not appear in source code,
-scripts, configs, or planning docs.
+Add **`typescript`** (pinned in root `devDependencies`) as the single workspace-wide
+compiler for validating shared configs (e.g. `@fortress/config-typescript`) and
+for future app packages to align on one version via hoisting.
 
 ### Reason
-- Dedicated Ubuntu hardware eliminates the WSL/Windows boundary class of bugs:
-  path-translation confusion, line-ending corruption, file-watcher quirks,
-  performance penalties on cross-filesystem operations.
-- AI tooling (Claude Code, Cursor CLI, GitHub Copilot CLI) is first-class on
-  Linux. Running natively avoids the WSL Remote round-trip and runs on the
-  host's full CPU/memory.
-- Server-class Ubuntu has better tooling for long-running background processes
-  (systemd, journald, cgroups) than WSL Ubuntu.
-- The `/mnt/c` ↔ `~/repos` path-ambiguity surface that ADR-001 was designed
-  to mitigate goes away entirely.
+`@fortress/config-typescript` must run `tsc --version` / `tsc --noEmit` in CI and
+locally without each consumer duplicating the dependency before apps exist.
 
 ### Tradeoffs
-- Requires a working Ubuntu 26 install (one-time, documented in
-  `/ai/DEV_ENVIRONMENT.md`).
-- The user can no longer edit files via Windows-side editors browsing
-  `\\wsl.localhost\...`. Mitigated by VS Code Remote SSH or Cursor Remote SSH
-  extensions to reach the Ubuntu host from any workstation.
-- Requires a network-reachable dev machine if development is done from a
-  separate workstation (LAN, Tailscale, or WireGuard).
-- The `setup.ps1` PowerShell variant of the setup script is no longer
-  required by this template (Ubuntu-only target). Forks targeting other
-  operating systems can re-introduce it via a per-project ADR.
+- Root owns the version pin; bumping TypeScript is a repo-wide choice (intended).
 
 ### Related Tasks
-All Phase 0 tasks (running on the Ubuntu dev host).
+P0-T2 (shared `tsconfig` package), later Phase 1+ packages and apps.
+
+---
+
+## ADR-024: ESLint 9 flat stack for `@fortress/config-eslint`
+Date: 2026-05-09
+Status: Accepted
+
+### Decision
+Phase 0 shared lint package **`@fortress/config-eslint`** depends on **`eslint` 9**,
+**`typescript-eslint`** (strict type-checked presets + project service),
+**`@eslint/js`**, **`@eslint/eslintrc`** + **`@eslint/compat`** (FlatCompat for
+`eslint-config-next`), **`eslint-config-next`** (Next.js Core Web Vitals rules),
+**`eslint-plugin-n`** (Node recommended flat rules), and **`globals`** (Node
+globals for the Node preset). Consumers use **`peerDependencies`** `eslint` and
+`typescript`.
+
+### Reason
+TASKS P0-T3 requires type-checked `@typescript-eslint` rules, Next and Node
+presets, and self-lint of the config package without per-app `eslint.config.js`
+in Phase 0.
+
+### Tradeoffs
+`eslint-config-next` is still consumed via compatibility layer until the monorepo
+pins a Next app and can revisit native flat-only Next config.
+
+### Related Tasks
+P0-T3; Phase 1+ apps will extend these presets.
+
+---
+
+## ADR-025: Phase 1 shared package runtime + test stack
+Date: 2026-05-09
+Status: Accepted
+
+### Decision
+Phase 1 library packages use **Vitest 4** for smoke tests, **Zod 4** in `@fortress/sdk`, **Pino 10** in
+`@fortress/observability`, and **`typescript-eslint` 8** as an explicit `devDependency` on each package that
+ships an `eslint.config.js` (pnpm isolated `node_modules`; configs cannot rely on transitive resolution from
+`@fortress/config-eslint` alone). Root **`@types/node` ~24** supports `compilerOptions.types: ["node"]` in packages
+that import Node built-ins. **`@fortress/sdk`** declares **`engines.node` >= 24.15.0** so `eslint-plugin-n`
+treats `fetch` / `Response` as supported. Dual **tsconfig**: `tsconfig.json` (`noEmit`, all `src/**/*.ts`
+including tests) and `tsconfig.build.json` (emit `dist/`, exclude `*.test.ts`).
+Aligns with ADR-009 (Vitest), template stack (Zod 4, Pino), strict TypeScript presets, and reproducible CI.
+pnpm strictness required hoisting `typescript-eslint` for ESLint flat configs importing `typescript-eslint`.
+
+### Tradeoffs
+Minor duplication of `devDependencies` across six packages; bumping Vitest/Zod is repo-wide maintenance.
+
+### Related Tasks
+P1-T1–P1-T6
 
 ---
 

@@ -6,47 +6,38 @@ Last Updated: 2026-05-09
 
 ## Current State Summary
 
-Dev environment migrated from WSL-on-Windows to native Ubuntu 26 LTS per
-ADR-023 (supersedes ADR-001). `/ai/AI_RULES.md`, `/ai/DEV_ENVIRONMENT.md`,
-`/ai/TASKS.md` (Dev Environment Constraints in all 8 tasks), `/ai/DECISIONS.md`,
-`/ai/templates/*`, `KICKOFF_PROMPT.md`, and several other files updated. P0-T6
-narrowed to `setup.sh` only (`setup.ps1` dropped per ADR-023). Phase 0 is still
-`Ready`; P0-T1 is still `Active`.
+**Phase 1 complete** (`P1-T1`–`P1-T6`): `packages/types`, `crypto`, `auth-core`, `observability`,
+`sdk`, `testing` — each with README, build/lint/typecheck/test scripts, Vitest smoke tests.
+Root `devDependencies` includes `@types/node` (for `typescript` `types: ["node"]` in packages).
 
 ## Last Completed Task
 
-WSL → Ubuntu 26 migration realignment (this session). Stage 2 of the Fortress
-Template kickoff completed in the prior session.
+Phase 1 batch: shared library packages — see `DONE_LOG.md` (`df43b73`).
 
 ## Active Task
 
-P0-T1: Initialize the monorepo skeleton. Status: Active (ready to execute; not yet started).
+None — start **Phase 2** (API skeleton): decompose in `/ai/TASKS.md`, then scaffold `apps/api`.
 
 ## Next Recommended Task
 
-Execute P0-T1. Open a fresh AI CLI session and paste:
-  "Read /ai/START_HERE.md and follow it. Then pick up P0-T1 per HANDOFF.md."
-
-Or run all 8 Phase 0 tasks autonomously: `./run-phase.sh 8`
+Add P2 atomic tasks to `/ai/TASKS.md`; implement NestJS 11 API per `/ai/ROADMAP.md`.
 
 ## What Is Blocked
 
-Nothing is blocked.
+None.
 
 ## Important Instructions for Next AI
 
-- Read `/ai/START_HERE.md` first, then `/ai/CURRENT_STATE.md` and `/ai/TASKS.md`.
-- P0-T1 is the active task: initialize the monorepo skeleton (no app code).
-- Do NOT begin P0-T2 until P0-T1 is committed and CI-green.
-- Do NOT write application code or business logic in Phase 0.
-- Honor `/ai/AI_RULES.md` and `/ai/DEV_ENVIRONMENT.md` as non-negotiable.
-- Push after every commit.
+- Confirm **CI green on `origin/main`** after each push (verify on GitHub).
+- Phase 2 stays **Unattended: Yes** until real Clerk/Postgres wiring; follow task matrix in `/ai/TASKS.md`.
+- No business logic in shared packages; honor `AGENTS.md`.
 
 ## Known Risks
 
-- `REFRESH_PROMPT.md` is still `ai-starter`-era content; needs a Fortress-aware
-  rewrite in a future pass. Flag in `PROJECT_STATUS.md` when P0-T8 creates it.
+- `packages/sdk` sets `engines.node` for `eslint-plugin-n`; keep aligned with `.node-version`.
 
 ## Tests / Checks Last Run
 
-None. Stage 2 is planning files only.
+- `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm audit --audit-level=high` (clean); YAML `ci.yml` /
+  `dependabot.yml` parse; `bash -n scripts/setup.sh`; `grep -c replace-with-` `.env.example` (=27). Local branch
+  matched `origin/main` when checks ran.

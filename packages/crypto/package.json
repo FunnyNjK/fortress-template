@@ -1,0 +1,32 @@
+{
+  "name": "@fortress/crypto",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "AES-256-GCM, HMAC, and timing-safe helpers for Fortress (no secrets in repo).",
+  "license": "UNLICENSED",
+  "files": ["dist", "README.md"],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "clean": "rm -rf dist",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "@fortress/config-eslint": "workspace:*",
+    "@fortress/config-typescript": "workspace:*",
+    "eslint": "^9.28.0",
+    "typescript": "~5.8.3",
+    "typescript-eslint": "^8.33.1",
+    "vitest": "^4.1.5"
+  }
+}

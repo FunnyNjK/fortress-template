@@ -1,0 +1,13 @@
+# Gitleaks configuration for fortress-template (non-placeholder baseline).
+# Extends default rules; narrows noise from documented env placeholders.
+
+title = "fortress-template"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Example and template placeholders only"
+paths = [
+  '''\.env\.example$''',
+]

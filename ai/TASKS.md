@@ -1,9 +1,13 @@
 # Tasks
 
-Last Updated: 2026-05-08
+Last Updated: 2026-05-09
 
-Phase 0 tasks are queued and ready for execution. P0-T1 is Active.
-Phase 1–8 placeholders are in Backlog; each will be decomposed when its phase becomes active.
+CHAT_END (2026-05-09): Reconciled vs `origin/main` (clean). YAML (`ci.yml`, `dependabot.yml`);
+`pnpm lint` + `pnpm typecheck` + `pnpm test` + `pnpm audit --audit-level=high` (clean); `bash -n scripts/setup.sh`;
+`grep -c replace-with-` `.env.example` (=27). Phase 0–1 complete; Phase 2 next.
+
+Phase 0 is **complete** (P0-T1–P0-T8). **Phase 1** is **complete** (P1-T1–P1-T6): shared library
+packages landed. Next: **Phase 2** (`apps/api` skeleton). Phase 2–8 remain in Backlog until decomposed.
 
 ---
 
@@ -22,6 +26,12 @@ to decide whether to execute a task fully, partially, or stop and ask for a huma
 | P0-T6   | Yes        | —                                |
 | P0-T7   | Yes        | —                                |
 | P0-T8   | Yes        | —                                |
+| P1-T1   | Yes        | —                                |
+| P1-T2   | Yes        | —                                |
+| P1-T3   | Yes        | —                                |
+| P1-T4   | Yes        | —                                |
+| P1-T5   | Yes        | —                                |
+| P1-T6   | Yes        | —                                |
 
 Definitions:
 - **Yes**: Fully automatable. Harness proceeds, claims Done on success.
@@ -50,604 +60,50 @@ Rough unattended profiles — refine when each phase becomes active.
 
 ---
 
+### P0-T1: Initialize the monorepo skeleton — Done; see DONE_LOG.md.
+
+### P0-T2: Add shared TypeScript config package — Done; see DONE_LOG.md.
+
+### P0-T3: Add shared ESLint config package — Done; see DONE_LOG.md.
+
+### P0-T4: Add docker-compose.yml for local dev supporting services — Done; see DONE_LOG.md.
+
+### P0-T5: Add .env.example — Done; see DONE_LOG.md.
+
+### P0-T6: Add scripts/setup.sh and scripts/setup.ps1 — Done; see DONE_LOG.md.
+
+---
+
+### P0-T7: Add CI workflow scaffolding — Done; see DONE_LOG.md.
+
+### P0-T8: Add .well-known/security.txt, AGENTS.md, PROJECT_STATUS.md — Done; see DONE_LOG.md.
+
+---
+
+### P1-T1: Add `packages/types` (pure TS boundary types) — Done; see DONE_LOG.md.
+
+### P1-T2: Add `packages/crypto` (AES-GCM, HMAC, timing-safe helpers) — Done; see DONE_LOG.md.
+
+### P1-T3: Add `packages/auth-core` (CSRF/session identifier helpers) — Done; see DONE_LOG.md.
+
+### P1-T4: Add `packages/observability` (Pino baseline logger) — Done; see DONE_LOG.md.
+
+### P1-T5: Add `packages/sdk` (Zod + `/auth/me` client) — Done; see DONE_LOG.md.
+
+### P1-T6: Add `packages/testing` (fixtures for Vitest) — Done; see DONE_LOG.md.
+
+---
+
 ## Active Task
 
-### P0-T1: Initialize the monorepo skeleton
-
-Status: Active
-Owner: AI CLI (unattended)
-Priority: High
-Unattended: Yes
-
-### Goal
-
-Bootstrap root-level monorepo configuration: workspace definition, Turbo pipeline,
-root `package.json` with workspace scripts, Node version pin, editor config, and
-Prettier config. No apps or packages yet.
-
-### Scope Included
-
-- `pnpm-workspace.yaml` — declares `apps/*` and `packages/*` globs
-- `turbo.json` — pipeline for `build`, `lint`, `typecheck`, `test`, `clean`
-- `package.json` (root) — `packageManager: "pnpm@10.x.x"` (exact); scripts: `dev`,
-  `build`, `lint`, `typecheck`, `test`, `clean`, `setup`
-- `.gitignore` — Node, pnpm, Turbo, env files, build outputs, secret patterns
-- `.node-version` — pins Node 24 LTS
-- `.editorconfig` — indent style, charset, line endings
-- `.prettierrc` — single quotes, semi, 100-column print width
-
-### Scope Excluded
-
-- Any `apps/*` or `packages/*` directories
-- `docker-compose.yml` (P0-T4)
-- `.env.example` (P0-T5)
-- CI workflows (P0-T7)
-
-### Files Likely Involved
-
-- `pnpm-workspace.yaml` (create)
-- `turbo.json` (create)
-- `package.json` (create)
-- `.gitignore` (create)
-- `.node-version` (create)
-- `.editorconfig` (create)
-- `.prettierrc` (create)
-
-### Acceptance Criteria
-
-- `pnpm install` exits 0
-- `packageManager` in `package.json` is `pnpm@10.x.x` with exact version
-- `turbo.json` defines `build`, `lint`, `typecheck`, `test`, `clean` pipeline tasks
-- `.node-version` pins Node 24 LTS
-- `.gitignore` includes `.env`, `.env.*`, `*.local`, `node_modules`, `.turbo`, `dist`
-
-### Test Requirements
-
-- `pnpm install` exits 0
-- `node -e "JSON.parse(require('fs').readFileSync('turbo.json','utf8'))"` succeeds
-
-### Security Considerations
-
-- `.gitignore` must cover all secret and env file patterns before first commit
-- No `^`/`~` version ranges in `package.json` — exact pinning only
-
-### Dev Environment Constraints
-
-- All work runs natively on Ubuntu 26 (`~/repos/fortress-template`).
-- Docker is for supporting services only (Postgres, Redis, mailpit, Azurite, Unleash) via `docker-compose up -d`.
-- Apps run as native Node processes via `pnpm dev`. No Windows paths anywhere in the repo.
-
-### Handoff Notes
-
-- P0-T2 and P0-T3 depend on this task completing first.
-- After this task the repo installs cleanly but has no app or package source.
-
-### Verification Step
-
-`pnpm install` exits 0.
-
----
-
-## Ready
-
-### P0-T2: Add shared TypeScript config package
-
-Status: Ready
-Owner: AI CLI (unattended)
-Priority: High
-Unattended: Yes
-
-### Goal
-
-Create `packages/config-typescript` with shared `tsconfig` base files for all
-workspace members. Strict compiler settings, ES2023 target, and per-app variants
-(next, node, library).
-
-### Scope Included
-
-- `packages/config-typescript/package.json` — name: `@fortress/config-typescript`
-- `packages/config-typescript/base.json` — strict, noUncheckedIndexedAccess,
-  exactOptionalPropertyTypes, ES2023 target
-- `packages/config-typescript/next.json` — extends base, Next.js-specific lib/jsx
-- `packages/config-typescript/node.json` — extends base, Node module resolution
-- `packages/config-typescript/library.json` — extends base, declaration output, composite
-- `packages/config-typescript/README.md` — one paragraph on role and usage
-
-### Scope Excluded
-
-- No TypeScript source files in this package (configs only)
-- App-level `tsconfig.json` files (created when apps are scaffolded, Phases 2–5)
-
-### Files Likely Involved
-
-- `packages/config-typescript/` (create all files listed above)
-
-### Acceptance Criteria
-
-- `@fortress/config-typescript` resolves correctly in the workspace
-- `base.json` contains `"strict": true`, `"noUncheckedIndexedAccess": true`,
-  `"exactOptionalPropertyTypes": true`, `"target": "ES2023"`
-- `next.json`, `node.json`, `library.json` each extend `base.json`
-- A downstream `tsconfig.json` using `"extends": "@fortress/config-typescript/base.json"`
-  resolves without error
-
-### Test Requirements
-
-- Create a minimal `tsconfig.json` in the package root extending base; verify it
-  parses cleanly (`tsc --version` succeeds after workspace install)
-
-### Security Considerations
-
-- `exactOptionalPropertyTypes` and `noUncheckedIndexedAccess` prevent runtime bugs
-  caused by unsafe property access — these must not be disabled in any downstream config
-
-### Dev Environment Constraints
-
-- All work runs natively on Ubuntu 26 (`~/repos/fortress-template`).
-- Docker is for supporting services only (Postgres, Redis, mailpit, Azurite, Unleash) via `docker-compose up -d`.
-- Apps run as native Node processes via `pnpm dev`. No Windows paths anywhere in the repo.
-
-### Handoff Notes
-
-- Depends on P0-T1 (workspace installable).
-- P0-T3 may run in parallel after P0-T1 completes.
-
-### Verification Step
-
-`pnpm install` exits 0 and `packages/config-typescript/base.json` is valid JSON
-with all four required strict flags present.
-
----
-
-### P0-T3: Add shared ESLint config package
-
-Status: Ready
-Owner: AI CLI (unattended)
-Priority: High
-Unattended: Yes
-
-### Goal
-
-Create `packages/config-eslint` with shared ESLint flat configs for all workspace
-members. Type-checked rules, no-floating-promises, and consistent-type-imports
-enforced across all apps and packages.
-
-### Scope Included
-
-- `packages/config-eslint/package.json` — name: `@fortress/config-eslint`
-- `packages/config-eslint/base.js` — type-checked rules, no-floating-promises,
-  consistent-type-imports, no-eval, no-implied-eval, no-console (warn)
-- `packages/config-eslint/next.js` — extends base, Next.js plugin rules
-- `packages/config-eslint/node.js` — extends base, Node-specific rules
-- `packages/config-eslint/README.md` — one paragraph on role and usage
-
-### Scope Excluded
-
-- App-level `eslint.config.js` files (created when apps are scaffolded)
-- Prettier integration (handled by root `.prettierrc` + prettier-plugin)
-
-### Files Likely Involved
-
-- `packages/config-eslint/` (create all files listed above)
-
-### Acceptance Criteria
-
-- `@fortress/config-eslint` resolves correctly in the workspace
-- `base.js` exports a valid ESLint flat config array
-- `no-floating-promises` and `consistent-type-imports` rules are enabled
-- `no-eval` and `no-implied-eval` are enabled
-- `eslint .` passes when run against `packages/config-eslint` itself (self-linting)
-
-### Test Requirements
-
-- `pnpm --filter @fortress/config-eslint exec eslint .` exits 0
-
-### Security Considerations
-
-- `no-eval` and `no-implied-eval` must be enabled (XSS / injection prevention)
-- `@typescript-eslint/no-unsafe-*` rules enabled to catch boundary violations early
-
-### Dev Environment Constraints
-
-- All work runs natively on Ubuntu 26 (`~/repos/fortress-template`).
-- Docker is for supporting services only (Postgres, Redis, mailpit, Azurite, Unleash) via `docker-compose up -d`.
-- Apps run as native Node processes via `pnpm dev`. No Windows paths anywhere in the repo.
-
-### Handoff Notes
-
-- Depends on P0-T1 (workspace installable).
-- May run in parallel with P0-T2 after P0-T1 completes.
-
-### Verification Step
-
-`pnpm --filter @fortress/config-eslint exec eslint .` exits 0.
-
----
-
-### P0-T4: Add docker-compose.yml for local dev supporting services
-
-Status: Ready
-Owner: AI CLI (unattended)
-Priority: High
-Unattended: Yes
-
-### Goal
-
-Provide a `docker-compose.yml` at the repo root that boots all supporting services
-needed for local development and testing. Apps run natively — only data/infra
-services live in Docker.
-
-### Scope Included
-
-- `docker-compose.yml` (root) with five named services:
-  - `postgres` — Postgres 18, port 5432, named volume, health check
-  - `redis` — Redis 8, port 6379, named volume, health check
-  - `mailpit` — SMTP port 1025, web UI port 8025, named volume
-  - `azurite` — Azure Blob Storage emulator, ports 10000–10002, named volume
-  - `unleash` — Unleash feature-flag server, port 4242 (plus its Postgres dependency)
-- Top-level comment block documenting each service's port, purpose, and the env var
-  that points at it
-
-### Scope Excluded
-
-- App `Dockerfiles` (Phase 6 infra)
-- Production image builds (Phase 6)
-- Any networking beyond the default compose bridge network
-
-### Files Likely Involved
-
-- `docker-compose.yml` (create)
-
-### Acceptance Criteria
-
-- `docker-compose config` exits 0 (valid YAML and valid Compose spec)
-- All 5 services defined with: exact image version (no `latest` tags), named volume,
-  health check, and documented port mapping
-- Postgres and Redis credentials set via environment variables (safe local-dev defaults)
-- Comment block at top documents all ports and their corresponding env var names
-
-### Test Requirements
-
-- `docker-compose config` exits 0
-- Manual smoke test (outside CI): `docker-compose up -d` boots all services; each
-  responds on its documented port
-
-### Security Considerations
-
-- No `latest` image tags — pin to digest or exact version tag
-- Postgres and Redis must require passwords (non-empty `POSTGRES_PASSWORD`, `requirepass`)
-- Compose is local-dev-only; services must not bind to `0.0.0.0` in a way that is
-  reachable outside the dev machine by default
-
-### Dev Environment Constraints
-
-- All work runs natively on Ubuntu 26 (`~/repos/fortress-template`).
-- Supporting services (Postgres, Redis, etc.) run in Docker via `docker-compose up -d`.
-- App processes must NOT run in Docker locally.
-- No Windows paths anywhere in the repo.
-
-### Handoff Notes
-
-- `.env.example` (P0-T5) and `scripts/setup.sh` (P0-T6) both reference the ports
-  and credentials defined here — write those after this task.
-
-### Verification Step
-
-`docker-compose config` exits 0.
-
----
-
-### P0-T5: Add .env.example
-
-Status: Ready
-Owner: AI CLI (unattended)
-Priority: High
-Unattended: Yes
-
-### Goal
-
-Create `.env.example` as the canonical source of truth for every environment variable
-required by the Fortress stack. Every var has a comment with its purpose and where
-to obtain the value. Secrets use `replace-with-*` placeholders; service URLs default
-to `localhost` ports matching `docker-compose.yml`.
-
-### Scope Included
-
-- `.env.example` with sections for: App URLs, Clerk, Postmark, Stripe, Sentry,
-  OTLP/Tempo, Database, Redis, Unleash, Encryption, CSP report URI, and miscellaneous
-- Every variable from `/ai/DEPLOYMENT.md` "Required Environment Variables" section
-- Comments: purpose + source (e.g., `# Clerk Dashboard → API Keys`)
-- `replace-with-*` placeholders for all secrets and required external keys
-- `localhost:*` defaults for all service URLs (matching `docker-compose.yml` ports)
-- Warning comment at the top: DO NOT commit a populated `.env`
-
-### Scope Excluded
-
-- Actual secret values (never in `.env.example`)
-- `.env` file generation (handled by `scripts/setup.sh` in P0-T6)
-- App-level env validation schemas (scaffolded with apps in Phases 2–5)
-
-### Files Likely Involved
-
-- `.env.example` (create)
-
-### Acceptance Criteria
-
-- Every env var from `/ai/DEPLOYMENT.md` is present
-- All secret vars use `replace-with-*` placeholder pattern
-- All service URL defaults point at `localhost` with ports matching `docker-compose.yml`
-- No real secrets or real-looking credentials present
-- File is parseable by `dotenv` without error
-
-### Test Requirements
-
-- `grep -c "replace-with-" .env.example` returns a count ≥ 1
-- Manual review: all `/ai/DEPLOYMENT.md` vars present
-
-### Security Considerations
-
-- This file IS committed to git — it must never contain real secrets
-- All values must be obviously fake (e.g., `replace-with-clerk-secret-key`)
-- Warning comment at top of file required
-
-### Dev Environment Constraints
-
-- All work runs natively on Ubuntu 26 (`~/repos/fortress-template`).
-- Docker is for supporting services only (Postgres, Redis, mailpit, Azurite, Unleash) via `docker-compose up -d`.
-- Apps run as native Node processes via `pnpm dev`. No Windows paths anywhere in the repo.
-
-### Handoff Notes
-
-- Depends on P0-T4 (ports and service names must match `docker-compose.yml`).
-- `scripts/setup.sh` (P0-T6) reads this file to generate `.env`.
-
-### Verification Step
-
-`grep -c "replace-with-" .env.example` returns ≥ 1.
-
----
-
-### P0-T6: Add scripts/setup.sh
-
-Status: Ready
-Owner: AI CLI (unattended)
-Priority: High
-Unattended: Yes
-
-### Goal
-
-Provide an idempotent setup script (`scripts/setup.sh`) that generates `.env`
-with strong cryptographic randoms, starts the Docker supporting services, and
-prints next steps. The script refuses to overwrite an existing `.env` without
-`--force`. Ubuntu-only target per ADR-023; no PowerShell variant.
-
-### Scope Included
-
-- `scripts/setup.sh` — bash script for Ubuntu 26 that:
-  - Reads `.env.example`, replaces every `replace-with-*` value with a 32-byte
-    hex random (`openssl rand -hex 32`), writes to `.env`
-  - Skips vars that already have non-placeholder values in `.env.example`
-    (URL defaults, ports, etc.)
-  - Runs `docker compose up -d` (Compose v2 plugin)
-  - Prints a "next steps" summary: `pnpm install`, then `pnpm dev`
-  - Guards idempotency: if `.env` exists, prints warning and exits unless `--force`
-  - Refuses to run if `NODE_ENV=production`
-
-### Scope Excluded
-
-- Database migration or seeding (Phase 2+)
-- `pnpm install` invocation (explicit separate step)
-- Production secret generation (use Azure Key Vault / AWS Secrets Manager)
-- A `setup.ps1` PowerShell variant — not in scope per ADR-023 (Ubuntu-only target)
-
-### Files Likely Involved
-
-- `scripts/setup.sh` (create)
-
-### Acceptance Criteria
-
-- `bash -n scripts/setup.sh` exits 0 (bash syntax valid)
-- Running `setup.sh` on a clean checkout creates `.env` with no `replace-with-*`
-  values remaining for secret vars
-- Running a second time without `--force` does NOT overwrite `.env`
-- Running with `--force` DOES overwrite `.env`
-- Script prints generated-secret notification but NOT the secret values
-
-### Test Requirements
-
-- `bash -n scripts/setup.sh` exits 0 (syntax check)
-- Manual smoke test (outside CI): run on clean checkout; `.env` created; Docker services start
-- Second run without `--force` shows warning and exits cleanly
-
-### Security Considerations
-
-- Generated secrets must use 32-byte cryptographic entropy (256-bit)
-- Script must NOT print generated secret values to stdout
-- `--force` must require an explicit flag; not triggered by any env var
-- Script must refuse to run if `NODE_ENV=production` is set
-
-### Dev Environment Constraints
-
-- All work runs natively on Ubuntu 26 (`~/repos/fortress-template`).
-- `setup.sh` uses `openssl rand -hex 32` for secret generation (available in default Ubuntu).
-- `docker compose` v2 plugin (not the legacy `docker-compose` v1) is required.
-
-### Handoff Notes
-
-- Depends on P0-T4 (`docker-compose.yml` must exist).
-- Depends on P0-T5 (`.env.example` must exist to copy from).
-
-### Verification Step
-
-`bash -n scripts/setup.sh` exits 0.
-
----
-
-### P0-T7: Add CI workflow scaffolding
-
-Status: Ready
-Owner: AI CLI (unattended)
-Priority: High
-Unattended: Yes
-
-### Goal
-
-Scaffold the GitHub Actions CI pipeline that enforces all code quality, security,
-and supply-chain gates on every push and pull request. The initial run may produce
-trivial output for lint and test (no app code yet), but must be green.
-
-### Scope Included
-
-- `.github/workflows/ci.yml` — 9 jobs:
-  1. `install` — pnpm install with pnpm store cache
-  2. `lint` — `pnpm lint` (ESLint)
-  3. `typecheck` — `pnpm typecheck` (`tsc --noEmit`)
-  4. `test` — `pnpm test` (Vitest)
-  5. `dep-audit` — `pnpm audit --audit-level=high` (blocks on high/critical)
-  6. `gitleaks` — secret scanning via `gitleaks/gitleaks-action`
-  7. `semgrep` — SAST via `returntocorp/semgrep-action`
-  8. `codeql` — GitHub CodeQL analysis
-  9. `sbom` — CycloneDX SBOM generation, uploaded as build artifact
-- Triggers: `push` (all branches) and `pull_request`
-- `.github/dependabot.yml` — weekly updates for `npm` (pnpm compat) and `github-actions`
-
-### Scope Excluded
-
-- Deploy workflows (`deploy-staging.yml`, `deploy-prod.yml`) — Phase 6
-- `CODEOWNERS` file — Phase 7 (docs pass)
-- Actual passing test suite (apps scaffolded in Phases 2–5)
-
-### Files Likely Involved
-
-- `.github/workflows/ci.yml` (create)
-- `.github/dependabot.yml` (create)
-
-### Acceptance Criteria
-
-- `ci.yml` is valid GitHub Actions YAML
-- All 9 jobs defined with correct job IDs and `needs:` dependencies
-- `dep-audit` step fails build on `high` or `critical` CVEs
-- `gitleaks` uses the official action with a non-placeholder config
-- SBOM artifact uploaded as `sbom-*.json` per build
-- `dependabot.yml` covers both `npm` and `github-actions` ecosystems
-- Action versions pinned to specific SHA (not floating tag)
-- `permissions:` block at job level (least privilege)
-
-### Test Requirements
-
-- `python3 -c "import yaml; yaml.safe_load(open('.github/workflows/ci.yml'))"` exits 0
-- Manual: push to a branch; confirm CI run is green
-
-### Security Considerations
-
-- No secrets hardcoded in workflow YAML — use `${{ secrets.* }}` references only
-- Action versions pinned to commit SHA, not floating tag (supply-chain integrity)
-- `permissions: contents: read` or narrower at job level; escalate only where required
-- CodeQL analysis must include `javascript` and `typescript` language targets
-
-### Dev Environment Constraints
-
-- All work runs natively on Ubuntu 26 (`~/repos/fortress-template`).
-- Docker is for supporting services only (Postgres, Redis, mailpit, Azurite, Unleash) via `docker-compose up -d`.
-- Apps run as native Node processes via `pnpm dev`. No Windows paths anywhere in the repo.
-
-### Handoff Notes
-
-- Depends on P0-T1 (pnpm workspace required; otherwise `pnpm install` in CI fails).
-- Depends on P0-T2 and P0-T3 (lint and typecheck reference these packages).
-
-### Verification Step
-
-`python3 -c "import yaml; yaml.safe_load(open('.github/workflows/ci.yml'))"` exits 0.
-
----
-
-### P0-T8: Add .well-known/security.txt, AGENTS.md, and PROJECT_STATUS.md
-
-Status: Ready
-Owner: AI CLI (unattended)
-Priority: Medium
-Unattended: Yes
-
-### Goal
-
-Add three required disclosure/documentation files: `security.txt` for vulnerability
-disclosure, `AGENTS.md` for AI agent layer rules, and `PROJECT_STATUS.md` as a
-living template-state document.
-
-### Scope Included
-
-- `.well-known/security.txt` — fields: `Contact:`, `Policy:`, `Preferred-Languages:`,
-  `Expires:` (placeholder date 1 year after scaffold); all are clearly marked as
-  placeholders requiring fork-specific values
-- `AGENTS.md` — AI agent layer rules per `NEW_TEMPLATE_PROMPT.md`:
-  - Web layer never touches database directly
-  - API is sole owner of DB access and business rules
-  - SDK (`@fortress/sdk`) is the typed contract between web and API
-  - Worker processes async jobs; no user-facing HTTP responses
-  - No business logic in shared packages (`types`, `crypto`, `auth-core`, etc.)
-  - All 10 locked decisions listed as non-negotiable constraints
-  - Instructions for follow-up AI passes on forks of this template
-- `PROJECT_STATUS.md` — current scaffold state:
-  - Phase 0 in progress; Phases 1–8 listed as TODO with spec section pointers
-  - Every locked decision listed and marked implemented/pending
-  - `REFRESH_PROMPT.md` rewrite flagged as a known pending item
-
-### Scope Excluded
-
-- `docs/` directory and runbooks (Phase 7)
-- `CLAUDE.md` (spec repo layout includes it; do not create or overwrite here)
-- `README.md` (updated in Stage 1)
-
-### Files Likely Involved
-
-- `.well-known/security.txt` (create)
-- `AGENTS.md` (create)
-- `PROJECT_STATUS.md` (create)
-
-### Acceptance Criteria
-
-- `security.txt` contains all four required fields
-- `AGENTS.md` lists all 10 non-negotiables and all layer responsibilities
-- `PROJECT_STATUS.md` lists every stubbed item with a TODO and a doc link
-- `REFRESH_PROMPT.md` rewrite is flagged in `PROJECT_STATUS.md`
-- "Secrets never live in code or repo" is explicitly stated in `AGENTS.md`
-
-### Test Requirements
-
-- Manual review of all three files
-
-### Security Considerations
-
-- `security.txt` `Contact:` must use a placeholder email, not a real address
-- `AGENTS.md` must explicitly state "secrets never live in code or repo" as a
-  non-negotiable constraint for any AI agent working on a fork
-
-### Dev Environment Constraints
-
-- All work runs natively on Ubuntu 26 (`~/repos/fortress-template`).
-- Docker is for supporting services only (Postgres, Redis, mailpit, Azurite, Unleash) via `docker-compose up -d`.
-- Apps run as native Node processes via `pnpm dev`. No Windows paths anywhere in the repo.
-
-### Handoff Notes
-
-- This task is independent and can run in parallel with P0-T2 through P0-T7.
-- After P0-T8 is complete, Phase 0 is done. Proceed to Phase 1.
-
-### Verification Step
-
-`test -f .well-known/security.txt && test -f AGENTS.md && test -f PROJECT_STATUS.md && echo "P0-T8 OK"` exits 0.
+None — begin **Phase 2** (API skeleton) per `/ai/ROADMAP.md` / this file Backlog when picked up.
 
 ---
 
 ## Backlog
 
-Phase 1–8 placeholders. Each will be decomposed into atomic tasks when its phase becomes active.
-See `/ai/reference/NEW_TEMPLATE_PROMPT.md` for the authoritative scope of each phase.
-
-**P1 — Shared packages**: Create `packages/sdk`, `packages/types`, `packages/ui`,
-`packages/crypto`, `packages/auth-core`, `packages/observability`, `packages/testing`.
-Each package: source, exports, smoke tests, README. Estimated ~8 tasks.
+Phase 2–8. Decompose each phase into atomic tasks when it becomes active.
+See `/ai/reference/NEW_TEMPLATE_PROMPT.md` for authoritative scope.
 
 **P2 — API skeleton**: Scaffold `apps/api` (NestJS 11) with env validation, security
 middleware chain (headers → rate limit → Zod validation → logging → exception filter),

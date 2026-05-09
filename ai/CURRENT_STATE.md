@@ -6,34 +6,33 @@ Last Updated: 2026-05-09
 
 ## Current Phase
 
-Phase 0 (Repo skeleton) — `Ready`. Task breakdown complete; execution not yet started.
+**Phase 1 (Shared packages) — complete.** `P1-T1`–`P1-T6` landed. Next: **Phase 2** (API skeleton).
 
 ## Current Task
 
-P0-T1: Initialize the monorepo skeleton. Status: Active (ready to execute).
+None active — decompose Phase 2 in `/ai/TASKS.md` before coding `apps/api`.
 
 ## What Exists Now
 
-- `/ai/` planning files realigned to Fortress Template stack (Stage 1 complete).
-- `/ai/TASKS.md` populated with P0-T1 through P0-T8 and Phase 1–8 placeholders (Stage 2 complete).
-- `/PHASE_MANIFEST.md` and `/phase-manifest.json` created (Stage 2 complete).
-- Dev environment realigned from WSL-on-Windows to native Ubuntu 26 LTS (ADR-023 supersedes ADR-001).
-- `run-phase.sh` and `run-phase-cursor.sh` present and ready for Phase 0.
-- `.gitattributes` and `.gitignore` in place.
-- No application code. No `package.json`. No `pnpm-workspace.yaml`. No infra applied.
+- Root monorepo skeleton (unchanged from Phase 0): `pnpm-workspace.yaml`, Turbo, CI, `docker-compose`,
+  `.env.example`, setup scripts — see prior entries.
+- **`packages/types`** — branded boundary types, `FORTRESS_API_VERSION`, pagination input shape; zero runtime deps.
+- **`packages/crypto`** — AES-256-GCM secret box, HMAC-SHA256, timing-safe compare, `randomOpaqueBytes`.
+- **`packages/auth-core`** — CSRF double-submit compare, base64url opaque tokens, canonical cookie/header names.
+- **`packages/observability`** — `createFortressLogger` (Pino + default redaction paths).
+- **`packages/sdk`** — `createFortressSdk`, `AuthMeResponseSchema` (Zod strict), `normalizeBaseUrl`; `engines.node` pinned.
+- **`packages/testing`** — Vitest fixtures importing `@fortress/types`.
+- **`@types/node`** — root `devDependencies` for workspace `tsc` with `types: ["node"]`.
+- No `apps/*` yet — Phase 2.
 
 ## What Works
 
-- AI workflow ready (`/ai/START_HERE.md` → `/ai/HANDOFF.md` → `/ai/TASKS.md`).
-- Phase 0 fully planned: 8 tasks, all `Unattended: Yes`.
-- `./run-phase.sh 8` will drive all 8 Phase 0 tasks autonomously once execution begins.
+- `pnpm run build` / `lint` / `typecheck` / `test` via Turbo across all packages including new libraries.
+- Smoke tests in each new package (`vitest run`).
 
 ## What Is Not Built Yet
 
-- Everything in `/ai/reference/NEW_TEMPLATE_PROMPT.md` acceptance criteria.
-- Phase 0: monorepo skeleton, tsconfig, eslint, docker-compose, .env.example,
-  scripts/setup, CI workflow, security.txt, AGENTS.md, PROJECT_STATUS.md.
-- Phases 1–8: all application code, packages, infra, docs.
+- **`apps/api`** onward (Phases 2–8).
 
 ## Known Problems
 
@@ -41,17 +40,18 @@ None.
 
 ## Important Files or Folders
 
-- `/ai/reference/NEW_TEMPLATE_PROMPT.md` — authoritative spec
-- `/KICKOFF_PROMPT.md` — kickoff instructions (historical reference)
-- `/ai/START_HERE.md` — AI workflow entry point
-- `/ai/AI_RULES.md` — hard rules (Ubuntu-native, push after commit, etc.)
-- `/ai/DECISIONS.md` — ADR-001 through ADR-022
-- `/ai/TASKS.md` — P0-T1 through P0-T8 queued; Phases 1–8 placeholders in Backlog
-- `/PHASE_MANIFEST.md` — human-readable 9-phase manifest
-- `/phase-manifest.json` — machine-readable manifest for run-phase.sh
+- `/ai/HANDOFF.md` — next-session baton  
+- `/packages/sdk` — web↔API typed boundary  
+- `/packages/crypto`, `/packages/auth-core` — security helpers for API (when built)
 
 ## Next Recommended Action
 
-Execute Phase 0: open a fresh AI CLI session and paste:
-  "Read /ai/START_HERE.md and follow it. Then pick up P0-T1 per HANDOFF.md."
-Or run autonomously: `./run-phase.sh 8`
+1. Confirm **GitHub Actions CI is green** on `origin/main` (manual check on GitHub).
+2. Decompose Phase 2 in `/ai/TASKS.md` and scaffold `apps/api` (NestJS 11).
+
+## Session reconciliation
+
+CHAT_END (2026-05-09): Ran `/ai/templates/CHAT_END_PROMPT.md`; matched `origin/main` (clean); YAML parse
+(`ci.yml`, `dependabot.yml`); `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm audit --audit-level=high` (clean);
+`bash -n scripts/setup.sh`; `grep -c replace-with-` `.env.example` (=27). ARCHITECTURE / ROADMAP / TESTING /
+DEPLOYMENT / DECISIONS untouched this pass.

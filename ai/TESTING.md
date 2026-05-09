@@ -1,10 +1,13 @@
 # Testing Strategy
 
-Last Updated: 2026-05-08
+Last Updated: 2026-05-09
 
 ## Testing Status
-Fortress Template testing strategy. No tests exist yet — Phase 0 scaffolding
-is next.
+Fortress Template testing strategy. Vitest-backed unit and app tests are still
+ahead; Phase 0 adds **GitHub Actions** (`.github/workflows/ci.yml`) that run `pnpm lint`,
+`pnpm typecheck`, `pnpm test` (Turbo; may be no-op until packages define tests),
+`pnpm audit --audit-level=high`, Gitleaks, Semgrep, CodeQL, and SBOM generation on
+push and pull request.
 
 ---
 
