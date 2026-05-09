@@ -10,11 +10,19 @@ const postgresUrlSchema = z
     { message: 'DATABASE_URL must be a postgres:// or postgresql:// connection string' },
   );
 
+const redisUrlSchema = z
+  .string()
+  .min(1)
+  .refine((v) => /^redis:\/\//i.test(v), {
+    message: 'REDIS_URL must be a redis:// connection string',
+  });
+
 export const envSchema = z.object({
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
   PORT: z.coerce.number().int().min(1).max(65_535).default(4000),
   LOG_LEVEL: logLevelSchema.default('info'),
   DATABASE_URL: postgresUrlSchema,
+  REDIS_URL: redisUrlSchema,
 });
 
 export type AppEnvConfig = z.infer<typeof envSchema>;

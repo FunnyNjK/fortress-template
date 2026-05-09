@@ -12,6 +12,7 @@ describe('env validation', () => {
       PORT: '4010',
       LOG_LEVEL: 'debug',
       DATABASE_URL: 'postgresql://u:p@127.0.0.1:5432/db',
+      REDIS_URL: 'redis://127.0.0.1:6379/0',
     });
     expect(env.PORT).toBe(4010);
     expect(env.NODE_ENV).toBe('test');
@@ -24,6 +25,7 @@ describe('env validation', () => {
         NODE_ENV: 'development',
         PORT: 'not-a-port',
         DATABASE_URL: 'postgresql://u:p@127.0.0.1:5432/db',
+        REDIS_URL: 'redis://127.0.0.1:6379/0',
       }),
     ).toThrow();
   });
@@ -38,6 +40,7 @@ describe('env validation', () => {
           PORT: 4000,
           LOG_LEVEL: 'info',
           DATABASE_URL: 'postgresql://u:p@127.0.0.1:5432/db',
+          REDIS_URL: 'redis://127.0.0.1:6379/0',
         }),
       ).toThrow(/replace-with-/);
     } finally {

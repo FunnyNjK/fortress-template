@@ -1,8 +1,10 @@
 # Done Log
 
-Last Updated: 2026-05-09
+Last Updated: 2026-05-10
 
 ## 2026-05-10
+
+- **P2-T4** — Security middleware chain: **`apps/api/src/security/`** (`SecurityModule`, Helmet-based headers + explicit `Permissions-Policy`, dynamic **`express.json`** limits via **`BodyLimitRegistry`**, **`RateLimitGuard`** + **`ioredis`**, global **`ZodValidationPipe`**, **`FortressRequestLoggerMiddleware`**, **`FortressExceptionFilter`**); **`REDIS_URL`** in **`env.schema.ts`**; non-prod **`SecurityChainTestController`** (`/__security_chain__/…`); **`main.ts`** / tests use **`bodyParser: false`**; CI **`redis`** service + **`REDIS_URL`**; Vitest **`setup-env`** reads **`apps/api/.env`** and repo **`.env`** for **`DATABASE_URL`/`REDIS_URL`** defaults; integration tests **`test/security/security-chain.integration.test.ts`** (`describe.skipIf` when Redis unreachable locally unless **`CI=true`**). Pins: **`helmet@8.1.0`**, **`ioredis@5.8.2`**, **`express@5.2.1`**, **`@types/express@5.0.6`**. (`56a1ace`)
 
 - **Post-Phase-1 cleanup commit** — addresses findings from the Phase 0+1 review:
   - **Restored the migration ADR as ADR-026.** Original was written as ADR-023 on

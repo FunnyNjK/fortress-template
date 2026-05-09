@@ -1,24 +1,24 @@
 # AI Handoff
 
-Last Updated: 2026-05-09
+Last Updated: 2026-05-10
 
 > **Target shape: ≤ 50 lines.** Baton, not a diary.
 
 ## Current State Summary
 
-**Phase 2 in progress.** **`P2-T3` complete**: Drizzle **`audit_events`** + **`sessions`** (`apps/api/src/db/schema/`), migration **`drizzle/0001_rainy_hairball.sql`** + append-only **`BEFORE UPDATE OR DELETE`** trigger **`fortress_audit_events_append_only`**, **`meta/0001_snapshot.json`**. Integration tests **`test/db/audit-events-append-only.integration.test.ts`** (UPDATE/DELETE + orphan FK), **`test/db/sessions-schema.integration.test.ts`**.
+**Phase 2 in progress.** **`P2-T4` complete**: **`SecurityModule`** (`apps/api/src/security/`) — Helmet headers + **`Permissions-Policy`**, **`DynamicJsonBodyMiddleware`** (256KB default, **`@AllowLargeBody`**) keyed on **`req.originalUrl`**, **`RateLimitGuard`** + **`ioredis`** (120/60s general, 20/60s **`@AuthRoute()`**, IP + **`x-fortress-session-id`** buckets), **`ZodValidationPipe`**, **`FortressRequestLoggerMiddleware`**, **`FortressExceptionFilter`**. **`REDIS_URL`** validated in **`env.schema`**; CI **`redis`** service; **`main.ts`** **`bodyParser: false`**.
 
 ## Last Completed Task
 
-**P2-T3** — see `DONE_LOG.md`.
+**P2-T4** — see `DONE_LOG.md` (commit hash in that entry after push).
 
 ## Active Task
 
-**`P2-T4`** — Security middleware chain (`Unattended: Yes`).
+**`P2-T5`** — Session/audit + JWKS stub + CSRF (`Unattended: Yes`).
 
 ## Next Recommended Task
 
-Implement **`P2-T4`** per `/ai/TASKS.md`; keep API boundary rules (`AGENTS.md`).
+Implement **`P2-T5`** per `/ai/TASKS.md`; reuse **`FORTRESS_REDIS`**; extend rate limit keying once **`sessionId`** exists on the request.
 
 ## What Is Blocked
 
@@ -27,16 +27,15 @@ None.
 ## Important Instructions for Next AI
 
 - Confirm **CI green on `origin/main`** after pushes (GitHub Actions).
-- Phase 2 tasks **`P2-T4`–`P2-T6`** remain **`Unattended: Yes`** (matrix in `/ai/TASKS.md`).
+- Phase 2 **`P2-T5`–`P2-T6`** remain **`Unattended: Yes`** (matrix in `/ai/TASKS.md`).
+- Security integration tests **skip** when Redis is unreachable **unless** `CI=true` — local dev: `docker compose up -d redis` or set **`REDIS_URL`** in **`.env`** (also loaded from **`apps/api/test/setup-env.ts`** for Vitest).
 - **`pnpm`** may require `corepack prepare pnpm@10.33.4 --activate` or **`npx pnpm@10.33.4 <cmd>`** when `pnpm` is not on `PATH`.
-- **`pnpm approve-builds`** may be needed locally if installs ignore `@nestjs/core` lifecycle scripts (template default).
 - Pull-rebase before planning-file edits; deltas only (`/ai/templates/CHAT_END_PROMPT.md`).
-- Harness `<N>` equals remaining Phase 2 task count; humans gate phase boundaries (ADR-022).
 
 ## Known Risks
 
-- Workspace `engines.node` / `.node-version` must stay aligned with `packages/sdk`.
+- Fixed-window rate limits are an approximation of a token bucket (see **ADR-028**).
 
 ## Tests / Checks Last Run
 
-- CHAT_END (2026-05-09): `npx pnpm@10.33.4 lint` / `typecheck` / `test` / `build`; `pnpm audit --audit-level=high` (**1 moderate**); `python3` YAML load `ci.yml` / `dependabot.yml`; `bash -n scripts/setup.sh`; `grep -c replace-with-` `.env.example` (=27).
+- 2026-05-10: `pnpm lint` / `typecheck` / `test` / `build` (workspace).

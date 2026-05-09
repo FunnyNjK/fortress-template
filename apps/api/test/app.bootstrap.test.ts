@@ -26,7 +26,11 @@ describe('API bootstrap', () => {
       imports: [AppModule],
     }).compile();
 
-    app = moduleRef.createNestApplication({ bufferLogs: true, logger: false });
+    app = moduleRef.createNestApplication({
+      bufferLogs: true,
+      logger: false,
+      bodyParser: false,
+    });
     await app.init();
 
     await request(app.getHttpServer() as Server).get('/').expect(404);

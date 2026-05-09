@@ -1,16 +1,16 @@
 # Current State
 
-Last Updated: 2026-05-09
+Last Updated: 2026-05-10
 
 > **Target shape: ≤ 80 lines.** Snapshot only — implementation detail in DONE_LOG.md.
 
 ## Current Phase
 
-**Phase 2 (API skeleton).** **P2-T3** complete: **`audit_events`** (append-only trigger) + **`sessions`** Drizzle schemas, migration **`0001_*.sql`**, integration tests. Next: **`P2-T4`–`P2-T6`**.
+**Phase 2 (API skeleton).** **`P2-T4`** complete (security chain + Redis rate limit). Next: **`P2-T5`**–**`P2-T6`**.
 
 ## Current Task
 
-**`P2-T4`** — Security middleware chain. See `/ai/TASKS.md`.
+**`P2-T5`** — Session/audit service + JWKS stub + CSRF. See `/ai/TASKS.md`.
 
 ## What Exists Now
 
@@ -22,7 +22,7 @@ Last Updated: 2026-05-09
 - **`packages/observability`** — `createFortressLogger`, **`fortressPinoRedactPaths()`** export for nestjs-pino.
 - **`packages/sdk`** — `createFortressSdk`, `AuthMeResponseSchema` (Zod strict), `normalizeBaseUrl`; `engines.node` pinned.
 - **`packages/testing`** — Vitest fixtures importing `@fortress/types`.
-- **`apps/api`** — Nest shell + **Drizzle** (**through P2-T3**): **`DbModule`**, **`users`** / **`sessions`** / **`audit_events`**, migrations **`drizzle/`**, Vitest DB integration + CI Postgres.
+- **`apps/api`** — Nest + Drizzle + **P2-T4 security**: **`SecurityModule`** (headers, dynamic JSON body limits, Redis **`RateLimitGuard`**, Zod **`ValidationPipe`**, request logger, exception filter); **`REDIS_URL`** required in env; CI runs Redis service for tests; non-prod **`/__security_chain__/*`** test controller.
 - **`@types/node`** — root `devDependencies` for workspace `tsc` with `types: ["node"]`.
 
 ## What Works
@@ -32,7 +32,7 @@ Last Updated: 2026-05-09
 
 ## What Is Not Built Yet
 
-- Security middleware chain (**`P2-T4`**), auth / health (**`P2-T5`**+).
+- Auth / session service / health (**`P2-T5`**+).
 
 ## Known Problems
 
@@ -42,18 +42,17 @@ None.
 
 - `/apps/api` — Nest API + Drizzle.  
 - `/apps/api/drizzle` — SQL migrations + meta.  
+- `/apps/api/src/security` — inbound boundary middleware and guards.  
 - `/ai/HANDOFF.md` — next-session baton  
 - `/packages/sdk` — web↔API typed boundary  
 - `/packages/crypto`, `/packages/auth-core` — security helpers for API (when built)
 
 ## Next Recommended Action
 
-1. Confirm **GitHub Actions CI is green** on `origin/main` (manual check on GitHub).
-2. Implement **`P2-T4`** per `/ai/TASKS.md`.
+1. Confirm **GitHub Actions CI is green** on `origin/main` after push.
+2. Implement **`P2-T5`** per `/ai/TASKS.md`.
 3. When passing `<N>` to `./run-phase-cursor.sh`, pass exactly the Phase 2 task count — do not cross a phase boundary unattended (ADR-022).
 
 ## Session reconciliation
 
-2026-05-09 — **P2-T3**: `pnpm lint` / `typecheck` / `test` / `build` (workspace); API integration tests skip without `DATABASE_URL` (CI exercises against Postgres).
-
-CHAT_END (2026-05-09): Ran `/ai/templates/CHAT_END_PROMPT.md`; `git fetch` clean vs `origin/main` at `e9f57a0`; YAML `ci.yml` + `dependabot.yml` (**python3** `yaml.safe_load`); `npx pnpm@10.33.4 lint` / `typecheck` / `test` / `build`; `pnpm audit --audit-level=high` (**1 moderate**, below gate); `bash -n scripts/setup.sh`; `grep -c replace-with-` `.env.example` (=27); ARCHITECTURE / ROADMAP / TESTING / DEPLOYMENT / DECISIONS unchanged.
+2026-05-10 — **P2-T4**: full workspace `lint` / `typecheck` / `test` / `build`; **`ADR-028`** (security deps + rate-limit note).

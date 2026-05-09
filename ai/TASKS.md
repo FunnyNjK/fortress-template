@@ -1,8 +1,8 @@
 # Tasks
 
-Last Updated: 2026-05-09
+Last Updated: 2026-05-10
 
-CHAT_END (2026-05-09): `git fetch` vs `origin/main` at `e9f57a0` (clean); YAML `ci.yml` / `dependabot.yml` (**python3** `yaml.safe_load`); `npx pnpm@10.33.4 lint` + `typecheck` + `test` + `build`; `audit --audit-level=high` (**1 moderate**, below gate); `bash -n scripts/setup.sh`; `grep -c replace-with-` `.env.example` (=27); planning deltas only (`CHAT_END_PROMPT.md`). **`P2-T3`** landed (**`28730ce`**, DONE_LOG **`e9f57a0`**); active **`P2-T4`**.
+CHAT_END (2026-05-10): **`P2-T4`** complete (security chain + `REDIS_URL` + CI Redis); next **`P2-T5`**. Full workspace `lint` / `typecheck` / `test` / `build` green.
 
 Phase 0 is **complete** (P0-T1–P0-T8). **Phase 1** is **complete** (P1-T1–P1-T6): shared library
 packages landed. Next: **Phase 2** (`apps/api` skeleton). Phase 2–8 remain in Backlog until decomposed.
@@ -100,7 +100,7 @@ Rough unattended profiles — refine when each phase becomes active.
 
 ## Active Task
 
-**P2-T4** — Build the security middleware chain (`Unattended: Yes`). Depends on **`P2-T1`–`P2-T3`**.
+**P2-T5** — Server-side session/audit record service + JWKS verifier (stub) + CSRF (`Unattended: Yes`). Depends on **`P2-T1`–`P2-T4`**.
 
 ---
 
@@ -112,96 +112,7 @@ Rough unattended profiles — refine when each phase becomes active.
 
 ---
 
-### P2-T4: Build the security middleware chain
-Status: Backlog
-Owner: TBD
-Priority: High
-
-## Goal
-Implement the inbound boundary protection chain in the order documented in
-`/ai/reference/NEW_TEMPLATE_PROMPT.md` "API hardening": security headers →
-body size limit → rate limiter → Zod ValidationPipe → safe request logger →
-centralized exception filter. No auth dependency yet; the chain protects all
-routes including the future health endpoints.
-
-## Scope Included
-- `apps/api/src/security/` module exposing each component.
-- Helmet-equivalent header set: HSTS preload, COOP/COEP, X-Frame-Options
-  DENY, X-Content-Type-Options nosniff, Referrer-Policy
-  strict-origin-when-cross-origin, Permissions-Policy locked down.
-- Body size limit: 256KB default; Nest decorator `@AllowLargeBody(size)` for
-  per-route opt-in.
-- Rate limiter: token bucket via Redis (ioredis client wired here, shared
-  later with BullMQ). Defaults: general routes 120/60s per IP + per session;
-  routes tagged with `@AuthRoute()` 20/60s. Per-IP and per-session counters
-  combined. 429 response with `Retry-After`.
-- Global Zod `ValidationPipe`: fails 400 on schema violation, returns
-  generic message, never echoes user input.
-- Safe request logger middleware: structured Pino log per request with
-  redaction; never logs request body, only path/method/status/duration/ids.
-- Global exception filter: maps known errors to canonical codes; unknown
-  errors become 500 with no stack/message leakage; correlates via request id.
-
-## Scope Excluded
-- Authentication / JWKS verification (P2-T5).
-- CSRF middleware (P2-T5).
-- Session/audit lookups (P2-T5).
-- Health endpoints (P2-T6) — but the chain MUST cover them when added.
-
-## Files Likely Involved
-- `apps/api/src/security/security.module.ts`
-- `apps/api/src/security/headers.middleware.ts`
-- `apps/api/src/security/body-size.middleware.ts`
-- `apps/api/src/security/rate-limit.guard.ts`
-- `apps/api/src/security/redis.provider.ts`
-- `apps/api/src/security/validation.pipe.ts`
-- `apps/api/src/security/request-logger.middleware.ts`
-- `apps/api/src/security/exception.filter.ts`
-- `apps/api/src/security/decorators/auth-route.decorator.ts`
-- `apps/api/src/security/decorators/allow-large-body.decorator.ts`
-- `apps/api/src/app.module.ts` (wire chain)
-- `apps/api/test/security/*.integration.test.ts`
-
-## Acceptance Criteria
-- A stub controller (test-only or behind a `NODE_ENV !== 'production'` guard)
-  is reachable; the integration test exercises the full chain against it.
-- 121st request inside 60s on a general route returns 429 with `Retry-After`.
-- 21st request inside 60s on an `@AuthRoute()` returns 429.
-- POST with > 256KB body returns 413 unless route is `@AllowLargeBody`.
-- POST with malformed JSON or Zod schema mismatch returns 400 with generic
-  body (no echoed input).
-- Thrown `Error('boom')` inside a handler returns 500 with no stack in the
-  response body.
-- Pino logs do not contain `Authorization`, `Cookie`, or any redacted field
-  values (verified by inspecting captured log lines in the test).
-- Required security headers present on every response.
-
-## Test Requirements
-- supertest integration suite under `apps/api/test/security/`. Runs against
-  `docker-compose up -d redis postgres` (Redis required for rate limiter
-  state).
-- Rate-limit smoke test asserts both general and auth thresholds.
-- Header-presence assertion test.
-
-## Security Considerations
-- This is THE inbound boundary task. Order matters; verify the registration
-  order (headers must run before logger so 4xx responses still carry them).
-- Rate limiter must key on both IP and session id once sessions exist
-  (P2-T5); for now key on IP and a placeholder session header.
-- Exception filter must NEVER serialize stack traces in production responses.
-
-## Dev Environment Constraints
-- All work runs natively on Ubuntu 26 (`~/repos/<project>`).
-- Docker is for supporting services only (Postgres, Redis, mailpit, Azurite,
-  Unleash) via `docker-compose up -d`.
-- Apps run as native Node processes via `pnpm dev`. No Windows paths anywhere
-  in the repo.
-
-## Handoff Notes
-- Depends on P2-T1 (config + Pino baseline). Independent of P2-T2/T3/T5
-  except for the Redis client provider, which P2-T5 will reuse.
-- Pin `ioredis`, `helmet` (or hand-rolled equivalent), and rate-limit lib
-  versions exactly.
+### P2-T4: Build the security middleware chain — Done; see DONE_LOG.md.
 
 ---
 

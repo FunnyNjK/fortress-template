@@ -5,10 +5,12 @@ import { fortressPinoRedactPaths } from '@fortress/observability';
 
 import { EnvConfigModule } from './config/config.module.js';
 import { DbModule } from './db/db.module.js';
+import { SecurityModule } from './security/security.module.js';
 
 @Module({
   imports: [
     EnvConfigModule,
+    SecurityModule,
     DbModule,
     LoggerModule.forRootAsync({
       inject: [ConfigService],

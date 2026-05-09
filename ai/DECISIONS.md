@@ -1,6 +1,6 @@
 # Architecture Decision Records
 
-Last Updated: 2026-05-09
+Last Updated: 2026-05-10
 
 This file records decisions that affect architecture, dependencies, security,
 deployment, testing, or scope. ADRs ADR-001 through ADR-010 are pre-populated
@@ -771,6 +771,42 @@ listed them. The remaining six shared packages (`types`, `crypto`,
 ### Related Tasks
 P0-T2, P0-T3 (Phase 0 config packages); P1-T1 through P1-T6 (Phase 1
 runtime packages).
+
+---
+
+## ADR-028: API inbound security stack (helmet, ioredis, express) for P2-T4
+Date: 2026-05-10
+Status: Accepted
+
+### Decision
+Phase 2 task **P2-T4** adds **`helmet@8.1.0`**, **`ioredis@5.8.2`**, a direct
+**`express@5.2.1`** dependency (for typed `express.json` body limits aligned with
+**`@nestjs/platform-express@11.1.19`**), and **`@types/express@5.0.6`** on **`apps/api`**.
+Rate limiting uses a fixed window per Redis key (IP + placeholder session bucket);
+the template spec mentioned a “token bucket” — this implementation uses increment +
+TTL at a 60s window (see **`RATE_LIMIT_*`** in **`apps/api/src/security/constants.ts`**).
+
+### Reason
+- **Helmet** is the maintained baseline for security headers; Helmet 8’s bundled
+  **`helmet()`** omits Permissions-Policy, so the API sets **`Permissions-Policy`**
+  explicitly after Helmet in **`headers.middleware.ts`**.
+- **Redis** is required for shared rate-limit state across workers; **P2-T5** reuses
+  the same **`FORTRESS_REDIS`** provider.
+- **Express** is declared explicitly so middleware can call **`express.json`**
+  with per-route byte limits discovered from **`@AllowLargeBody`** metadata without
+  relying on transitive-only imports for types.
+
+### Tradeoffs
+- Fixed-window counters are simpler than a strict token bucket; abusive traffic
+  near a window edge can send slightly more than the nominal rate. Acceptable
+  for the template; product forks can swap the guard implementation while
+  keeping **`@AuthRoute()`** / **`x-fortress-session-id`** keying contract.
+- **`req.path`** can be empty under some Express/Nest edge cases; the dynamic
+  JSON middleware keys limits off **`req.originalUrl`** (pathname), matching
+  **`BodyLimitRegistry`** route keys.
+
+### Related Tasks
+P2-T4 (security middleware chain); P2-T5 (session-aware rate limit refinement).
 
 ---
 
