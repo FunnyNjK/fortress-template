@@ -46,4 +46,4 @@ None (**human reviewer** **APPROVED** owed; **`CI`** (**`workflow`** **`name`** 
 
 ## Session reconciliation
 
-**Captured **`HEAD`** **`fef64d07caa3b620c90b4fac810196a895b5a8d6`** (**`SHORT`** **`fef64d0`**) with **`workflow`** **`CI`** **`databaseId`** **`25611142953`** **`success`** — **no** Phase 2 **`Complete`** / **APPROVED** claim.
+Planning **`CHAT`**: **`DONE_LOG`** **`CHAT_END`** rows carry **`workflow`** **`CI`** **`gh`** **`JSON`** (**e.g.** **`fef64d0`**, **`databaseId`** **`25611142953`**, **`success`**). **`HEAD`** churns **`on`** **`planning`** **`commits`** **`—`** **`pull`** **`+`** **`gh run list`** **`name`** **`CI`** **`against`** **`origin/main`** (**no **`Complete`** / **`APPROVED`** claim**).
