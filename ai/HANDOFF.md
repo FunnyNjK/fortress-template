@@ -6,20 +6,20 @@ Last Updated: 2026-05-09
 
 ## Current State Summary
 
-P0-T3 complete: `packages/config-eslint` (`@fortress/config-eslint`). Active task is
-**P0-T4** (root `docker-compose.yml`).
+P0-T4 complete: root `docker-compose.yml` + init SQL for `unleash` DB. Active task is
+**P0-T5** (`.env.example`).
 
 ## Last Completed Task
 
-P0-T3: Add shared ESLint config package — see DONE_LOG.md.
+P0-T4: Add docker-compose.yml for local dev supporting services — see DONE_LOG.md.
 
 ## Active Task
 
-P0-T4: Add docker-compose.yml for local dev supporting services. Status: Active.
+P0-T5: Add `.env.example`. Status: Active.
 
 ## Next Recommended Task
 
-Execute P0-T4 per `/ai/TASKS.md`, then commit and push.
+Execute P0-T5 per `/ai/TASKS.md`, then commit and push.
 
 ## What Is Blocked
 
@@ -27,7 +27,7 @@ None.
 
 ## Important Instructions for Next AI
 
-- Do not start P0-T5 until P0-T4 is done, committed, and pushed (or push is
+- Do not start P0-T6 until P0-T5 is done, committed, and pushed (or push is
   explicitly skipped), CI-green per project rules.
 - No application/business logic in Phase 0 packages beyond config files.
 - Honor `/ai/AI_RULES.md` and `/ai/DEV_ENVIRONMENT.md`.
@@ -38,5 +38,5 @@ None.
 
 ## Tests / Checks Last Run
 
-- `npx pnpm@10.33.4 install`; `pnpm --filter @fortress/config-eslint exec eslint .`;
-  `pnpm run typecheck`; `pnpm run lint`.
+- `docker compose config` (OK); `docker compose up -d` smoke (all services healthy);
+  `npx pnpm@10.33.4 run typecheck`; `npx pnpm@10.33.4 run lint`.

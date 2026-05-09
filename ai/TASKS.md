@@ -2,7 +2,7 @@
 
 Last Updated: 2026-05-09
 
-Phase 0 tasks are queued and ready for execution. P0-T4 is Active.
+Phase 0 tasks are queued and ready for execution. **P0-T5** is Active.
 Phase 1–8 placeholders are in Backlog; each will be decomposed when its phase becomes active.
 
 ---
@@ -56,88 +56,15 @@ Rough unattended profiles — refine when each phase becomes active.
 
 ### P0-T3: Add shared ESLint config package — Done; see DONE_LOG.md.
 
+### P0-T4: Add docker-compose.yml for local dev supporting services — Done; see DONE_LOG.md.
+
 ---
 
 ## Active Task
 
-### P0-T4: Add docker-compose.yml for local dev supporting services
-
-Status: Active
-Owner: AI CLI (unattended)
-Priority: High
-Unattended: Yes
-
-### Goal
-
-Provide a `docker-compose.yml` at the repo root that boots all supporting services
-needed for local development and testing. Apps run natively — only data/infra
-services live in Docker.
-
-### Scope Included
-
-- `docker-compose.yml` (root) with five named services:
-  - `postgres` — Postgres 18, port 5432, named volume, health check
-  - `redis` — Redis 8, port 6379, named volume, health check
-  - `mailpit` — SMTP port 1025, web UI port 8025, named volume
-  - `azurite` — Azure Blob Storage emulator, ports 10000–10002, named volume
-  - `unleash` — Unleash feature-flag server, port 4242 (plus its Postgres dependency)
-- Top-level comment block documenting each service's port, purpose, and the env var
-  that points at it
-
-### Scope Excluded
-
-- App `Dockerfiles` (Phase 6 infra)
-- Production image builds (Phase 6)
-- Any networking beyond the default compose bridge network
-
-### Files Likely Involved
-
-- `docker-compose.yml` (create)
-
-### Acceptance Criteria
-
-- `docker-compose config` exits 0 (valid YAML and valid Compose spec)
-- All 5 services defined with: exact image version (no `latest` tags), named volume,
-  health check, and documented port mapping
-- Postgres and Redis credentials set via environment variables (safe local-dev defaults)
-- Comment block at top documents all ports and their corresponding env var names
-
-### Test Requirements
-
-- `docker-compose config` exits 0
-- Manual smoke test (outside CI): `docker-compose up -d` boots all services; each
-  responds on its documented port
-
-### Security Considerations
-
-- No `latest` image tags — pin to digest or exact version tag
-- Postgres and Redis must require passwords (non-empty `POSTGRES_PASSWORD`, `requirepass`)
-- Compose is local-dev-only; services must not bind to `0.0.0.0` in a way that is
-  reachable outside the dev machine by default
-
-### Dev Environment Constraints
-
-- All work runs natively in WSL Ubuntu (`~/repos/fortress-template`).
-- Supporting services (Postgres, Redis, etc.) run in Docker via `docker-compose up -d`.
-- App processes must NOT run in Docker locally.
-- No `/mnt/c` paths in code or scripts.
-
-### Handoff Notes
-
-- `.env.example` (P0-T5) and `scripts/setup.sh` (P0-T6) both reference the ports
-  and credentials defined here — write those after this task.
-
-### Verification Step
-
-`docker-compose config` exits 0.
-
----
-
-## Ready
-
 ### P0-T5: Add .env.example
 
-Status: Ready
+Status: Active
 Owner: AI CLI (unattended)
 Priority: High
 Unattended: Yes
@@ -204,6 +131,8 @@ to `localhost` ports matching `docker-compose.yml`.
 `grep -c "replace-with-" .env.example` returns ≥ 1.
 
 ---
+
+## Ready
 
 ### P0-T6: Add scripts/setup.sh and scripts/setup.ps1
 

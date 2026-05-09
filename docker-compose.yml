@@ -1,0 +1,111 @@
+# Fortress template — local supporting services only. Run apps on the host (`pnpm dev`), not here.
+#
+# Ports, purpose, and the primary env var each service maps to in app configuration:
+#
+# | Service      | Ports (host → container)                      | Env / connection |
+# |--------------|------------------------------------------------|-------------------|
+# | postgres     | 5432 → 5432                                    | DATABASE_URL (postgresql://...@127.0.0.1:5432/...) |
+# | redis        | 6379 → 6379                                     | REDIS_URL (redis://:password@127.0.0.1:6379) |
+# | mailpit      | 1025 → SMTP, 8025 → web UI                     | SMTP_URL / mail client pointed at smtp://127.0.0.1:1025 |
+# | azurite      | 10000 blob, 10001 queue, 10002 table            | AZURE_STORAGE_CONNECTION_STRING (Azurite / dev emulator) |
+# | unleash      | 4242 → HTTP                                     | UNLEASH_URL (e.g. http://127.0.0.1:4242) |
+#
+# Bindings use 127.0.0.1 so published ports stay on the loopback interface during local dev.
+# Set POSTGRES_* and REDIS_PASSWORD in a root `.env` or via the shell — never ship real secrets here.
+
+services:
+  postgres:
+    image: postgres:18-alpine@sha256:54451ecb8ab38c24c3ec123f2fd501303a3a1856a5c66e98cecf2460d5e1e9d7
+    container_name: fortress-postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-fortress}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-FortressLocalPostgres_7c4a9}
+      POSTGRES_DB: ${POSTGRES_DB:-fortress}
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      # Postgres 18+ images expect the named volume on /var/lib/postgresql (not .../data).
+      - fortress_postgres_data:/var/lib/postgresql
+      - ./docker/postgres/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$$POSTGRES_USER\" -d \"$$POSTGRES_DB\""]
+      interval: 5s
+      timeout: 5s
+      retries: 6
+      start_period: 15s
+
+  redis:
+    image: redis:8-alpine@sha256:d146f83b1e0f02fc27c26a50cee39338c736674c5959db84363e6ae3cd9e02d2
+    container_name: fortress-redis
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-FortressLocalRedis_5b2e8}
+    command:
+      - sh
+      - -c
+      - redis-server --save "" --appendonly no --requirepass "$$REDIS_PASSWORD"
+    ports:
+      - "127.0.0.1:6379:6379"
+    volumes:
+      - fortress_redis_data:/data
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli -a \"$$REDIS_PASSWORD\" ping | grep -q PONG"]
+      interval: 5s
+      timeout: 5s
+      retries: 6
+      start_period: 10s
+
+  mailpit:
+    image: axllent/mailpit:v1.24.1@sha256:4873e5a441ed368f1e98a832f61257a033859f5e829542cd03fb772d2282ea4e
+    container_name: fortress-mailpit
+    ports:
+      - "127.0.0.1:1025:1025"
+      - "127.0.0.1:8025:8025"
+    volumes:
+      - fortress_mailpit_data:/data
+    healthcheck:
+      test: ["CMD", "/mailpit", "readyz"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  azurite:
+    image: mcr.microsoft.com/azure-storage/azurite:3.34.0@sha256:0a47e12e3693483cef5c71f35468b91d751611f172d2f97414e9c69113b106d9
+    container_name: fortress-azurite
+    ports:
+      - "127.0.0.1:10000:10000"
+      - "127.0.0.1:10001:10001"
+      - "127.0.0.1:10002:10002"
+    volumes:
+      - fortress_azurite_data:/data
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:10000/ || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+      start_period: 15s
+
+  unleash:
+    image: unleashorg/unleash-server:6.8.0@sha256:4d976e9b678a2d38d562065f761a2c7d5e9d6b28dd4726ec85b31676704f3ee5
+    container_name: fortress-unleash
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgres://${POSTGRES_USER:-fortress}:${POSTGRES_PASSWORD:-FortressLocalPostgres_7c4a9}@postgres:5432/unleash
+      DATABASE_SSL: "false"
+      LOG_LEVEL: warn
+    ports:
+      - "127.0.0.1:4242:4242"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:4242/health > /dev/null"]
+      interval: 10s
+      timeout: 5s
+      retries: 8
+      start_period: 90s
+
+volumes:
+  fortress_postgres_data:
+  fortress_redis_data:
+  fortress_mailpit_data:
+  fortress_azurite_data:
