@@ -10,7 +10,7 @@ Last Updated: 2026-05-09
 
 ## Last Completed Task
 
-**`P2-T6`** — see **`DONE_LOG.md`** / **`git log -1`** on **`origin/main`** after **`push`**.
+**`P2-T6`** — **`DONE_LOG`** / **`origin/main`** **`f65aca4`**.
 
 ## Active Task
 
