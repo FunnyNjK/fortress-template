@@ -2,7 +2,7 @@
 
 Last Updated: 2026-05-09
 
-CHAT_END (2026-05-09): `git fetch` vs `origin/main` at `fbed14e` (clean); YAML `ci.yml` / `dependabot.yml` (**python3**); `npx pnpm@10.33.4 lint` + `typecheck` + `test` + `build`; `audit --audit-level=high` (**1 moderate**); `bash -n scripts/setup.sh`; `grep -c replace-with-` `.env.example` (=27); planning deltas only. **`P2-T2`** landed (`70dab75`); doc-hash fix (`fbed14e`).
+CHAT_END (2026-05-09): `git fetch` vs `origin/main` at `e9f57a0` (clean); YAML `ci.yml` / `dependabot.yml` (**python3** `yaml.safe_load`); `npx pnpm@10.33.4 lint` + `typecheck` + `test` + `build`; `audit --audit-level=high` (**1 moderate**, below gate); `bash -n scripts/setup.sh`; `grep -c replace-with-` `.env.example` (=27); planning deltas only (`CHAT_END_PROMPT.md`). **`P2-T3`** landed (**`28730ce`**, DONE_LOG **`e9f57a0`**); active **`P2-T4`**.
 
 Phase 0 is **complete** (P0-T1–P0-T8). **Phase 1** is **complete** (P1-T1–P1-T6): shared library
 packages landed. Next: **Phase 2** (`apps/api` skeleton). Phase 2–8 remain in Backlog until decomposed.

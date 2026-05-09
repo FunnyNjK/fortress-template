@@ -56,4 +56,4 @@ None.
 
 2026-05-09 — **P2-T3**: `pnpm lint` / `typecheck` / `test` / `build` (workspace); API integration tests skip without `DATABASE_URL` (CI exercises against Postgres).
 
-CHAT_END (2026-05-09): Ran `/ai/templates/CHAT_END_PROMPT.md`; `git fetch` vs `origin/main` at `fbed14e` (clean); YAML `ci.yml` + `dependabot.yml` (**python3**); `npx pnpm@10.33.4 lint` / `typecheck` / `test` / `build`; `pnpm audit --audit-level=high` (**1 moderate**); `bash -n scripts/setup.sh`; `grep -c replace-with-` `.env.example` (=27); ARCHITECTURE / ROADMAP / TESTING / DEPLOYMENT / DECISIONS unchanged.
+CHAT_END (2026-05-09): Ran `/ai/templates/CHAT_END_PROMPT.md`; `git fetch` clean vs `origin/main` at `e9f57a0`; YAML `ci.yml` + `dependabot.yml` (**python3** `yaml.safe_load`); `npx pnpm@10.33.4 lint` / `typecheck` / `test` / `build`; `pnpm audit --audit-level=high` (**1 moderate**, below gate); `bash -n scripts/setup.sh`; `grep -c replace-with-` `.env.example` (=27); ARCHITECTURE / ROADMAP / TESTING / DEPLOYMENT / DECISIONS unchanged.

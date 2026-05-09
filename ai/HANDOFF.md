@@ -39,4 +39,4 @@ None.
 
 ## Tests / Checks Last Run
 
-- P2-T3 (2026-05-09): `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm build` (workspace).
+- CHAT_END (2026-05-09): `npx pnpm@10.33.4 lint` / `typecheck` / `test` / `build`; `pnpm audit --audit-level=high` (**1 moderate**); `python3` YAML load `ci.yml` / `dependabot.yml`; `bash -n scripts/setup.sh`; `grep -c replace-with-` `.env.example` (=27).
