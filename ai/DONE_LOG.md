@@ -4,6 +4,13 @@ Last Updated: 2026-05-09
 
 ## 2026-05-09
 
+- P0-T3: Add shared ESLint config package — `packages/config-eslint`
+  (`@fortress/config-eslint`): `base.js` (`typescript-eslint` strict type-checked,
+  `no-floating-promises`, `consistent-type-imports`, `no-unsafe-*`, `no-eval` /
+  `no-implied-eval`, `no-console` warn), `next.js` (FlatCompat + `next/core-web-vitals`),
+  `node.js` (`eslint-plugin-n` flat recommended + Node globals), `eslint.config.js`
+  self-lint (`disableTypeChecked` for `.js`), `README.md`, **ADR-024** for dependency stack.
+  (`TBD`)
 - P0-T2: Add shared TypeScript config package — `packages/config-typescript`
   (`@fortress/config-typescript`): `base.json`, `next.json`, `node.json`, `library.json`,
   `README.md`, `exports` map, `tsconfig.json` + `tsconfig.package-path.json` validating
@@ -14,7 +21,9 @@ Last Updated: 2026-05-09
   root `package.json` (`packageManager` pnpm@10.33.4, turbo 2.9.12), `.node-version`
   24.15.0, `.editorconfig`, `.prettierrc`; `pnpm-lock.yaml` from install. (`a58986b`)
 - Post-P0-T1 planning: DONE_LOG hash footnote (`9bce76f`); HANDOFF/CURRENT_STATE push sync (`0dc397f`).
-- CHAT_END template pass: durable ahead-of-origin wording, DONE_LOG completeness.
+- CHAT_END (2026-05-09): Ran `/ai/templates/CHAT_END_PROMPT.md`; refreshed `CURRENT_STATE`
+  tip-of-`main` pointer; `ARCHITECTURE` / `ROADMAP` / `TESTING` / `DEPLOYMENT` / `DECISIONS`
+  unchanged (not touched this pass). (`TBD`)
 
 ## 2026-05-02
 - Created customized AI project starter for WSL-native dev with Astro 5 +

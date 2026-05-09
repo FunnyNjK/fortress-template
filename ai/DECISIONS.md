@@ -624,6 +624,33 @@ P0-T2 (shared `tsconfig` package), later Phase 1+ packages and apps.
 
 ---
 
+## ADR-024: ESLint 9 flat stack for `@fortress/config-eslint`
+Date: 2026-05-09
+Status: Accepted
+
+### Decision
+Phase 0 shared lint package **`@fortress/config-eslint`** depends on **`eslint` 9**,
+**`typescript-eslint`** (strict type-checked presets + project service),
+**`@eslint/js`**, **`@eslint/eslintrc`** + **`@eslint/compat`** (FlatCompat for
+`eslint-config-next`), **`eslint-config-next`** (Next.js Core Web Vitals rules),
+**`eslint-plugin-n`** (Node recommended flat rules), and **`globals`** (Node
+globals for the Node preset). Consumers use **`peerDependencies`** `eslint` and
+`typescript`.
+
+### Reason
+TASKS P0-T3 requires type-checked `@typescript-eslint` rules, Next and Node
+presets, and self-lint of the config package without per-app `eslint.config.js`
+in Phase 0.
+
+### Tradeoffs
+`eslint-config-next` is still consumed via compatibility layer until the monorepo
+pins a Next app and can revisit native flat-only Next config.
+
+### Related Tasks
+P0-T3; Phase 1+ apps will extend these presets.
+
+---
+
 ## ADR Template
 
 ## ADR-XXX: Title

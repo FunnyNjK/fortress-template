@@ -6,11 +6,11 @@ Last Updated: 2026-05-09
 
 ## Current Phase
 
-Phase 0 (Repo skeleton) — in progress. P0-T1–P0-T2 complete; **P0-T3** active.
+Phase 0 (Repo skeleton) — in progress. P0-T1–P0-T3 complete; **P0-T4** active.
 
 ## Current Task
 
-P0-T3: Add shared ESLint config package. Status: Active.
+P0-T4: Add `docker-compose.yml` for local dev supporting services. Status: Active.
 
 ## What Exists Now
 
@@ -20,28 +20,31 @@ P0-T3: Add shared ESLint config package. Status: Active.
   already met Phase 0 secret/output patterns.
 - `packages/config-typescript/` — `@fortress/config-typescript` presets (`base`,
   `next`, `node`, `library`) + tooling stub + package-path `tsconfig` check.
-- No `apps/` yet; other `packages/` pending (P0-T3+).
+- `packages/config-eslint/` — `@fortress/config-eslint` flat configs (`base`, `next`,
+  `node`), self-lint via `eslint.config.js`; `pnpm run lint` runs this package.
+- No `apps/` yet; P0-T4+ pending.
 
 ## What Works
 
 - `pnpm install` from repo root; `pnpm run typecheck` runs `@fortress/config-typescript`
-  `typecheck` via Turbo.
+  via Turbo; `pnpm run lint` runs `@fortress/config-eslint` lint.
 
 ## What Is Not Built Yet
 
-- P0-T3 through P0-T8; all application code and Phases 1–8 per roadmap.
+- P0-T4 through P0-T8; all application code and Phases 1–8 per roadmap.
 
 ## Known Problems
 
-None. `origin/main` includes P0-T2 as of this handoff (`67200e7`).
+None on published `origin/main` tip; this session completes P0-T3 locally (commit/push pending).
 
 ## Important Files or Folders
 
 - `/ai/HANDOFF.md` — next session baton
-- `/ai/TASKS.md` — P0-T3 active
+- `/ai/TASKS.md` — P0-T4 active
 - `packages/config-typescript/` — shared TS configs
+- `packages/config-eslint/` — shared ESLint flat configs
 
 ## Next Recommended Action
 
-1. Complete P0-T3 (`packages/config-eslint`), then commit and push.  
+1. Commit and push P0-T3, then execute **P0-T4** per TASKS.md.  
 2. Continue Phase 0 toward P0-T8.

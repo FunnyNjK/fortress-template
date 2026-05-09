@@ -2,7 +2,7 @@
 
 Last Updated: 2026-05-09
 
-Phase 0 tasks are queued and ready for execution. P0-T3 is Active.
+Phase 0 tasks are queued and ready for execution. P0-T4 is Active.
 Phase 1–8 placeholders are in Backlog; each will be decomposed when its phase becomes active.
 
 ---
@@ -54,80 +54,15 @@ Rough unattended profiles — refine when each phase becomes active.
 
 ### P0-T2: Add shared TypeScript config package — Done; see DONE_LOG.md.
 
+### P0-T3: Add shared ESLint config package — Done; see DONE_LOG.md.
+
 ---
 
 ## Active Task
 
-### P0-T3: Add shared ESLint config package
-
-Status: Active
-Owner: AI CLI (unattended)
-Priority: High
-Unattended: Yes
-
-### Goal
-
-Create `packages/config-eslint` with shared ESLint flat configs for all workspace
-members. Type-checked rules, no-floating-promises, and consistent-type-imports
-enforced across all apps and packages.
-
-### Scope Included
-
-- `packages/config-eslint/package.json` — name: `@fortress/config-eslint`
-- `packages/config-eslint/base.js` — type-checked rules, no-floating-promises,
-  consistent-type-imports, no-eval, no-implied-eval, no-console (warn)
-- `packages/config-eslint/next.js` — extends base, Next.js plugin rules
-- `packages/config-eslint/node.js` — extends base, Node-specific rules
-- `packages/config-eslint/README.md` — one paragraph on role and usage
-
-### Scope Excluded
-
-- App-level `eslint.config.js` files (created when apps are scaffolded)
-- Prettier integration (handled by root `.prettierrc` + prettier-plugin)
-
-### Files Likely Involved
-
-- `packages/config-eslint/` (create all files listed above)
-
-### Acceptance Criteria
-
-- `@fortress/config-eslint` resolves correctly in the workspace
-- `base.js` exports a valid ESLint flat config array
-- `no-floating-promises` and `consistent-type-imports` rules are enabled
-- `no-eval` and `no-implied-eval` are enabled
-- `eslint .` passes when run against `packages/config-eslint` itself (self-linting)
-
-### Test Requirements
-
-- `pnpm --filter @fortress/config-eslint exec eslint .` exits 0
-
-### Security Considerations
-
-- `no-eval` and `no-implied-eval` must be enabled (XSS / injection prevention)
-- `@typescript-eslint/no-unsafe-*` rules enabled to catch boundary violations early
-
-### Dev Environment Constraints
-
-- All work runs natively in WSL Ubuntu (`~/repos/fortress-template`).
-- No Docker for application processes.
-- No `/mnt/c` paths in code or scripts.
-
-### Handoff Notes
-
-- Depends on P0-T1 (workspace installable).
-- Depends on P0-T2 (`@fortress/config-typescript` for workspace-wide TS version / presets).
-
-### Verification Step
-
-`pnpm --filter @fortress/config-eslint exec eslint .` exits 0.
-
----
-
-## Ready
-
 ### P0-T4: Add docker-compose.yml for local dev supporting services
 
-Status: Ready
+Status: Active
 Owner: AI CLI (unattended)
 Priority: High
 Unattended: Yes
@@ -197,6 +132,8 @@ services live in Docker.
 `docker-compose config` exits 0.
 
 ---
+
+## Ready
 
 ### P0-T5: Add .env.example
 
