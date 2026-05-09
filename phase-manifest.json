@@ -1,0 +1,76 @@
+{
+  "phases": [
+    {
+      "id": "P0",
+      "title": "Repo skeleton",
+      "task_count": 8,
+      "task_ids": ["P0-T1", "P0-T2", "P0-T3", "P0-T4", "P0-T5", "P0-T6", "P0-T7", "P0-T8"],
+      "verification": "pnpm install && pnpm typecheck && pnpm lint succeed; CI green on initial commit",
+      "status": "Ready"
+    },
+    {
+      "id": "P1",
+      "title": "Shared packages",
+      "task_count": null,
+      "task_ids": [],
+      "verification": "Each package has smoke tests; all build, lint, and link correctly",
+      "status": "Backlog"
+    },
+    {
+      "id": "P2",
+      "title": "API skeleton",
+      "task_count": null,
+      "task_ids": [],
+      "verification": "API boots; security middleware chain integration test passes; rate-limit smoke test passes",
+      "status": "Backlog"
+    },
+    {
+      "id": "P3",
+      "title": "Web skeleton",
+      "task_count": null,
+      "task_ids": [],
+      "verification": "E2E: a user can sign up via Clerk, land in app, see 'hello, [name]', sign out",
+      "status": "Backlog"
+    },
+    {
+      "id": "P4",
+      "title": "Worker skeleton",
+      "task_count": null,
+      "task_ids": [],
+      "verification": "Worker consumes a test job; retry/backoff demonstrated; Postmark webhook signature verifies",
+      "status": "Backlog"
+    },
+    {
+      "id": "P5",
+      "title": "Marketing site",
+      "task_count": null,
+      "task_ids": [],
+      "verification": "Lighthouse 95+ on performance and security headers; CSP report-only mode wired",
+      "status": "Backlog"
+    },
+    {
+      "id": "P6",
+      "title": "Infrastructure",
+      "task_count": null,
+      "task_ids": [],
+      "verification": "terraform plan -var-file=dev.tfvars succeeds for both Azure and AWS modules with no errors",
+      "status": "Backlog"
+    },
+    {
+      "id": "P7",
+      "title": "Documentation",
+      "task_count": null,
+      "task_ids": [],
+      "verification": "All runbooks linked from docs/index.md; no broken links",
+      "status": "Backlog"
+    },
+    {
+      "id": "P8",
+      "title": "Acceptance",
+      "task_count": null,
+      "task_ids": [],
+      "verification": "Every box in NEW_TEMPLATE_PROMPT.md acceptance criteria is checked",
+      "status": "Backlog"
+    }
+  ]
+}

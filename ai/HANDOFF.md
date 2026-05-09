@@ -5,39 +5,45 @@ Last Updated: 2026-05-08
 > **Target shape: ≤ 50 lines.** Baton, not a diary.
 
 ## Current State Summary
-Stage 1 of the Fortress Template kickoff is complete. All `/ai/` planning files
-have been realigned away from the `ai-starter` static-site pattern (Astro + Azure
-SWA + Functions + Postmark + Turnstile contact form) and toward the Fortress SaaS
-chassis (Next.js 16 / NestJS 11 / Drizzle / Postgres 18 / Redis 8 / Clerk /
-Tailwind 4 / BullMQ / Terraform). Awaiting human approval to run Stage 2.
+
+Stage 2 of the Fortress Template kickoff is complete. Phase 0 task breakdown
+(P0-T1 through P0-T8) produced. `/PHASE_MANIFEST.md` and `/phase-manifest.json`
+created. `/ai/TASKS.md` fully populated. Phase 0 is `Ready`; P0-T1 is `Active`.
+No application code has been written. No packages installed. No infra applied.
 
 ## Last Completed Task
-Stage 1: Planning realignment (this session). No prior tasks.
+
+Stage 2: Phase 0 task breakdown + phase manifest (this session).
 
 ## Active Task
-None. Pending human approval.
+
+P0-T1: Initialize the monorepo skeleton. Status: Active (ready to execute; not yet started).
 
 ## Next Recommended Task
-Stage 2 of the kickoff prompt: produce Phase 0 task breakdown + phase manifest.
-Read `/KICKOFF_PROMPT.md` "STAGE 2" section for the full instructions.
+
+Execute P0-T1. Open a fresh AI CLI session and paste:
+  "Read /ai/START_HERE.md and follow it. Then pick up P0-T1 per HANDOFF.md."
+
+Or run all 8 Phase 0 tasks autonomously: `./run-phase.sh 8`
 
 ## What Is Blocked
-Nothing is blocked. Stage 2 requires explicit human approval of Stage 1 first.
+
+Nothing is blocked.
 
 ## Important Instructions for Next AI
-- Read `/ai/START_HERE.md` first, then `/ai/reference/NEW_TEMPLATE_PROMPT.md`,
-  then `/KICKOFF_PROMPT.md`.
-- Do NOT begin Phase 0 execution. Stage 2 is planning only (task breakdown + manifest).
-- Do NOT write application code in Stage 2 — it is planning only.
-- When Stage 2 is done: populate `/ai/TASKS.md` with P0-T1 through P0-T8,
-  create `/PHASE_MANIFEST.md` and `/phase-manifest.json`, update this file
-  to point at P0-T1 as the next pickup.
+
+- Read `/ai/START_HERE.md` first, then `/ai/CURRENT_STATE.md` and `/ai/TASKS.md`.
+- P0-T1 is the active task: initialize the monorepo skeleton (no app code).
+- Do NOT begin P0-T2 until P0-T1 is committed and CI-green.
+- Do NOT write application code or business logic in Phase 0.
 - Honor `/ai/AI_RULES.md` and `/ai/DEV_ENVIRONMENT.md` as non-negotiable.
 - Push after every commit.
 
 ## Known Risks
+
 - `REFRESH_PROMPT.md` is still `ai-starter`-era content; needs a Fortress-aware
-  rewrite in a future pass. Flag in `PROJECT_STATUS.md` once it is created (Phase 0).
+  rewrite in a future pass. Flag in `PROJECT_STATUS.md` when P0-T8 creates it.
 
 ## Tests / Checks Last Run
-None. Stage 1 is planning files only.
+
+None. Stage 2 is planning files only.

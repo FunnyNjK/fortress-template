@@ -5,41 +5,51 @@ Last Updated: 2026-05-08
 > **Target shape: ≤ 80 lines.** Snapshot only — implementation detail in DONE_LOG.md.
 
 ## Current Phase
-Stage 1 of kickoff complete (planning realignment); Phase 0 not yet started.
-Phase 0 will scaffold the monorepo skeleton, tooling, CI, and supporting files.
+
+Phase 0 (Repo skeleton) — `Ready`. Task breakdown complete; execution not yet started.
 
 ## Current Task
-None. Awaiting human approval to run Stage 2 (Phase 0 task breakdown).
+
+P0-T1: Initialize the monorepo skeleton. Status: Active (ready to execute).
 
 ## What Exists Now
-- `/ai/` planning files realigned to Fortress Template stack.
+
+- `/ai/` planning files realigned to Fortress Template stack (Stage 1 complete).
+- `/ai/TASKS.md` populated with P0-T1 through P0-T8 and Phase 1–8 placeholders (Stage 2 complete).
+- `/PHASE_MANIFEST.md` and `/phase-manifest.json` created (Stage 2 complete).
 - `run-phase.sh` and `run-phase-cursor.sh` present and ready for Phase 0.
 - No application code. No `package.json`. No `pnpm-workspace.yaml`. No infra applied.
-- Git initialized; no remote configured yet.
 
 ## What Works
+
 - AI workflow ready (`/ai/START_HERE.md` → `/ai/HANDOFF.md` → `/ai/TASKS.md`).
-- `run-phase.sh` can drive Phase 0 tasks once they are queued (Stage 2).
+- Phase 0 fully planned: 8 tasks, all `Unattended: Yes`.
+- `./run-phase.sh 8` will drive all 8 Phase 0 tasks autonomously once execution begins.
 
 ## What Is Not Built Yet
+
 - Everything in `/ai/reference/NEW_TEMPLATE_PROMPT.md` acceptance criteria.
 - Phase 0: monorepo skeleton, tsconfig, eslint, docker-compose, .env.example,
   scripts/setup, CI workflow, security.txt, AGENTS.md, PROJECT_STATUS.md.
 - Phases 1–8: all application code, packages, infra, docs.
 
 ## Known Problems
-- None.
+
+None.
 
 ## Important Files or Folders
+
 - `/ai/reference/NEW_TEMPLATE_PROMPT.md` — authoritative spec
-- `/KICKOFF_PROMPT.md` — kickoff instructions (historical reference after Stage 1)
+- `/KICKOFF_PROMPT.md` — kickoff instructions (historical reference)
 - `/ai/START_HERE.md` — AI workflow entry point
 - `/ai/AI_RULES.md` — hard rules (WSL-native, push after commit, etc.)
 - `/ai/DECISIONS.md` — ADR-001 through ADR-022
-- `/ai/TASKS.md` — task tracker (Phase 0 tasks populated in Stage 2)
-- `/ai/HANDOFF.md` — next-session pickup point
+- `/ai/TASKS.md` — P0-T1 through P0-T8 queued; Phases 1–8 placeholders in Backlog
+- `/PHASE_MANIFEST.md` — human-readable 9-phase manifest
+- `/phase-manifest.json` — machine-readable manifest for run-phase.sh
 
 ## Next Recommended Action
-Human reviews Stage 1 realignment. When approved: paste KICKOFF_PROMPT.md
-into a fresh session (or reply "approve Stage 1, run Stage 2" in this session)
-to produce the Phase 0 task breakdown and phase manifest.
+
+Execute Phase 0: open a fresh AI CLI session and paste:
+  "Read /ai/START_HERE.md and follow it. Then pick up P0-T1 per HANDOFF.md."
+Or run autonomously: `./run-phase.sh 8`
