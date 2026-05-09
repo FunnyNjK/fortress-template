@@ -6,33 +6,35 @@ Last Updated: 2026-05-09
 
 ## Current State Summary
 
-**Phase 2 complete** (**`P2-T6`**): **`HealthModule`** (**`GET /healthz`** liveness **`{ status, uptime, version }`** with **`FORTRESS_API_VERSION`**; **`GET /readyz`** Postgres + Redis checks, 503 **`{ status:'unavailable', checks }`**); **`@SkipRateLimit()`** on health routes (**`SKIP_RATE_LIMIT_KEY`** in **`rate-limit.guard`**). Integration tests live under **`apps/api/test/integration/`**; **`pnpm --filter api test`** excludes them; **`test:integration`** + CI **`api-integration`** (**compose `.env`** + **`postgres`/`redis` --wait**, migrate). **`apps/api/README.md`** added.
+**`P2-T7`** landed as **`0eae43e`** (await **`git push`**). Highlights: **`turbo`** **`lint`/`test`** **`dependsOn:^build`**; **`test` JOB `DATABASE_URL`** uses **`127.0.0.1`** (+ **`NODE_ENV=test`** CI); **`api-integration`** runs **`pnpm run build`** pre-suite; **`RateLimitGuard` before `AuthenticatedGuard`**; **`FortressRequestIdMiddleware` + **`FortressRequestLoggingInterceptor`** (429 via **`FortressExceptionFilter`** **pino**); **`__Host-` CSRF always `Secure`**; **`NODE_ENV` required** (**`main.ts`** prod JWKS guard); **`ADR-029`**; integration **`rate-limit-unauth`** (`test/integration/`); **`CHAT_END_PROMPT`** requires **`gh run list`**.
 
 ## Last Completed Task
 
-**`P2-T6`** — **`DONE_LOG`**; feature commit **`f65aca4`**; branch tip **`origin/main`** **`72b07fb`** (includes docs-only follow-ups).
+**`P2-T7`** — **`0eae43e`**. Prior **`origin/main`** tip **`72b07fb`** (**pre-remediation `HANDOFF`** overstated Phase 2 completeness vs **`TASKS`**).
 
 ## Active Task
 
-None — **phase boundary**. **Human must approve Phase 3** before picking up **`apps/web`** (**`TASKS.md`/`ROADMAP`**, **`Unattended: Partial`**).
+None (**human reviewer + CI verdict** owns the phase boundary).
 
 ## Next Recommended Task
 
-After human approval: scaffold **`apps/web`** (Phase 3) — first **`TASKS`** line in Backlog section.
+Human: **`./ai/templates/REVIEW_PHASE_PROMPT.md`** on **`origin/main`** post-push; **`gh run list --branch main --limit 1 --json status,conclusion,headSha`**. Phase 3 only after **`APPROVED`** (**`Partial`** Clerk harness rules).
 
 ## What Is Blocked
 
-Human phase gate (**ADR-022**): do **not** start P3 unattended until approved.
+**Phase 2 NOT “Complete” in manifest sense** until reviewer **APPROVED** + **`conclusion.success`**.
 
 ## Important Instructions for Next AI
 
-- Confirm **CI green** on **`origin/main`** (**`api-integration`** depends on **`REDIS_URL`** with **`REDIS_PASSWORD`** from compose, e.g. **`redis://:test@127.0.0.1:6379/0`** in CI env).
-- **`pnpm`** locally: **`npx pnpm@10.33.4`** when **`pnpm`** not on **`PATH`**.
+- **Commit message** cites **interceptor/logger + guards + **`ADR-029`****.
+- **`pnpm`** locally: **`npx pnpm@10.33.4`** fallback.
+- **Integration**: Compose Redis password → **`redis://:…@127.0.0.1:6379/0`** in CI (**`ALLOW_DEV_AUTH`**, **`NODE_ENV=test`**).
 
 ## Known Risks
 
-- Redis failure tests patch **`Redis#ping`** / **`vi.spyOn(db,'execute')`** — restore in **`finally`**.
+- Redis RL tests patch **`Redis#ping`** in other suites — restore **`finally`**.
+- **`/healthz`** burst still logs loudly (baseline behavior).
 
 ## Tests / Checks Last Run
 
-- CHAT_END (2026-05-09): **`npx pnpm@10.33.4`** **`lint`** **`typecheck`** **`test`** **`build`**; **`pnpm audit --audit-level=high`** (**1 moderate**). **`python3`** **`yaml.safe_load`** **`ci.yml`** + **`dependabot.yml`**; **`bash -n`** **`scripts/setup.sh`**. **`test:integration`**: CI **`api-integration`** or local Compose + **`REDIS_URL`** with **`requirepass`**.
+CHAT_END (pre-push): **`npx pnpm@10.33.4`** **`lint`**, **`typecheck`**, **`test`**, **`build`**; **`pnpm --filter api test`**; **`pnpm --filter api test:integration`** (**local `.env`** + Postgres/Redis + migrate). **`pnpm audit --audit-level=high`** (**1 moderate**, below **`high`** gate). **`gh run list`** not evaluated until after **`git push`**.

@@ -8,6 +8,7 @@ import {
 import { Reflector } from '@nestjs/core';
 import type { Request, Response } from 'express';
 import type { Redis } from 'ioredis';
+import type { Logger as PinoLogger } from 'pino';
 
 import { clientIp } from '../util/client-ip.js';
 import {
@@ -18,6 +19,7 @@ import {
   RATE_LIMIT_WINDOW_SECONDS,
   SKIP_RATE_LIMIT_KEY,
 } from './constants.js';
+import { FORTRESS_PINO_LOGGER } from './request-logging.tokens.js';
 import { FORTRESS_REDIS } from './redis.tokens.js';
 
 function sessionFingerprint(req: Request): string {
@@ -36,6 +38,7 @@ function sessionFingerprint(req: Request): string {
 export class RateLimitGuard implements CanActivate {
   constructor(
     @Inject(FORTRESS_REDIS) private readonly redis: Redis,
+    @Inject(FORTRESS_PINO_LOGGER) private readonly log: PinoLogger,
     private readonly reflector: Reflector,
   ) {}
 
@@ -86,8 +89,21 @@ export class RateLimitGuard implements CanActivate {
       if (e instanceof HttpException && e.getStatus() === 429) {
         throw e;
       }
-      // Fail open if Redis is unavailable — availability over strict rate enforcement.
+      // Fail open if Redis is unavailable — see ADR-029 (`security.rate_limit.fail_open`).
+      this.logFailOpen();
       return true;
     }
+  }
+
+  private logFailOpen(): void {
+    this.log.warn(
+      {
+        severity: 'high',
+        evt: 'security.rate_limit.fail_open',
+        metric: 'security.rate_limit.fail_open',
+        increments: 1,
+      },
+      'Rate limit Redis error — failing open',
+    );
   }
 }

@@ -123,7 +123,8 @@ jobs:
           --health-timeout 5s
           --health-retries 12
     env:
-      DATABASE_URL: postgresql://fortress:test@postgres:5432/fortress
+      NODE_ENV: test
+      DATABASE_URL: postgresql://fortress:test@127.0.0.1:5432/fortress
       REDIS_URL: redis://127.0.0.1:6379/0
       FORTRESS_REQUEST_HMAC_KEY: ci-test-fortress-request-hmac-key-32c
       ALLOW_DEV_AUTH: 'true'
@@ -156,6 +157,7 @@ jobs:
     permissions:
       contents: read
     env:
+      NODE_ENV: test
       DATABASE_URL: postgresql://fortress:test@127.0.0.1:5432/fortress
       REDIS_URL: redis://:test@127.0.0.1:6379/0
       FORTRESS_REQUEST_HMAC_KEY: ci-integration-fortress-request-hmac-key-32c
@@ -188,6 +190,9 @@ jobs:
 
       - name: pnpm install
         run: pnpm install --frozen-lockfile
+
+      - name: Build workspace (packages + API)
+        run: pnpm run build
 
       - name: Apply API migrations
         run: pnpm --filter api db:migrate

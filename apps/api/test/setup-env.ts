@@ -50,6 +50,8 @@ for (const key of ['DATABASE_URL', 'REDIS_URL', 'FORTRESS_REQUEST_HMAC_KEY'] as 
 process.env.DATABASE_URL ??= 'postgresql://fortress:test@127.0.0.1:5432/fortress';
 /** Default when no `.env` (e.g. CI sets `REDIS_URL` explicitly). */
 process.env.REDIS_URL ??= 'redis://127.0.0.1:6379/0';
+/** Required by `validateEnv`; CI and Vitest set `test`; local dev overrides via `.env`. */
+process.env.NODE_ENV ??= 'test';
 /** Test default; local `.env` may override. */
 process.env.FORTRESS_REQUEST_HMAC_KEY ??= 'unit-test-fortress-request-hmac-key-32c';
 process.env.ALLOW_DEV_AUTH ??= 'true';

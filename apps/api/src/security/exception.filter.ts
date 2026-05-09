@@ -3,10 +3,14 @@ import {
   Catch,
   ExceptionFilter,
   HttpException,
+  Inject,
   Injectable,
   Logger,
 } from '@nestjs/common';
 import type { Request, Response } from 'express';
+import type { Logger as PinoLogger } from 'pino';
+
+import { FORTRESS_PINO_LOGGER } from './request-logging.tokens.js';
 
 function httpStatusFromBodyParser(err: unknown): number | undefined {
   if (err && typeof err === 'object') {
@@ -24,7 +28,9 @@ function httpStatusFromBodyParser(err: unknown): number | undefined {
 @Catch()
 @Injectable()
 export class FortressExceptionFilter implements ExceptionFilter {
-  private readonly log = new Logger(FortressExceptionFilter.name);
+  private readonly nestLog = new Logger(FortressExceptionFilter.name);
+
+  constructor(@Inject(FORTRESS_PINO_LOGGER) private readonly accessLog: PinoLogger) {}
 
   catch(exception: unknown, host: ArgumentsHost): void {
     const ctx = HTTP_MODE(host);
@@ -38,6 +44,16 @@ export class FortressExceptionFilter implements ExceptionFilter {
     if (exception instanceof HttpException) {
       const status = exception.getStatus();
       if (status === 429) {
+        this.accessLog.warn(
+          {
+            requestId,
+            method: req.method,
+            path: req.path,
+            status,
+            event: 'rate_limited',
+          },
+          'Too many requests',
+        );
         res.status(429).json({ code: 'RATE_LIMITED', message: 'Too many requests' });
         return;
       }
@@ -60,9 +76,9 @@ export class FortressExceptionFilter implements ExceptionFilter {
     }
 
     if (exception instanceof Error) {
-      this.log.error(exception.stack);
+      this.nestLog.error(exception.stack ?? exception.message);
     } else {
-      this.log.error(String(exception));
+      this.nestLog.error(String(exception));
     }
 
     const body: Record<string, unknown> = {

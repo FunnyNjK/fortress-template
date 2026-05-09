@@ -810,6 +810,42 @@ P2-T4 (security middleware chain); P2-T5 (session-aware rate limit refinement).
 
 ---
 
+## ADR-029: Rate limiting fails open when Redis is unavailable
+
+Date: 2026-05-09  
+Status: Accepted
+
+### Decision
+
+The fixed-window **`RateLimitGuard`** **does not deny traffic** when **Redis errors**
+timeouts, or connection refusal occur during **`INCR`** / **`EXPIRE`**
+operations. Requests are **allowed** (fail-open) so the API stays available.
+
+When fail-open activates, **`apps/api` logs a structured **high-severity** warning**
+(**`severity: high`**) carrying **`evt: security.rate_limit.fail_open`** and
+**`metric: security.rate_limit.fail_open`** (with **`increments: 1`** on the JSON
+blob) suitable for **log-based alerting** until OTLP / meter plumbing lands (ADR-020). — not an incident to revert silently without
+changing this ADR.
+
+### Reason
+
+- **Availability** beats **perfect enforcement** during Redis outages — a total
+API outage hurts legitimate users more than temporarily relaxed rate caps.
+- **Observability** must surface fail-open visibly so operators can throttle at
+LB/WAF until Redis recovers.
+
+### Tradeoffs
+
+- During Redis downtime, abusive traffic is **under-counted**.
+- Operators must tune alerts on **`security.rate_limit.fail_open`** to avoid
+silent blind spots.
+
+### Related Tasks
+
+P2-T7 (remediation ratification + guard instrumentation).
+
+---
+
 ## ADR Template
 
 ## ADR-XXX: Title

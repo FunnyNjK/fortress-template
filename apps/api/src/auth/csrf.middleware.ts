@@ -32,17 +32,14 @@ function parseCookie(raw: string | undefined, name: string): string | undefined 
   return undefined;
 }
 
-/** `__Host-` prefix: Path=/, no Domain, Secure in production. */
+/** `__Host-` prefix: Path=/, no Domain, **Secure** always (RFC 6265bis; browsers reject `__Host-` without Secure). */
 export function issueCsrfCookie(res: Response, token: string): void {
-  const secure = process.env.NODE_ENV === 'production';
   const segments = [
     `${FORTRESS_CSRF_COOKIE_NAME}=${encodeURIComponent(token)}`,
     'Path=/',
     'SameSite=Strict',
+    'Secure',
   ];
-  if (secure) {
-    segments.push('Secure');
-  }
   res.append('Set-Cookie', segments.join('; '));
 }
 

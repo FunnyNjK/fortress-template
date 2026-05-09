@@ -13,6 +13,16 @@ const base = {
 } as const;
 
 describe('env validation', () => {
+  it('rejects omitted NODE_ENV', () => {
+    expect(() =>
+      validateEnv({
+        ...base,
+        PORT: 4000,
+        LOG_LEVEL: 'info',
+      }),
+    ).toThrow();
+  });
+
   it('parses coerced PORT and respects NODE_ENV', () => {
     const env = validateEnv({
       ...base,

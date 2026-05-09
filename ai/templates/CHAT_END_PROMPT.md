@@ -21,6 +21,12 @@ content. Do not skip them.
    file changed since you last looked; re-read and re-plan the edit.
 4. **Verify after edit.** After each edit, re-read the surrounding section
    to confirm no unintended content was dropped.
+5. **`gh run list` before declaring a phase Done.** Capture
+   **`gh run list --branch main --limit 1 --json status,conclusion,headSha`**
+   in the DONE_LOG CHAT_END entry (or explicitly document that **`gh`** is not
+   available and why). **Do not claim "Phase N complete"** unless the latest
+   `main` workflow run shows **`conclusion`** is **`success`**. When CI is
+   red/pending/skipped (`null`/`""`), STOP and describe the blocker for humans.
 
 ## What to update
 

@@ -35,8 +35,8 @@ import { SecurityModule } from './security/security.module.js';
     }),
   ],
   providers: [
-    { provide: APP_GUARD, useClass: AuthenticatedGuard },
     { provide: APP_GUARD, useClass: RateLimitGuard },
+    { provide: APP_GUARD, useClass: AuthenticatedGuard },
     { provide: APP_GUARD, useClass: CsrfGuard },
     { provide: APP_INTERCEPTOR, useClass: FortressCsrfCookieInterceptor },
   ],

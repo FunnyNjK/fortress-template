@@ -46,6 +46,10 @@ async function redisReachable(url: string): Promise<boolean> {
   }
 }
 
+function isStringArray(v: unknown): v is string[] {
+  return Array.isArray(v) && v.every((x) => typeof x === 'string');
+}
+
 function parseSetCookieCsrf(setCookie: string[] | undefined): string | undefined {
   if (!setCookie) {
     return undefined;
@@ -156,6 +160,16 @@ describe.skipIf(!pool || !!skipReason || (!redisOk && process.env.CI !== 'true')
       const auth = { Authorization: 'Bearer integration-mw-token', 'x-debug-user-id': 'u1' };
 
       const r1 = await request(server).get('/auth/me').set(auth).expect(200);
+      const rawSetCookieUnknown: unknown = r1.headers['set-cookie'];
+      expect(isStringArray(rawSetCookieUnknown)).toBe(true);
+      if (!isStringArray(rawSetCookieUnknown)) {
+        throw new Error('expected Set-Cookie string array');
+      }
+      const csrfLine = rawSetCookieUnknown.find((c) =>
+        c.startsWith(`${FORTRESS_CSRF_COOKIE_NAME}=`),
+      );
+      expect(csrfLine).toBeDefined();
+      expect(csrfLine).toMatch(/;\s*Secure(?:;|$)/);
       expect(r1.body).toMatchObject({ clerkUserId: 'u1' });
       const b1 = r1.body as AuthMeBody;
       expect(typeof b1.id).toBe('string');

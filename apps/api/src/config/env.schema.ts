@@ -27,7 +27,8 @@ function coerceBool(value: unknown): boolean {
 }
 
 export const envSchema = z.object({
-  NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
+  /** Required: empty/missing must fail bootstrap (avoid silent JWKS-dev fallback in prod). */
+  NODE_ENV: z.enum(['development', 'production', 'test']),
   PORT: z.coerce.number().int().min(1).max(65_535).default(4000),
   LOG_LEVEL: logLevelSchema.default('info'),
   DATABASE_URL: postgresUrlSchema,

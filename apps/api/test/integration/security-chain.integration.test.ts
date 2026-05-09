@@ -12,7 +12,7 @@ import { afterAll, beforeAll, beforeEach, describe, expect, it } from 'vitest';
 
 import { AppModule } from '../../src/app.module.js';
 import { BodyLimitRegistry } from '../../src/security/body-limit.registry.js';
-import { FORTRESS_PINO_LOGGER } from '../../src/security/request-logger.middleware.js';
+import { FORTRESS_PINO_LOGGER } from '../../src/security/request-logging.tokens.js';
 
 async function redisReachable(url: string): Promise<boolean> {
   const r = new Redis(url, {
@@ -51,6 +51,19 @@ describe.skipIf(!redisOk && process.env.CI !== 'true')(
         throw new Error('Nest application not initialized');
       }
       return app;
+    }
+
+    function statusesFromCaptured(): number[] {
+      return capturedLogs
+        .map((line) => {
+          try {
+            const o = JSON.parse(line) as Record<string, unknown>;
+            return typeof o.status === 'number' ? o.status : undefined;
+          } catch {
+            return undefined;
+          }
+        })
+        .filter((x): x is number => x !== undefined);
     }
 
     beforeAll(async () => {
@@ -125,6 +138,7 @@ describe.skipIf(!redisOk && process.env.CI !== 'true')(
         expect(res.headers['retry-after']).toBeDefined();
         expect(Number(res.headers['retry-after'])).toBeGreaterThan(0);
         expect(res.body).toMatchObject({ code: 'RATE_LIMITED' });
+        expect(statusesFromCaptured()).toContain(429);
       },
       120_000,
     );
@@ -151,6 +165,7 @@ describe.skipIf(!redisOk && process.env.CI !== 'true')(
         .send({ message })
         .set('Content-Type', 'application/json')
         .expect(413);
+      expect(capturedLogs).toHaveLength(0);
     });
 
     it('registry applies AllowLargeBody to /large', () => {
@@ -187,6 +202,7 @@ describe.skipIf(!redisOk && process.env.CI !== 'true')(
         .set('Content-Type', 'application/json')
         .expect(400);
       expect(res.body).toEqual({ code: 'BAD_REQUEST', message: 'Invalid request' });
+      expect(statusesFromCaptured()).toContain(400);
     });
 
     it('returns 500 for unexpected errors without stack in the response body', async () => {
