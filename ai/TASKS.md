@@ -5,7 +5,7 @@ Last Updated: 2026-05-09
 Phase 0 is **complete** (P0-T1–P0-T8). **Phase 1** is **complete** (P1-T1–P1-T6). **Phase 2**
 engineering tasks (**P2-T1**–**P2-T7**) are **coded**; **`phase-manifest.json`** **Phase 2** stays **`Ready`**
 —not **`Complete`**—until **`/ai/templates/REVIEW_PHASE_PROMPT.md`** returns **APPROVED** from a human reviewer
-against **green **`origin/main`**** CI (**`gh run list --branch main --limit 1 --json conclusion`** must show **`success`** before any "Phase 2 Done" wording). Phase 3+ remain **Backlog** (**ADR-022** boundary; **Phase 3** **`Unattended: Partial`** for Clerk secrets).
+against green **`origin/main`** **HEAD** (latest **`gh run list`** entry with **`name`** **`CI`** must have **`conclusion`** **`success`** before any **"Phase 2 Done"** wording). Phase 3+ remain **Backlog** (**ADR-022** boundary; **Phase 3** **`Unattended: Partial`** for Clerk secrets).
 
 ---
 
@@ -101,7 +101,7 @@ Rough unattended profiles — refine when each phase becomes active.
 
 ## Active Task
 
-None — **blocked on human reviewer** (`REVIEW_PHASE_PROMPT.md` **APPROVED** + **`gh`** CI **`success`** on **`main`**). Do **not** start **Phase 3** until then (**ADR-022**).
+None — **blocked on human reviewer** (`REVIEW_PHASE_PROMPT.md` **APPROVED** + **`gh`** CI **`success`** on **`origin/main`** **HEAD**, workflow **`CI`**, per **`AI_RULES`** + **`CHAT_END_PROMPT`**). Do **not** start **Phase 3** until then (**ADR-022**).
 
 ---
 

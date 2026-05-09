@@ -6,7 +6,7 @@ Last Updated: 2026-05-09
 
 ## Current Phase
 
-**Phase 2** — **`P2-T7`** remediation on **`origin/main`** (**Vitest Postgres race fix **`eb64d1b`**). **`phase-manifest`** **`Ready`** until **`REVIEW_PHASE_PROMPT`** **APPROVED**. **`gh`** **`CI`** run **`25610557287`** on **`eb64d1b`**: **`conclusion`** **`success`**.
+**Phase 2** — **`P2-T7`** on **`origin/main`**, tip **`36d5c7e`** (**`1dea680`** → **`1f84951`** → **`eb64d1b`** → **`36d5c7e`**). **`phase-manifest`** **`Ready`** until **`REVIEW_PHASE_PROMPT`** **APPROVED**. **`gh`** **`CI`** (**`25610607554`**, **`HEAD`** **`36d5c7e`**): **`conclusion`** **`success`**.
 
 ## Current Task
 
@@ -30,7 +30,7 @@ Last Updated: 2026-05-09
 
 ## Known Problems
 
-None (human reviewer **APPROVED** still owed; **`CI`** **`main`** at **`eb64d1b`** is green).
+None (human reviewer **APPROVED** still owed; **`origin/main`** tip **`36d5c7e`** has green **`CI`** per **`gh run list`** (**`CI`** **`25610607554`**)).
 
 ## Important Files or Folders
 
@@ -41,9 +41,9 @@ None (human reviewer **APPROVED** still owed; **`CI`** **`main`** at **`eb64d1b`
 
 ## Next Recommended Action
 
-1. **Human**: **`./ai/templates/REVIEW_PHASE_PROMPT.md`** → **APPROVED** ( **`CI`** already **`success`** on **`eb64d1b`**).
+1. **Human**: **`./ai/templates/REVIEW_PHASE_PROMPT.md`** → **APPROVED** (**`CI`** **`success`** verified on **`36d5c7e`** via **`gh run list`**; filter **`name`** **`CI`**).
 2. After gate: backlog **Phase 3** scaffold (**Partial** unattended matrix).
 
 ## Session reconciliation
 
-**P2-T7** (**`origin/main`** **`eb64d1b`**) CI **`success`** (**`25610557287`**); remediation commit **`1dea680`** (+ **`1f84951`** baton SHA + **`eb64d1b`** Vitest).
+**P2-T7** remediation shipped (**`1dea680`⋯`eb64d1b`**); **`origin/main`** tip **`36d5c7e`** (**planning**/CHAT reconcile). **`CI`** **`25610607554`** **`success`** (**`CHAT_END_PROMPT`** pass).
